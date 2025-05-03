@@ -1,0 +1,13 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: pedido-service
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
