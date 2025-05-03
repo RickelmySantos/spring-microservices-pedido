@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-local
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    healthcheck:
+      test: "pg_isready --username=postgres && psql --username=postgres --list"
+      timeout: 10s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - rsdesenvolvimento
+networks:
+  rsdesenvolvimento:
+    driver: bridge
+volumes:
+  postgres_data:
