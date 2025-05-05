@@ -2,13 +2,32 @@
   "configurations": [
     {
       "type": "java",
+      "name": "EurekaServerApplication",
+      "request": "launch",
+      "mainClass": "com.rsdesenvolvimento.eureka_server.EurekaServerApplication",
+      "projectName": "eureka-server"
+    },
+    {
+      "type": "java",
       "name": "Spring Boot-UsuarioApplication<usuario>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "mainClass": "com.rsdesenvolvimento.usuario.UsuarioApplication",
       "projectName": "usuario",
       "args": "",
-      "envFile": "${workspaceFolder}/.env"
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=39621 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=usuario"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-PedidoServiceApplication<pedido-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rsdesenvolvimento.pedido_service.PedidoServiceApplication",
+      "projectName": "pedido-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=35009 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=pedido-service"
     }
   ]
 }
