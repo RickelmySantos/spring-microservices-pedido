@@ -5,7 +5,6 @@ import com.rsdesenvolvimento.usuario.modelo.dtos.UsuarioResponseDto;
 import com.rsdesenvolvimento.usuario.services.UsuarioService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class UsuarioApi {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Optional<UsuarioResponseDto>> buscarUsuarioPorId(@PathVariable Long id) {
+  public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(this.usuarioService.buscarPorId(id));
   }
 

@@ -5,7 +5,8 @@
       "name": "EurekaServerApplication",
       "request": "launch",
       "mainClass": "com.rsdesenvolvimento.eureka_server.EurekaServerApplication",
-      "projectName": "eureka-server"
+      "projectName": "eureka-server",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=33565 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=eureka-server"
     },
     {
       "type": "java",
@@ -28,6 +29,16 @@
       "args": "",
       "envFile": "${workspaceFolder}/.env",
       "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=35009 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=pedido-service"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-PagamentoServiceApplication<pagamento-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rsdesenvolvimento.pagamento_service.PagamentoServiceApplication",
+      "projectName": "pagamento-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }
