@@ -6,7 +6,6 @@ import com.rsdesenvolvimento.usuario.modelo.entidades.Usuario;
 import com.rsdesenvolvimento.usuario.modelo.mappers.UsuarioMapper;
 import com.rsdesenvolvimento.usuario.repositorios.UsuarioRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,16 +31,17 @@ public class UsuarioService {
     return this.usuarioMapper.toDto(this.usuarioRepository.save(usuario));
   }
 
-  public Optional<UsuarioResponseDto> buscarPorId(Long id) {
+  public UsuarioResponseDto buscarPorId(Long id) {
     Assert.notNull(id, "Id não pode ser nulo");
     Assert.notNull(id > 0, "Id deve ser maior que zero");
     Usuario usuario = this.usuarioRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-    return Optional.of(this.usuarioMapper.toDto(usuario));
+    return this.usuarioMapper.toDto(usuario);
   }
 
   public List<UsuarioResponseDto> listarTodos() {
-    return this.usuarioRepository.findAll().stream().map(this.usuarioMapper::toDto).collect(Collectors.toList());
+    return this.usuarioRepository.findAll().stream().map(this.usuarioMapper::toDto)
+        .collect(Collectors.toList());
   }
 
   public void deletar(Long id) {

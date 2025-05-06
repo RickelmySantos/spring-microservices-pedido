@@ -7,4 +7,5 @@ public class PedidoRequesteDto {
 
   private String descricao;
   private Long usuarioId;
+
 }
