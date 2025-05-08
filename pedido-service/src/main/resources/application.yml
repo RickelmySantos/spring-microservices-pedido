@@ -30,6 +30,17 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+rabbitmq:
+  host: rabbitmq
+  port: 5672
+  username: guest
+  password: guest
+  virtual-host: /
+  listener:
+    simple:
+      concurrency: 1
+      max-concurrency: 10
+
 logging:
   level:
     com.rsdesenvolvimento.pedido_service.core.client: DEBUG

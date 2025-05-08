@@ -2,6 +2,7 @@ package com.rsdesenvolvimento.pedido_service.services;
 
 import com.rsdesenvolvimento.pedido_service.core.client.UsuarioClient;
 import com.rsdesenvolvimento.pedido_service.core.client.UsuarioDto;
+import com.rsdesenvolvimento.pedido_service.core.config.NotificacaoProducer;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoRequesteDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoResponseDto;
 import com.rsdesenvolvimento.pedido_service.modelo.entidades.Pedido;
@@ -25,7 +26,7 @@ public class PedidoService {
   private final PedidoRepository pedidoRepository;
   private final PedidoMapper pedidoMapper;
   private final UsuarioClient usuarioClient;
-
+  private final NotificacaoProducer notificacaoProducer;
 
   public PedidoResponseDto criarPedido(PedidoRequesteDto dto) {
     try {
@@ -42,6 +43,9 @@ public class PedidoService {
 
       PedidoResponseDto response = this.pedidoMapper.paraDto(pedidoSalvo);
       response.setNomeUsuario(usuario.getNome());
+
+      String mensagem = String.format("Pedido %s criado com sucesso!", pedidoSalvo.getId());
+      this.notificacaoProducer.enviarNotificacao(mensagem);
 
 
       return response;
