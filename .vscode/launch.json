@@ -39,6 +39,16 @@
       "projectName": "pagamento-service",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-NotificacaoServiceApplication<notificacao-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rsdesenvolvimento.notificacao_service.NotificacaoServiceApplication",
+      "projectName": "notificacao-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }
