@@ -19,6 +19,27 @@ services:
     networks:
       - rsdesenvolvimento
 
+  eureka:
+    build:
+      context: ./eurekaserver
+      dockerfile: Dockerfile
+    container_name: eurekaserver
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
+      EUREKA_INSTANCE_IP_ADDRESS: localhost
+    networks:
+      - rsdesenvolvimento
+    healthcheck:
+      test: "curl --fail --silent localhost:8761/api/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+
   rabbitmq:
     image: rabbitmq:4.1-management
     container_name: rabbitmq-local
@@ -31,9 +52,129 @@ services:
     restart: unless-stopped
     networks:
       - rsdesenvolvimento
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - rsdesenvolvimento
+    depends_on:
+      - pedido-service
+      - notificacao-service
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - rsdesenvolvimento
+
+  usuario:
+    build:
+      context: ./usuario
+      dockerfile: Dockerfile
+      # profiles:
+      #   - "app"
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/usuario
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+    depends_on:
+      eureka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - rsdesenvolvimento
+
+  pedido-service:
+    build:
+      context: ./pedido
+      dockerfile: Dockerfile
+      # profiles:
+      #   - "app"
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/pedido
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+    depends_on:
+      eureka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - rsdesenvolvimento
+
+  notificacao-service:
+    build:
+      context: ./notificacao
+      dockerfile: Dockerfile
+      # profiles:
+      #   - "app"
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/notificacao
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+    depends_on:
+      eureka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - rsdesenvolvimento
+
+  pagamento-service:
+    build:
+      context: ./pagamento
+      dockerfile: Dockerfile
+      # profiles:
+      #   - "app"
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/pagamento
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+    depends_on:
+      eureka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - rsdesenvolvimento
 
 networks:
   rsdesenvolvimento:
     driver: bridge
 volumes:
   postgres_data:
+  grafana_data:

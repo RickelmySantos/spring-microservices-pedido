@@ -31,6 +31,8 @@
     <spring-cloud.version>2024.0.1</spring-cloud.version>
     <spring-mapstruct.version>1.6.2</spring-mapstruct.version>
     <spring-flayway.version>11.8.0</spring-flayway.version>
+    <spring-micrometer-prometheus.version>1.15.0-M3</spring-micrometer-prometheus.version>
+
   </properties>
 
   <dependencyManagement>
@@ -67,6 +69,13 @@
         <artifactId>flyway-database-postgresql</artifactId>
         <version>${spring-flayway.version}</version>
         <scope>runtime</scope>
+      </dependency>
+
+      <!-- Micrometer Prometheus-->
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+        <version>${spring-micrometer-prometheus.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

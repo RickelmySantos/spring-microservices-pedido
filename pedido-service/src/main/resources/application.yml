@@ -6,10 +6,10 @@ spring:
   application:
     name: pedido-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/pedido
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pedido}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME:org.postgresql.Driver}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -28,7 +28,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
 
 rabbitmq:
   host: rabbitmq
@@ -40,6 +40,21 @@ rabbitmq:
     simple:
       concurrency: 1
       max-concurrency: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+    endpoint:
+      health:
+        probes:
+          enabled: true
 
 logging:
   level:
