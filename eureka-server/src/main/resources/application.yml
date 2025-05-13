@@ -5,8 +5,8 @@ server:
 spring:
   application:
     name: eurekaserver
-  config:
-    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
+  # config:
+  #   import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
 
 eureka:
   client:
