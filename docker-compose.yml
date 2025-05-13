@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:15
-    container_name: postgres-local
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
@@ -21,7 +21,7 @@ services:
 
   eureka:
     build:
-      context: ./eurekaserver
+      context: ./eureka-server
       dockerfile: Dockerfile
     container_name: eurekaserver
     ports:
@@ -29,7 +29,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
+      # SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
       EUREKA_INSTANCE_IP_ADDRESS: localhost
     networks:
       - rsdesenvolvimento
@@ -56,7 +56,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     ports:
-      - "9091:9090"
+      - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
@@ -84,16 +84,17 @@ services:
     build:
       context: ./usuario
       dockerfile: Dockerfile
+
       # profiles:
       #   - "app"
     ports:
       - "8081:8081"
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/usuario
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usuario
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       eureka:
@@ -105,18 +106,19 @@ services:
 
   pedido-service:
     build:
-      context: ./pedido
+      context: ./pedido-service
       dockerfile: Dockerfile
+
       # profiles:
       #   - "app"
     ports:
       - "8084:8084"
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/pedido
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pedido
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       eureka:
@@ -128,18 +130,19 @@ services:
 
   notificacao-service:
     build:
-      context: ./notificacao
+      context: ./notificacao-service
       dockerfile: Dockerfile
+
       # profiles:
       #   - "app"
     ports:
-      - "8081:8081"
+      - "8085:8085"
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/notificacao
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notificacao
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       eureka:
@@ -151,18 +154,19 @@ services:
 
   pagamento-service:
     build:
-      context: ./pagamento
+      context: ./pagamento-service
       dockerfile: Dockerfile
+
       # profiles:
       #   - "app"
     ports:
       - "8083:8083"
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/pagamento
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pagamento
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       eureka:

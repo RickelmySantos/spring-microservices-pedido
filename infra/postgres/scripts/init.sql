@@ -1,1 +1,2 @@
 CREATE DATABASE usuario;
+CREATE DATABASE pedido;
