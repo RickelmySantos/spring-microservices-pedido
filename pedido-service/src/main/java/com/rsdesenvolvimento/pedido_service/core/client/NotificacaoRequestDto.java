@@ -1,8 +1,12 @@
 package com.rsdesenvolvimento.pedido_service.core.client;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class NotificacaoRequestDto {
 
   private String emailDestino;
