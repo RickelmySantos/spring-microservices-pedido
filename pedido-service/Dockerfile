@@ -1,12 +1,12 @@
-FROM maven:3.9.4-eclipse-temurin-21 AS builder
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY target/pedido-service-0.0.1-SNAPSHOT.jar app.jar  
+COPY target/pedido-service-0.0.1-SNAPSHOT.jar pedido-service.jar
 
-EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENTRYPOINT ["java", "-jar", "pedido-service.jar"]
 
 
 # # Etapa 1: Build da aplicação
