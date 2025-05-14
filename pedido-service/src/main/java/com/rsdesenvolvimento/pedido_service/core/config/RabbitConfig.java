@@ -25,7 +25,7 @@ public class RabbitConfig {
 
   @Bean
   public DirectExchange exchange() {
-    return new DirectExchange(RabbitConfig.EXCHANGE_NAME);
+    return new DirectExchange(RabbitConfig.EXCHANGE_NAME, true, false);
   }
 
   @Bean
