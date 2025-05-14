@@ -6,10 +6,10 @@ spring:
   application:
     name: pedido-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pedido}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}
+    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pedido}"
+    username: "${SPRING_DATASOURCE_USERNAME:postgres}"
+    password: "${SPRING_DATASOURCE_PASSWORD:postgres}"
+    driver-class-name: "${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}"
   jpa:
     hibernate:
       ddl-auto: validate
@@ -19,21 +19,29 @@ spring:
         format_sql: true
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: "classpath:db/migration"
     baseline-on-migrate: true
     out-of-order: false
-
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 10
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
-
+      defaultZone: "${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}"
 resilience4j:
   circuitbreaker:
     instances:
-      usuario-api: # <-- agora está igual ao FeignClient
+      usuario-api:
         registerHealthIndicator: true
         slidingWindowSize: 5
         failureRateThreshold: 50
@@ -44,18 +52,6 @@ resilience4j:
       usuario-api:
         maxAttempts: 3
         waitDuration: 2s
-
-rabbitmq:
-  host: rabbitmq
-  port: 5672
-  username: guest
-  password: guest
-  virtual-host: /
-  listener:
-    simple:
-      concurrency: 1
-      max-concurrency: 10
-
 management:
   endpoints:
     web:
@@ -70,7 +66,6 @@ management:
       health:
         probes:
           enabled: true
-
 logging:
   level:
     com.rsdesenvolvimento.pedido_service.core.client: DEBUG
