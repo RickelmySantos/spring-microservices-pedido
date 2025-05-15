@@ -141,6 +141,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+      SENDGRID_API_KEY: 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
     depends_on:
       eureka:
         condition: service_healthy
