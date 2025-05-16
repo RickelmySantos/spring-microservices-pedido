@@ -16,12 +16,14 @@ public class NotificacaoService {
   @Value("${sendgrid.api.key}")
   private String sendGridApiKey;
 
-  public void enviarEmail(String emailDestino, String mensagem) {
-    Email from = new Email("no-reply@notificacao-pedido.com");
-    Email to = new Email(emailDestino);
+  public void enviarEmail(String to, String subject, String content) {
+    Email from = new Email("rickelmysantos493@gmail.com", "RSDesenvolvimento - Notificações");
+    Email toEmail = new Email(to);
 
-    Content content = new Content("text/plain", mensagem);
-    Mail mail = new Mail(from, "Notificação de Pedido", to, content);
+    Content emailContent = new Content("text/html", content);
+    Mail mail = new Mail(from, subject, toEmail, emailContent);
+
+    mail.setReplyTo(new Email("contato@rsdesenvolvimento.com"));
 
     SendGrid sg = new SendGrid(this.sendGridApiKey);
 
@@ -31,8 +33,9 @@ public class NotificacaoService {
       request.setMethod(Method.POST);
       request.setEndpoint("mail/send");
       request.setBody(mail.build());
-      sg.api(request);
+
       Response response = sg.api(request);
+
       System.out.println("Status Code: " + response.getStatusCode());
       System.out.println("Response Body: " + response.getBody());
       System.out.println("Response Headers: " + response.getHeaders());

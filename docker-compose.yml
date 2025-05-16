@@ -134,6 +134,8 @@ services:
     #   - "app"
     ports:
       - "8085:8085"
+    env_file:
+      - .env
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notificacao

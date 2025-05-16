@@ -40,9 +40,12 @@ public class PedidoService {
       pedido.setStatus(StatusEnum.PENDENTE);
 
       Pedido pedidoSalvo = this.pedidoRepository.save(pedido);
-
       PedidoResponseDto response = this.pedidoMapper.paraDto(pedidoSalvo);
+
       response.setNomeUsuario(usuario.getNome());
+
+      // ObjectMapper objectMapper = new ObjectMapper();
+      // String jsonPedido = objectMapper.writeValueAsString(response);
 
       String mensagem = String.format("Pedido %s criado com sucesso!", pedidoSalvo.getId());
       this.notificacaoProducer.enviarNotificacao(mensagem);
@@ -53,6 +56,7 @@ public class PedidoService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado");
     }
   }
+
 
 }
 
