@@ -1,6 +1,6 @@
-# 🛒 Microserviços de Pedido com Spring Boot + Kafka
+# Microserviços de Pedido com Spring Boot + RabbitMQ
 
-Este projeto é uma demonstração de arquitetura baseada em **microserviços** utilizando **Spring Boot**, **Apache Kafka**, **Spring Cloud** e **JPA**. A aplicação simula o fluxo de um pedido completo, desde a criação do usuário até a notificação de finalização do pedido.
+Este projeto demonstra uma arquitetura baseada em **microserviços** utilizando **Spring Boot**, **Rabbitmq**, **Spring Cloud** e **JPA**. A aplicação simula o fluxo de um pedido completo, desde a criação do usuário até a notificação de finalização do pedido via **SendGrid**.
 
 ---
 
@@ -8,31 +8,44 @@ Este projeto é uma demonstração de arquitetura baseada em **microserviços** 
 
 - Java 21
 - Spring Boot 3.x
-- Spring Web / WebFlux
+- Spring Web
 - Spring Data JPA
 - Spring Validation
-- Spring Kafka
-- Apache Kafka + Zookeeper (via Docker)
 - Lombok
-- PostgreSql
+- PostgreSql + flyway
+- Mapstruct
+
+-Microsserviços e Integração
+
+- Spring Cloud
+- OpenFeing
+- Eureka
+- Resilienc4j
+- Rabbitmq
+
+**Observabilidade**
+
+- Spring Boot Actuator
+- Micrometer
+- Prometheus
+- Grafana
 
 ---
 
 ## 🧱 Arquitetura dos Microserviços
 
-| Serviço                 | Responsabilidade                                   |
-| ----------------------- | -------------------------------------------------- |
-| **User Service**        | CRUD de usuários                                   |
-| **Pedido Service**      | Recebe pedidos, valida usuários e envia para Kafka |
-| **Pagamento Service**   | Processa pagamento e envia evento de finalização   |
-| **Notificacao Service** | Escuta eventos e simula envio de notificação       |
+| Serviço                 | Responsabilidade                                              |
+| ----------------------- | ------------------------------------------------------------- |
+| **User Service**        | CRUD de usuários                                              |
+| **Pedido Service**      | Recebe pedidos, valida usuários e envia para fila             |
+| **Pagamento Service**   | Processa pagamento e envia evento de finalização              |
+| **Notificacao Service** | Consome a fila do RabbitMQ e envia notificação para o cliente |
 
 Comunicação entre serviços:
 
 - REST: PedidoService → UserService (validação do usuário)
-- Kafka:
-  - PedidoService → Kafka → PagamentoService
-  - PagamentoService → Kafka → NotificacaoService
+- RabbitMQ:
+  - PedidoService → RabbitMQ → NotificacaoService
 
 ---
 
@@ -54,7 +67,7 @@ Comunicação entre serviços:
 - Maven
 - Docker + Docker Compose
 
-### 1. Subir Kafka com Docker Compose
+### 1. Subir com Docker Compose
 
 ```bash
 docker-compose up -d
