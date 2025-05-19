@@ -9,7 +9,7 @@ import com.rsdesenvolvimento.pedido_service.modelo.entidades.Pedido;
 import com.rsdesenvolvimento.pedido_service.modelo.enums.StatusEnum;
 import com.rsdesenvolvimento.pedido_service.modelo.mappers.PedidoMapper;
 import com.rsdesenvolvimento.pedido_service.repositorios.PedidoRepository;
-import feign.FeignException.FeignClientException;
+import feign.FeignException;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class PedidoService {
 
 
       return response;
-    } catch (FeignClientException e) {
+    } catch (FeignException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado");
     }
   }
@@ -63,15 +63,14 @@ public class PedidoService {
     Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
 
-    if (status.equalsIgnoreCase(StatusEnum.FINALIZADO.name())) {
-      pedido.setStatus(StatusEnum.FINALIZADO);
+    try {
+      StatusEnum novoStatus = StatusEnum.valueOf(status.toUpperCase());
+      pedido.setStatus(novoStatus);
       this.pedidoRepository.save(pedido);
-    } else if (status.equalsIgnoreCase(StatusEnum.CANCELADO.name())) {
-      pedido.setStatus(StatusEnum.CANCELADO);
-      this.pedidoRepository.save(pedido);
-    } else {
+    } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status inválido");
     }
+
   }
 }
 

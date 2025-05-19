@@ -18,7 +18,7 @@ public interface UsuarioClient {
   default UsuarioDto fallbackBuscarUsuarioPorId(Long id, Throwable throwable) {
     UsuarioDto fallback = new UsuarioDto();
     fallback.setId(id);
-    fallback.setNome("Usuário não encontrado - fallback ativado");
+    fallback.setNome("Usuário não encontrado - motivo: " + throwable.getMessage());
     return fallback;
   }
 }

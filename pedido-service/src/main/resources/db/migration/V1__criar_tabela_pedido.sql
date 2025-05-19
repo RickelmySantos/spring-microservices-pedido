@@ -1,6 +1,6 @@
-CREATE SEQUENCE pedido_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS pedido_seq START 1;
 
-CREATE TABLE pedido (
+CREATE TABLE IF NOT EXISTS pedido (
     id BIGINT PRIMARY KEY DEFAULT nextval('pedido_seq'),
     descricao VARCHAR(255),
     usuario_id BIGINT NOT NULL,

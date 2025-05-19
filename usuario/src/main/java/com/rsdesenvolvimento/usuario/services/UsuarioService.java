@@ -33,7 +33,8 @@ public class UsuarioService {
 
   public UsuarioResponseDto buscarPorId(Long id) {
     Assert.notNull(id, "Id não pode ser nulo");
-    Assert.notNull(id > 0, "Id deve ser maior que zero");
+    Assert.isTrue(id > 0, "Id deve ser maior que zero");
+
     Usuario usuario = this.usuarioRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     return this.usuarioMapper.toDto(usuario);
@@ -46,7 +47,7 @@ public class UsuarioService {
 
   public void deletar(Long id) {
     Assert.notNull(id, "Id não pode ser nulo");
-    Assert.notNull(id > 0, "Id deve ser maior que zero");
+    Assert.isTrue(id > 0, "Id deve ser maior que zero");
     Usuario usuario = this.usuarioRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     this.usuarioRepository.delete(usuario);
@@ -55,6 +56,7 @@ public class UsuarioService {
   public UsuarioResponseDto atualizar(Long id, UsuarioRequestDto dto) {
     Assert.notNull(id, "Id não pode ser nulo");
     Assert.notNull(id > 0, "Id deve ser maior que zero");
+
     Usuario usuario = this.usuarioRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     if (this.usuarioRepository.existsByCpf(dto.getCpf())) {

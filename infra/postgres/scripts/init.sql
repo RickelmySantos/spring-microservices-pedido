@@ -2,3 +2,5 @@ CREATE DATABASE usuario;
 CREATE DATABASE pedido;
 CREATE DATABASE pagamento;
 CREATE DATABASE notificacao;
+
+CREATE DATABASE produto;

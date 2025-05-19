@@ -6,6 +6,7 @@ import com.rsdesenvolvimento.pagamento_service.modelo.dtos.PagamentoRequestDto;
 import com.rsdesenvolvimento.pagamento_service.modelo.entidades.Pagamento;
 import com.rsdesenvolvimento.pagamento_service.repositorios.PagamentoRepository;
 import java.time.LocalDateTime;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PagamentoService {
 
-  private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+  private static final ExecutorService executor = Executors.newFixedThreadPool(2);
   private static final Logger logger = LoggerFactory.getLogger(PagamentoService.class);
 
   private final PagamentoRepository repository;
@@ -44,7 +45,7 @@ public class PagamentoService {
     // e.printStackTrace();
     // }
     // }).start();
-    PagamentoService.executor.submit(() -> {
+    CompletableFuture.runAsync(() -> {
       try {
         Thread.sleep(5000);
         String mensagem = "EMAIL_PAGAMENTO_CONFIRMADO:" + dto.getPedidoId();
@@ -53,7 +54,8 @@ public class PagamentoService {
         Thread.currentThread().interrupt();
         PagamentoService.logger.error("Erro ao processar notificação: {}", e.getMessage());
       }
-    });
+    }, PagamentoService.executor);
+
     return pagamento;
   }
 

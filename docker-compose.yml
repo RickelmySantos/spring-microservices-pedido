@@ -80,14 +80,37 @@ services:
     networks:
       - rsdesenvolvimento
 
-  loki:
-    image: grafana/loki:2.9.1
-    container_name: loki
+  # loki:
+  #   image: grafana/loki:2.9.1
+  #   container_name: loki
+  #   ports:
+  #     - "3100:3100"
+  #   command: -config.file=/etc/loki/local-config.yml
+  #   # volumes:
+  #   #   - ./loki-config.yml:/etc/loki/local-config.yml
+  #   networks:
+  #     - rsdesenvolvimento
+
+  produto:
+    build:
+      context: ./estoque
+      dockerfile: Dockerfile
+    # profiles:
+    #   - "app"
     ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yml
-    volumes:
-      - ./loki-config.yml:/etc/loki/local-config.yml
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/produto
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+    depends_on:
+      eureka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     networks:
       - rsdesenvolvimento
 
