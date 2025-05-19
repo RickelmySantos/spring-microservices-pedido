@@ -94,6 +94,12 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!--Logging  -->
+		<dependency>
+			<groupId>com.github.loki4j</groupId>
+			<artifactId>loki-logback-appender</artifactId>
+		</dependency>
+
 		<!-- Testes -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

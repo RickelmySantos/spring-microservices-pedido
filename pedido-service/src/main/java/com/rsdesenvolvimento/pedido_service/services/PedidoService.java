@@ -1,8 +1,8 @@
 package com.rsdesenvolvimento.pedido_service.services;
 
+import com.rsdesenvolvimento.pedido_service.core.client.NotificacaoProducer;
 import com.rsdesenvolvimento.pedido_service.core.client.UsuarioClient;
 import com.rsdesenvolvimento.pedido_service.core.client.UsuarioDto;
-import com.rsdesenvolvimento.pedido_service.core.config.NotificacaoProducer;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoRequesteDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoResponseDto;
 import com.rsdesenvolvimento.pedido_service.modelo.entidades.Pedido;
@@ -58,5 +58,20 @@ public class PedidoService {
   }
 
 
+  public void statusPagamento(Long id, String status) {
+    PedidoService.log.info("Atualizando status do pedido com id: {} para {}", id, status);
+    Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+
+    if (status.equalsIgnoreCase(StatusEnum.FINALIZADO.name())) {
+      pedido.setStatus(StatusEnum.FINALIZADO);
+      this.pedidoRepository.save(pedido);
+    } else if (status.equalsIgnoreCase(StatusEnum.CANCELADO.name())) {
+      pedido.setStatus(StatusEnum.CANCELADO);
+      this.pedidoRepository.save(pedido);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status inválido");
+    }
+  }
 }
 

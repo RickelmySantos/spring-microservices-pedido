@@ -1,5 +1,6 @@
-package com.rsdesenvolvimento.pedido_service.core.config;
+package com.rsdesenvolvimento.pedido_service.core.client;
 
+import com.rsdesenvolvimento.pedido_service.core.config.RabbitConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 

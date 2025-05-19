@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -24,13 +26,12 @@ public class PedidoController {
 
   @PostMapping
   public ResponseEntity<PedidoResponseDto> criar(@RequestBody PedidoRequesteDto dto) {
-    PedidoController.log.info("🔍 Recebendo requisição para criar pedido: {}", dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.criarPedido(dto));
   }
 
-  @GetMapping("/teste")
-  public ResponseEntity<String> testarApi() {
-    return ResponseEntity.ok("✅ Pedido API está rodando corretamente!");
+  @PutMapping("/{id}/status")
+  public ResponseEntity<Void> atualizarStatus(@PathVariable Long id, @RequestParam String status) {
+    this.pedidoService.statusPagamento(id, status);
+    return ResponseEntity.ok().build();
   }
-
 }

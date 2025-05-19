@@ -32,6 +32,7 @@
     <spring-mapstruct.version>1.6.2</spring-mapstruct.version>
     <spring-flayway.version>11.8.0</spring-flayway.version>
     <spring-micrometer-prometheus.version>1.15.0-M3</spring-micrometer-prometheus.version>
+    <spring-loki.version>1.6.0</spring-loki.version>
 
   </properties>
 
@@ -76,6 +77,13 @@
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-registry-prometheus</artifactId>
         <version>${spring-micrometer-prometheus.version}</version>
+      </dependency>
+
+      <!--Logging  -->
+      <dependency>
+        <groupId>com.github.loki4j</groupId>
+        <artifactId>loki-logback-appender</artifactId>
+        <version>${spring-loki.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
