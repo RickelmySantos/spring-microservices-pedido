@@ -7,7 +7,8 @@ import org.hibernate.envers.RevisionEntity;
 
 @Entity
 @Table(name = AuditRevision.TABLE_NAME, schema = AppAuditRevision.APP_AUDIT_SCHEMA_NAME)
-@SequenceGenerator(name = AuditRevision.SEQUENCE_GENERATOR, initialValue = 1, allocationSize = 1,
+@SequenceGenerator(name = AuditRevision.SEQUENCE_GENERATOR,
+    sequenceName = AuditRevision.SEQUENCE_NAME, initialValue = 1, allocationSize = 1,
     schema = AppAuditRevision.APP_AUDIT_SCHEMA_NAME)
 @RevisionEntity(AppRevisionListener.class)
 public class AppAuditRevision extends AuditRevision {

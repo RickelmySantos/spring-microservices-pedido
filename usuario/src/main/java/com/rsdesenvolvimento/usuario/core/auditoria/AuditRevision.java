@@ -17,7 +17,7 @@ import org.hibernate.envers.RevisionTimestamp;
 @Setter
 @NoArgsConstructor
 @MappedSuperclass
-public class AuditRevision {
+public abstract class AuditRevision {
 
 
   public static final String SEQUENCE_GENERATOR = "revinfoSeq";

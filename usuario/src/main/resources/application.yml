@@ -77,24 +77,24 @@ management:
           enabled: true
 
   # configurações de logging
-  logging:
-    level:
-      org:
-        flywaydb: info
-        hibernate: info
-        hibernate.SQL: debug
-        hibernate.orm.jdbc.bind: trace
-        hibernate.boot.internal: error
-        hibernate.envers: error
-        hibernate.cache: debug
-        springframework:
-          web:
-            filter: info
-            client: debug
-          jdbc.core:
-            JdbcTemplate: debug
-            StatementCreatorUtils: trace
-          transaction: error
+logging:
+  level:
+    org:
+      flywaydb: info
+      hibernate: info
+      hibernate.SQL: debug
+      hibernate.orm.jdbc.bind: trace
+      hibernate.boot.internal: error
+      hibernate.envers: error
+      hibernate.cache: debug
+      springframework:
+        web:
+          filter: info
+          client: debug
+        jdbc.core:
+          JdbcTemplate: debug
+          StatementCreatorUtils: trace
+        transaction: error
 
 ---
 ################################################

@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @Entity
 @Table(name = "TB_USUARIO", uniqueConstraints = {})
-@SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SEQ_USUARIO",
+@SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_USUARIO",
     initialValue = 1, allocationSize = 1)
 public class Usuario extends EntidadeBase {
 
