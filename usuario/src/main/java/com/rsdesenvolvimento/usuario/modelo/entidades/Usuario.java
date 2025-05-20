@@ -3,33 +3,37 @@ package com.rsdesenvolvimento.usuario.modelo.entidades;
 import com.rsdesenvolvimento.usuario.core.modelo.EntidadeBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Entity
+@Table(name = "TB_USUARIO", uniqueConstraints = {})
+@SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SEQ_USUARIO",
+    initialValue = 1, allocationSize = 1)
 public class Usuario extends EntidadeBase {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  @Column(nullable = false, length = 100)
+
+  private static final long serialVersionUID = 1L;
+
+  @Column(name = "NOME", nullable = false, length = 100)
   private String nome;
-  @Column(nullable = false, length = 11)
+  @Column(name = "CPF", nullable = false, length = 11)
   private String cpf;
-  @Column(nullable = false, length = 50)
+  @Column(name = "EMAIL", nullable = false, length = 50)
   private String email;
-  @Column(nullable = false, length = 20)
+  @Column(name = "ATIVO", nullable = false)
   private boolean ativo;
 
 }

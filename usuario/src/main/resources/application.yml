@@ -1,26 +1,55 @@
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
   servlet:
-    context-path: /api
+    context-path: ${CONTEXT_PATH:/api}
+# Configurações gerais
 spring:
+  profiles:
+    active:
+      - "@activatedProfile@"
   application:
     name: usuario-api
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/usuario}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
   flyway:
-    repair: true
-    enabled: true
-    locations: classpath:db/migration
+    enabled: ${FLYWAY_ENABLED:false}
     baseline-on-migrate: true
-    out-of-order: false
-
+    baseline-version: 0
+    baseline-description: Usuario Baseline
+    create-schemas: ${FLYWAY_CREATE_SCHEMA:false}
+    default-schema: ${FLYWAY_DEFAULT_SCHEMA:usuario_adm}
+    schemas: ${FLYWAY_SCHEMAS:usuario,usuario_aud, usuario_adm}
+    url: ${SPRING_DATASOURCE_URL}
+    user: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}
+  h2:
+    console:
+      enabled: false
+  jpa:
+    database-platform: ${JPA_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: ${JPA_FORMAT_SQL:false}
+        default_schema: ${DB_SCHEMA:"usuario"}
+      org:
+        hibernate:
+          envers:
+            default_schema: ${ENVERS_SCHEMA:"usuario_aud"}
+      javax.persistence.schema-generation.scripts:
+        action: none
+  sql:
+    init:
+      mode: never
 eureka:
   client:
     fetch-registry: true
@@ -46,3 +75,68 @@ management:
       health:
         probes:
           enabled: true
+
+  # configurações de logging
+  logging:
+    level:
+      org:
+        flywaydb: info
+        hibernate: info
+        hibernate.SQL: debug
+        hibernate.orm.jdbc.bind: trace
+        hibernate.boot.internal: error
+        hibernate.envers: error
+        hibernate.cache: debug
+        springframework:
+          web:
+            filter: info
+            client: debug
+          jdbc.core:
+            JdbcTemplate: debug
+            StatementCreatorUtils: trace
+          transaction: error
+
+---
+################################################
+# configurações específicas para profile LOCAL #
+################################################
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  flyway:
+    enabled: true
+    cleanDisabled: false
+    create-schemas: true
+    url: jdbc:postgresql://localhost:5432/usuario
+    user: postgres
+    password: postgres
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/usuario
+    username: postgres
+    password: postgres
+  jpa:
+    # show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      javax.persistence.schema-generation.scripts:
+        action: drop-and-create
+        create-source: metadata
+        create-target: target/create.sql
+        drop-source: metadata
+        drop-target: target/drop.sql
+# configurações de logging
+logging:
+  level:
+    org:
+      flywaydb: debug
+      hibernate:
+        type.descriptor.sql.BasicBinder: info
+      springframework:
+        web:
+          filter: info
+          client: debug
+        transaction: error

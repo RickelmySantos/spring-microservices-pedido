@@ -122,12 +122,30 @@ services:
     #   - "app"
     ports:
       - "8081:8081"
+    volumes:
+      - ./infra/usuario/api/data:/tmp/import
     environment:
+      SERVER_PORT: 8081
+      CONTEXT_PATH: /api
+
+      DEFAULT_TIMEZONE: America/Belem
+      DEFAULT_LOCALE: pt-BR
+      LOGGING_LEVEL: debug
+
+      FLYWAY_ENABLED: true
+      FLYWAY_CREATE_SCHEMA: true
+      FLYWAY_DEFAULT_SCHEMA: usuario_adm
+      FLYWAY_SCHEMAS: usuario,usuario_aud, usuario_adm
+      FLYWAY_LOCATIONS: filesystem:/tmp/import
+
       SPRING_PROFILES_ACTIVE: default
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usuario
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      JPA_SHOW_SQL: true
+      ENVERS_SCHEMA: usuario_aud
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       eureka:
