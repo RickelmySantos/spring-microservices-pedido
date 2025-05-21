@@ -196,7 +196,7 @@
 
 		</plugins>
 
-		<resources>
+		<!-- <resources>
 			<resource>
 				<directory>${project.basedir}/src</directory>
 				<includes>
@@ -204,7 +204,10 @@
 				</includes>
 				<targetPath>META-INF</targetPath>
 			</resource>
-		</resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources> -->
 
 	</build>
 </project>
