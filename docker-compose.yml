@@ -130,7 +130,7 @@ services:
 
       DEFAULT_TIMEZONE: America/Belem
       DEFAULT_LOCALE: pt-BR
-      LOGGING_LEVEL: debug
+      # LOGGING_LEVEL: debug
 
       FLYWAY_ENABLED: true
       FLYWAY_CREATE_SCHEMA: true

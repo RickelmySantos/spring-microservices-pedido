@@ -115,15 +115,15 @@
 	<profiles>
 		<profile>
 			<id>local</id>
+			<activation>
+				<!-- <activeByDefault>true</activeByDefault> -->
+			</activation>
 			<properties>
 				<activatedProfile>local</activatedProfile>
 			</properties>
 		</profile>
 		<profile>
 			<id>desenv</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<activatedProfile>desenv</activatedProfile>
 			</properties>
@@ -179,6 +179,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+						<configuration>${project.basedir}/src/layers.xml</configuration>
+					</layers>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -189,6 +195,16 @@
 			</plugin>
 
 		</plugins>
-	</build>
 
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src</directory>
+				<includes>
+					<include>layers.xml</include>
+				</includes>
+				<targetPath>META-INF</targetPath>
+			</resource>
+		</resources>
+
+	</build>
 </project>

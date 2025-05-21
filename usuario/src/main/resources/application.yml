@@ -1,3 +1,4 @@
+# configurações do servidor
 server:
   port: ${SERVER_PORT:8081}
   servlet:
@@ -95,7 +96,6 @@ logging:
           JdbcTemplate: debug
           StatementCreatorUtils: trace
         transaction: error
-
 ---
 ################################################
 # configurações específicas para profile LOCAL #
