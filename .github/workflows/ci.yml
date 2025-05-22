@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ api-gateway, estoque, eureka-server, infra, notificacao-service, pagamento-service, pedido-service, usuario ]
+        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
 
     steps:
     - name: Checkout código
