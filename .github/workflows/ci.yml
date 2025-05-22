@@ -1,0 +1,41 @@
+name: CI/CD - Spring Microservices
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [ api-gateway, estoque, eureka-server, infra, notificacao-service, pagamento-service, pedido-service, usuario ]
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Configurar Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Build e Teste do serviço ${{ matrix.service }}
+      working-directory: ${{ matrix.service }}
+      run: mvn clean install
+
+    - name: Login no Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build imagem Docker do serviço ${{ matrix.service }}
+      working-directory: ${{ matrix.service }}
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest .
+
+    - name: Push imagem Docker do serviço ${{ matrix.service }}
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
