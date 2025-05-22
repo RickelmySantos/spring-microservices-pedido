@@ -11,29 +11,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@AuditOverride(forClass = EntidadeBase.class)
+@Audited
 @ToString
 @Entity
 @Table(name = "TB_USUARIO", uniqueConstraints = {})
 @SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_USUARIO",
-    initialValue = 1, allocationSize = 1)
+        initialValue = 1, allocationSize = 1)
 public class Usuario extends EntidadeBase {
 
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Column(name = "NOME", nullable = false, length = 100)
-  private String nome;
-  @Column(name = "CPF", nullable = false, length = 11)
-  private String cpf;
-  @Column(name = "EMAIL", nullable = false, length = 50)
-  private String email;
-  @Column(name = "ATIVO", nullable = false)
-  private boolean ativo;
+    @Column(name = "NOME", nullable = false, length = 100)
+    private String nome;
+    @Column(name = "CPF", nullable = false, length = 11)
+    private String cpf;
+    @Column(name = "EMAIL", nullable = false, length = 50)
+    private String email;
+    @Column(name = "ATIVO", nullable = false)
+    private boolean ativo;
 
 }

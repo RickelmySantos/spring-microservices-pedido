@@ -1,23 +1,3 @@
-# # Etapa de dependências
-# FROM maven:3.9.6-eclipse-temurin-21 as dependencies
-# WORKDIR /root
-
-# COPY parent-pom.xml pom.xml
-# WORKDIR /root/app
-# COPY pom.xml .
-# RUN --mount=type=cache,target=~/.m2 mvn dependency:go-offline -B -DskipTests && rm -rf ./target
-
-# # Etapa de build
-# FROM dependencies as build
-# COPY src src
-# RUN mvn clean package -DskipTests
-
-# # Imagem final
-# FROM eclipse-temurin:21-jdk-jammy
-# WORKDIR /app
-# COPY --from=build /root/app/target/usuario-0.0.1-SNAPSHOT.jar app.jar
-# ENTRYPOINT ["java", "-jar", "app.jar"]
-
 ### DOWNLOAD DEPENDENCIES
 FROM maven:3.9.6-eclipse-temurin-21 AS dependencies
 WORKDIR /root
@@ -31,7 +11,6 @@ RUN --mount=type=cache,target=~/.m2/repository mvn -B -T 1C -Dmaven.artifact.thr
 
 FROM dependencies AS build 
 COPY src src 
-# RUN --mount=type=cache,target=~/app/target mvn -B -T 1C -Pdeploy -DskipTests clean package && java -Djarmode=tools -jar ./target/usuario-0.0.1-SNAPSHOT.jar extract --destination ./target/layers && rm -rf ~/.m2/repository && find target -mindepth 1 -not -path 'target/layers*' -not -path 'target/*.jar' -prune -delete
 RUN --mount=type=cache,target=~/app/target \
     mvn -B -T 1C -Pdeploy -DskipTests clean package && \
     java -Djarmode=tools -jar ./target/usuario-0.0.1-SNAPSHOT.jar \

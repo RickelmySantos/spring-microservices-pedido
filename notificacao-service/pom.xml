@@ -81,12 +81,88 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<!-- <activeByDefault>true</activeByDefault> -->
+			</activation>
+			<properties>
+				<activatedProfile>local</activatedProfile>
+			</properties>
+		</profile>
+		<profile>
+			<id>desenv</id>
+			<properties>
+				<activatedProfile>desenv</activatedProfile>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<activatedProfile>test</activatedProfile>
+			</properties>
+		</profile>
+		<profile>
+			<id>deploy</id>
+			<properties>
+				<activatedProfile>deploy</activatedProfile>
+			</properties>
+		</profile>
+	</profiles>
+
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${spring-mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass> com.rsdesenvolvimento.notificacao_service.NotificacaoServiceApplication</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+						<configuration>${project.basedir}/src/layers.xml</configuration>
+					</layers>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

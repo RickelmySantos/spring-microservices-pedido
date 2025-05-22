@@ -11,11 +11,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 
 
 @Entity
 @Getter
 @Setter
+@Audited
+@AuditOverride(forClass = EntidadeBase.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

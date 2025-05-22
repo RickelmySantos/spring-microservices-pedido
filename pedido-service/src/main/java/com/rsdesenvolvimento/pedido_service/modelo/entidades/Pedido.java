@@ -13,11 +13,15 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@AuditOverride(forClass = EntidadeBase.class)
+@Audited
 public class Pedido extends EntidadeBase {
 
   @Id
