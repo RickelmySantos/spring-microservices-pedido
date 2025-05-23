@@ -228,20 +228,36 @@ services:
     networks:
       - rsdesenvolvimento
 
-  produto:
+  estoque:
     build:
       context: ./estoque
       dockerfile: Dockerfile
-    container_name: produto
+    container_name: estoque
     ports:
       - "8082:8082"
+    volumes:
+      - ./infra/estoque/api/data:/tmp/import
     environment:
+      CONTEXT_PATH: /api
+      DEFAULT_LOCALE: pt-BR
+      DEFAULT_TIMEZONE: America/Belem
+
+      ENVERS_SCHEMA: estoque_aud
+      FLYWAY_CREATE_SCHEMA: true
+      FLYWAY_DEFAULT_SCHEMA: estoque_adm
+      FLYWAY_ENABLED: true
+      FLYWAY_LOCATIONS: filesystem:/tmp/import
+      FLYWAY_SCHEMAS: estoque,estoque_aud, estoque_adm
+      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      JPA_SHOW_SQL: true
+
       EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
       SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/produto
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/estoque
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_PROFILES_ACTIVE: default
+      SERVER_PORT: 8082
     depends_on:
       eureka:
         condition: service_healthy
@@ -263,6 +279,7 @@ services:
       CONTEXT_PATH: /api
       DEFAULT_LOCALE: pt-BR
       DEFAULT_TIMEZONE: America/Belem
+
       ENVERS_SCHEMA: usuario_aud
       EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
       FLYWAY_CREATE_SCHEMA: true
@@ -272,6 +289,7 @@ services:
       FLYWAY_SCHEMAS: usuario,usuario_aud, usuario_adm
       JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       JPA_SHOW_SQL: true
+
       SERVER_PORT: 8081
       SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
       SPRING_DATASOURCE_PASSWORD: postgres

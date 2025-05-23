@@ -1,4 +1,4 @@
-package com.rsdesenvolvimento.pedido_service.core.client;
+package com.rsdesenvolvimento.pedido_service.core.client.dtos;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

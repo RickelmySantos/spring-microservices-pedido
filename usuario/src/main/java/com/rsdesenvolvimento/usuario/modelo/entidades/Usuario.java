@@ -19,10 +19,10 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @Getter
 @Setter
-@AuditOverride(forClass = EntidadeBase.class)
-@Audited
 @ToString
 @Entity
+@Audited
+@AuditOverride(forClass = EntidadeBase.class)
 @Table(name = "TB_USUARIO", uniqueConstraints = {})
 @SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_USUARIO",
         initialValue = 1, allocationSize = 1)

@@ -20,16 +20,4 @@ public class NotificacaoProducer {
     this.rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY,
         mensagem);
   }
-
-  // public void enviarNotificacao(String jsonPedido) {
-  // try {
-  // // ✅ Enviar diretamente, sem nova conversão
-  // this.rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY,
-  // jsonPedido);
-  // System.out.println("✅ Notificação enviada ao RabbitMQ: " + jsonPedido);
-  // } catch (Exception e) {
-  // System.err.println("🚨 Erro ao enviar notificação: " + e.getMessage());
-  // }
-  // }
-
 }

@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.pedido_service.core.client;
 
+import com.rsdesenvolvimento.pedido_service.core.client.dtos.UsuarioDto;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 

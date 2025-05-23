@@ -6,37 +6,43 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
-@Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@AuditOverride(forClass = EntidadeBase.class)
+@Entity
 @Audited
+@AuditOverride(forClass = EntidadeBase.class)
+@Table(name = "TB_PEDIDO", uniqueConstraints = {})
+@SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_PEDIDO",
+    initialValue = 1, allocationSize = 1)
 public class Pedido extends EntidadeBase {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedido_seq")
-  @SequenceGenerator(name = "pedido_seq", sequenceName = "pedido_seq", allocationSize = 1)
-  private Long id;
+  private static final long serialVersionUID = 1L;
 
   private Long usuarioId;
   @Column(nullable = false)
   private String descricao;
+  @Column(name = "NOME_USUARIO", nullable = false, length = 100)
   private String nomeUsuario;
+  @Column(name = "EMAIL_USUARIO", nullable = false, length = 50)
+  @Email
   private String emailUsuario;
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, name = "status_pedido")
   private StatusEnum status;
-
-
 }

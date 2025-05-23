@@ -3,24 +3,52 @@ server:
   servlet:
     context-path: ${CONTEXT_PATH:/api}
 spring:
+  profiles:
+    active:
+      - "@activatedProfile@"
   application:
-    name: produto-api
+    name: estoque-api
+  flyway:
+    enabled: ${FLYWAY_ENABLED:false}
+    baseline-on-migrate: true
+    baseline-version: 0
+    baseline-description: Estoque Baseline
+    create-schemas: ${FLYWAY_CREATE_SCHEMA:false}
+    default-schema: ${FLYWAY_DEFAULT_SCHEMA:estoque_adm}
+    schemas: ${FLYWAY_SCHEMAS:estoque,estoque_aud, estoque_adm}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/estoque}
+    user: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/data/dev}
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/produto}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/estoque}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}
+  h2:
+    console:
+      enabled: false
   jpa:
+    database-platform: ${JPA_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
     hibernate:
-      ddl-auto: validate
-    show-sql: true
-  flyway:
-    repair: true
-    enabled: true
-    locations: classpath:db/migration
-    baseline-on-migrate: true
-    out-of-order: false
-
+      ddl-auto: none
+    open-in-view: false
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: ${JPA_FORMAT_SQL:false}
+        default_schema: ${DB_SCHEMA:"estoque"}
+      org:
+        hibernate:
+          envers:
+            default_schema: ${ENVERS_SCHEMA:"estoque_aud"}
+      javax.persistence.schema-generation.scripts:
+        action: none
+  sql:
+    init:
+      mode: never
 eureka:
   client:
     fetch-registry: true
@@ -46,3 +74,48 @@ management:
       health:
         probes:
           enabled: true
+
+---
+################################################
+# configurações específicas para profile LOCAL #
+################################################
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  flyway:
+    enabled: true
+    cleanDisabled: false
+    create-schemas: true
+    url: jdbc:postgresql://localhost:5432/estoque
+    user: postgres
+    password: postgres
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/data/dev}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/estoque
+    username: postgres
+    password: postgres
+  jpa:
+    # show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      javax.persistence.schema-generation.scripts:
+        action: drop-and-create
+        create-source: metadata
+        create-target: target/create.sql
+        drop-source: metadata
+        drop-target: target/drop.sql
+# configurações de logging
+logging:
+  level:
+    org:
+      flywaydb: debug
+      hibernate:
+        type.descriptor.sql.BasicBinder: info
+      springframework:
+        web:
+          filter: info
+          client: debug
+        transaction: error

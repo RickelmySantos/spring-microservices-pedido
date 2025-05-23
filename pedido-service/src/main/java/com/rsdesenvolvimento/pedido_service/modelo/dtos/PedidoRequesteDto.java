@@ -1,5 +1,7 @@
 package com.rsdesenvolvimento.pedido_service.modelo.dtos;
 
+import java.util.List;
+import com.rsdesenvolvimento.pedido_service.core.client.dtos.ReservaEstoqueRequestDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,5 +19,7 @@ public class PedidoRequesteDto {
 
   @NotNull(message = "O usuário ID não pode ser nulo")
   private Long usuarioId;
+
+  private List<ReservaEstoqueRequestDto> itens;
 
 }
