@@ -1,8 +1,9 @@
 package com.rsdesenvolvimento.pedido_service.services;
 
+import com.rsdesenvolvimento.pedido_service.core.client.EstoqueFeignClient;
 import com.rsdesenvolvimento.pedido_service.core.client.NotificacaoProducer;
 import com.rsdesenvolvimento.pedido_service.core.client.UsuarioClient;
-import com.rsdesenvolvimento.pedido_service.core.client.UsuarioDto;
+import com.rsdesenvolvimento.pedido_service.core.client.dtos.UsuarioDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoRequesteDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoResponseDto;
 import com.rsdesenvolvimento.pedido_service.modelo.entidades.Pedido;
@@ -26,12 +27,19 @@ public class PedidoService {
   private final PedidoRepository pedidoRepository;
   private final PedidoMapper pedidoMapper;
   private final UsuarioClient usuarioClient;
+  private final EstoqueFeignClient estoqueFeignClient;
   private final NotificacaoProducer notificacaoProducer;
 
   public PedidoResponseDto criarPedido(PedidoRequesteDto dto) {
     try {
       UsuarioDto usuario = this.usuarioClient.buscarUsuarioPorId(dto.getUsuarioId());
 
+      boolean disponivel = this.estoqueFeignClient.validarEstoque(dto.getItens());
+
+      if (!disponivel) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Estoque insuficiente para um ou mais produtos.");
+      }
 
       var pedido = this.pedidoMapper.paraEntidade(dto);
       pedido.setDataHoraCriacao(LocalDateTime.now());
@@ -70,7 +78,6 @@ public class PedidoService {
     } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status inválido");
     }
-
   }
 }
 

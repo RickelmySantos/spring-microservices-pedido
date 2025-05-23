@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.pedido_service.core.client;
 
+import com.rsdesenvolvimento.pedido_service.core.client.dtos.UsuarioDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;

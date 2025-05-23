@@ -11,39 +11,6 @@ public class NotificacaoConsumer {
 
   private final NotificacaoService notificacaoService;
 
-  // @RabbitListener(queues = RabbitConfig.QUEUE_NAME)
-  // public void processarNotificacao(String body) {
-
-  // try {
-  // System.out.println("Notificação recebida: " + body);
-
-  // String to = "rickrickelmy98@gmail.com";
-  // String subject;
-  // String content;
-
-  // if (body.startsWith("EMAIL_PAGAMENTO_CONFIRMADO:")) {
-  // String pedidoId = body.split(":")[1];
-  // subject = "Pagamento Confirmado! ✅";
-  // content = "<h2 style='color: green;'>Pagamento do pedido #" + pedidoId
-  // + " confirmado com sucesso!</h2>"
-  // + "<p>Obrigado por confiar em nossa plataforma. Seu pedido está sendo processado.</p>"
-  // + "<hr><p style='font-size: 12px; color: gray;'>Este e-mail é automático, por favor não
-  // responda.</p>";
-  // } else {
-  // subject = "Confirmação do seu pedido! 📦";
-  // content =
-  // """
-  // <h2 style='color: #3498db;'>Seu pedido foi confirmado e está aguardando o pagamento!</h2>\
-  // <p>Obrigado por escolher nossa empresa!</p>\
-  // <hr><p style='font-size: 12px; color: gray;'>Este e-mail é automático, por favor não
-  // responda.</p>""";
-  // }
-
-  // this.notificacaoService.enviarEmail(to, subject, content);
-  // } catch (Exception e) {
-  // System.out.println("Erro ao processar notificação: " + e.getMessage());
-  // }
-  // }
   @RabbitListener(queues = RabbitConfig.QUEUE_NAME)
   public void processarNotificacao(String body) {
     try {
