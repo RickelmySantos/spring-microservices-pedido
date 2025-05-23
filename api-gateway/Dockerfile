@@ -13,7 +13,7 @@ FROM dependencies AS build
 COPY src src 
 RUN --mount=type=cache,target=~/app/target \
     mvn -B -T 1C -Pdeploy -DskipTests clean package && \
-    java -Djarmode=tools -jar ./target/eureka-server-0.0.1-SNAPSHOT.jar \
+    java -Djarmode=tools -jar ./target/api-gateway-0.0.1-SNAPSHOT.jar \
     extract --layers --launcher --destination ./target/layers && \
     rm -rf ~/.m2/repository && \
     find target -mindepth 1 ! -path 'target/layers*' ! -name '*.jar' -exec rm -rf {} +
