@@ -17,7 +17,7 @@ services:
       retries: 20
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./rsdesenvolvimento-api/infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - rsdesenvolvimento
 
@@ -36,7 +36,7 @@ services:
 
   eureka:
     build:
-      context: ./eureka-server
+      context: ./rsdesenvolvimento-api/eureka-server
       dockerfile: Dockerfile
     container_name: eurekaserver
     ports:
@@ -61,7 +61,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rsdesenvolvimento-api/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - pedido-service
       - notificacao-service
@@ -97,13 +97,13 @@ services:
   # === Serviços de Negócio ===
   pedido-service:
     build:
-      context: ./pedido-service
+      context: ./rsdesenvolvimento-api/pedido-service
       dockerfile: Dockerfile
     container_name: pedido-service
     ports:
       - "8083:8083"
     volumes:
-      - ./infra/pedido/api/data:/tmp/import
+      - ./rsdesenvolvimento-api/infra/pedido/api/data:/tmp/import
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
 
@@ -152,13 +152,13 @@ services:
 
   notificacao-service:
     build:
-      context: ./notificacao-service
+      context: ./rsdesenvolvimento-api/notificacao-service
       dockerfile: Dockerfile
     container_name: notificacao-service
     ports:
       - "8085:8085"
     env_file:
-      - .env
+      - ./rsdesenvolvimento-api/.env
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
 
@@ -188,7 +188,7 @@ services:
 
   pagamento-service:
     build:
-      context: ./pagamento-service
+      context: ./rsdesenvolvimento-api/pagamento-service
       dockerfile: Dockerfile
     container_name: pagamento-service
     ports:
@@ -230,13 +230,13 @@ services:
 
   estoque:
     build:
-      context: ./estoque
+      context: ./rsdesenvolvimento-api/estoque
       dockerfile: Dockerfile
     container_name: estoque
     ports:
       - "8082:8082"
     volumes:
-      - ./infra/estoque/api/data:/tmp/import
+      - ./rsdesenvolvimento-api/infra/estoque/api/data:/tmp/import
     environment:
       CONTEXT_PATH: /api
       DEFAULT_LOCALE: pt-BR
@@ -268,13 +268,13 @@ services:
 
   usuario:
     build:
-      context: ./usuario
+      context: ./rsdesenvolvimento-api/usuario
       dockerfile: Dockerfile
     container_name: usuario
     ports:
       - "8081:8081"
     volumes:
-      - ./infra/usuario/api/data:/tmp/import
+      - ./rsdesenvolvimento-api/infra/usuario/api/data:/tmp/import
     environment:
       CONTEXT_PATH: /api
       DEFAULT_LOCALE: pt-BR

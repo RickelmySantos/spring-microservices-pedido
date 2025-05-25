@@ -5,6 +5,9 @@
       "label": "Build todos os módulos (skip tests)",
       "type": "shell",
       "command": "mvn clean package -DskipTests -T 1",
+      "options": {
+        "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
@@ -19,6 +22,9 @@
       "label": "Instalar todos os módulos (skip tests)",
       "type": "shell",
       "command": "mvn clean install -DskipTests -T 1",
+      "options": {
+        "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
+      },
       "group": "build",
       "presentation": {
         "reveal": "always",
