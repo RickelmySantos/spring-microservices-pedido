@@ -1,0 +1,46 @@
+footer {
+    background-color: #064e3b;
+    color: white;
+    padding: 40px 0;
+
+    .footer-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            i {
+                font-size: 2rem;
+                color: #f59e0b;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
+
+            p {
+                color: #a7f3d0;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .footer-copyright {
+        text-align: center;
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        i {
+            color: #f59e0b;
+        }
+    }
+}
