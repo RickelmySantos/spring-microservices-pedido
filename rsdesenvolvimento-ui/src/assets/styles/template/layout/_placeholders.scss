@@ -1,0 +1,78 @@
+%actionButton {
+    font-weight: 500;
+    color: $actionIconColor;
+    background-color: $actionIconBg;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: $actionIconBorder;
+    border-radius: $actionIconBorderRadius;
+    cursor: pointer;
+    transition-duration: $transitionDuration;
+    transition-property: $actionIconTransition;
+
+    &:hover {
+        color: $actionIconHoverColor;
+        background-color: $actionIconHoverBg;
+        border-color: $actionIconHoverBorderColor;
+    }
+
+    i {
+        font-size: 1em;
+    }
+}
+
+%menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: $inlineSpacing;
+        list-style: none;
+        margin: 0;
+        padding: 0 0.5rem;
+        width: 100%;
+
+        li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            > a {
+                display: flex;
+                padding: 0 1rem;
+                gap: $inlineSpacing;
+                align-items: center;
+                justify-content: center;
+                color: var(--primary-color-text);
+                background-color: transparent;
+                width: 100%;
+                height: 3rem;
+                border: none;
+                cursor: pointer;
+                transition-duration: $transitionDuration;
+                transition-property: $actionIconTransition;
+
+                &:hover {
+                    color: var(--primary-color-text);
+                    background-color: alpha(--primary-200, 0.32);
+
+                    border-right: none;
+                    border-radius: $borderRadius;
+                }
+
+                > i {
+                    font-size: 1em;
+                }
+
+                span {
+                    display: none;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,164 @@
+{
+    "primeng": {
+        "clear": "Limpar",
+        "apply": "Aplicar",
+        "accept": "Sim",
+        "reject": "Não",
+        "cancel": "Cancelar",
+        "dayNames": ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+        "dayNamesShort": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+        "dayNamesMin": ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sá"],
+        "monthNames": ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        "monthNamesShort": ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+        "dateFormat": "dd/mm/yy",
+        "firstDayOfWeek": 0,
+        "today": "Hoje",
+        "emptyMessage": "Nenhum resultado encontrado",
+        "emptyFilterMessage": "Nenhum resultado encontrado",
+        "weak": "Fraco",
+        "medium": "Médio",
+        "strong": "Forte"
+    },
+
+    "placeholder": {
+        "filtro": "Pesquisar...",
+        "lista": "Selecione",
+        "data": "dd/mm/aaaa"
+    },
+
+    "label": {
+        "dados": "Dados",
+        "formulario": "Formulário",
+        "nenhuma": "Nenhuma"
+    },
+
+    "botao": {
+        "imprimir": "Imprimir",
+        "pesquisar": "Pesquisar",
+        "caixa-entrada": "Notificações",
+        "adicionar": "Adicionar",
+        "novo": "Novo",
+        "cadastrar": "Cadastrar",
+        "remover": "Remover",
+        "excluir": "Excluir",
+        "confirmar": "Confirmar",
+        "sim": "Sim",
+        "nao": "Não",
+        "visualizar": "Visualizar",
+        "emprestimo": "Empréstimo",
+        "alterar": "Alterar",
+        "editar": "Editar",
+        "salvar": "Salvar",
+        "fechar": "Fechar",
+        "cancelar": "Cancelar",
+        "voltar": "Voltar",
+        "selecionar": "Selecionar",
+        "selecionarTodos": "Selecionar Todos",
+        "logout": "Encerrar",
+        "login": "Realizar Login",
+        "preferencias": "Preferências",
+        "marcarComoLida": "Marcar como lida",
+        "marcarTodasComoLida": "Marcar todas como lida"
+    },
+
+    "mensagem": {
+        "paginacao": "{first} a {last} de {totalRecords}",
+        "registros": {
+            "encontrados": "{{total}} registro(s) encontrado(s)",
+            "vazio": "Nenhum resultado encontrado",
+            "ativos": "{{total}} registro(s) ativo(s)",
+            "cadastrados": "{{total}} registro(s) cadastrado(s)"
+        },
+        "campo": {
+            "obrigatorio": "Campo obrigatório",
+            "tamanhoMaximo": "Este campo deve possuir no máximo {{tamanho}} caracteres"
+        },
+        "confirmacao.exclusao": "Deseja realmente EXCLUIR este registro?",
+        "salvar.sucesso": "Dados salvos com sucesso!",
+        "operacao.realizada.sucesso": "Operação realizada com sucesso!",
+        "salvar.erro": "Um erro ocorreu ao salvar os dados informados.",
+        "excluir.sucesso": "Dados excluídos com sucesso!",
+        "excluir.erro": "Um erro ocorreu ao excluir os dados.",
+        "listar.erro": "Um erro ocorreu ao listar as entidades.",
+        "carregarEntidade.erro": "Um erro ocorreu ao carregar os dados da entidade.",
+        "operacao.invalida": "Não foi possível completar a operação.",
+        "error": {
+            "0.titulo": "Ocorreu um erro inesperado",
+            "0.mensagem": "Desculpe, um erro desconhecido ocorreu ao processar a sua solicitação. Caso o erro persista, por favor, entre em contato com o administrador do sistema.",
+            "sessao-expirada.titulo": "Sessão expirada",
+            "sessao-expirada.mensagem": "Sua sessão expirou. Por favor, autentique-se novamente para continuar a navegar pelo sistema.",
+            "400.titulo": "Solicitação Inválida",
+            "400.mensagem": "Desculpe, não foi possível reconhecer os parâmetros enviados nesta requisição. Caso o erro persista, por favor, entre em contato com o administrador do sistema.",
+            "401.titulo": "Usuário não autenticado",
+            "401.mensagem": "Para processarmos a sua solicitação, o seu usuário precisa estar autenticado. Por favor, autentique-se e continue a navegar pelo sistema.",
+            "403.titulo": "Acesso Negado",
+            "403.mensagem": "Não foi possível processar a sua solicitação, pois você não possui as permissões necessárias. Em caso de dúvidas, por favor, entre em contato com o administrador do sistema.",
+            "404.titulo": "Página não encontrada",
+            "404.mensagem": "Desculpe, a página que você solicitou não pode ser encontrada.",
+            "500.titulo": "Servidor Indisponível",
+            "500.mensagem": "Não foi possível processar a sua solicitação, pois no momento o servidor da aplicação está indisponível. Caso o erro persista, por favor, entre em contato com o administrador do sistema.",
+            "503.titulo": "Serviço Indisponível",
+            "503.mensagem": "Não foi possível processar a sua solicitação, pois no momento um ou mais serviços internos estão indisponíveis. Caso o erro persista, por favor, entre em contato com o administrador do sistema.",
+            "default.titulo": "Erro",
+            "default.mensagem": "Desculpe, um erro desconhecido ocorreu ao processar a sua solicitação. Caso o erro persista, por favor, entre em contato com o administrador do sistema."
+        },
+        "sessao.expirada": "Sessão Expirada",
+        "faca-login-novamente": "Faça o login novamente no sistema."
+    },
+
+    "app": {
+        "sigla": "appinitials",
+        "nome": "appdescription",
+        "direitos": "Todos os direitos reservados"
+    },
+
+    "perfil": {
+        "admin": "Administrador"
+    },
+
+    "menu": {
+        "home": " Página Inicial",
+        "livros": "Livros",
+        "cadastros": "Cadastros",
+        "projetos": "Projetos",
+        "paginas": "Páginas",
+        "erro-inesperado": "Erro Inesperado",
+        "sessao-expirada": "Sessão Expirada",
+        "acesso-nao-autorizado": "Acesso Não Autorizado",
+        "acesso-negado": "Acesso Negado",
+        "recurso-nao-encontrado": "Recurso Não Encontrado",
+        "servico-indisponivel": "Serviço Indisponível",
+        "servidor-indisponivel": "Servidor Indisponível",
+        "solicitacao-invalida": "Solicitação Inválida"
+    },
+
+    "projeto": {
+        "titulo": {
+            "singular": "Projeto",
+            "plural": "Projetos"
+        },
+        "campo": {
+            "id": "Código",
+            "titulo": "Título"
+        }
+    },
+    "livro": {
+        "titulo": {
+            "singular": "Livro",
+            "plural": "Livros"
+        },
+        "campo": {
+            "titulo": "Título",
+            "autor": "Autor",
+            "editora": "Editora",
+            "ano": "Ano",
+            "idioma": "Idioma",
+            "paginas": "Páginas",
+            "disponivel": "Disponível",
+            "reservado": "Reservado",
+            "emprestado": "Emprestado",
+            "dataCadastro": "Data de Cadastro",
+            "dataAtualizacao": "Data de Atualização"
+        }
+    }
+}

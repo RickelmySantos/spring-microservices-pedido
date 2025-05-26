@@ -1,0 +1,61 @@
+* {
+    text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -webkit-text-rendering: optimizeLegibility;
+}
+
+html {
+    height: 100%;
+    // PHONE E TABLET PORTRAIT
+    font-size: 56.25%; //1rem = 9px => 9px/16px=50%
+    line-height: 1.5;
+
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-feature-settings: "normal";
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--primary-color-text);
+
+    // @include responsive(tablet) {
+    //     font-size: 56.25%; //1rem = 9px => 9px/16px=56.25%
+    // }
+
+    @include responsive(tablet-landscape) {
+        font-size: 62.5%; //1rem = 10px => 10/16px=62.5%
+    }
+
+    @include responsive(notebook) {
+        font-size: 68.75%; //1rem = 11px => 12px/16px=75%
+    }
+
+    @include responsive(desktop) {
+        // font-size: 87.5%; //1rem = 14px => 14px/16px=87.5%
+        font-size: 68.75%; //1rem = 11px => 12px/16px=75%
+    }
+
+    @include responsive(tv) {
+        font-size: 75%; //1rem = 12px => 13px/16px=81.25%
+    }
+}
+
+body {
+    font-weight: $fontWeight;
+    font-feature-settings: "salt";
+    padding: 0;
+    margin: 0;
+    min-height: 100%;
+    box-sizing: border-box;
+    background: var(--surface-ground);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+}

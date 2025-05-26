@@ -1,0 +1,118 @@
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: $inlineSpacing;
+    list-style: none;
+    margin: 0;
+    padding: 0 0.5rem;
+    width: 100%;
+    color: var(--primary-color-text);
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: $inlineSpacing;
+    }
+
+    &__group {
+        width: 100%;
+        height: 3rem;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+        font-weight: 700;
+
+        span {
+            display: none;
+        }
+        i {
+            display: block;
+        }
+    }
+
+    &__link {
+        display: flex;
+        padding: 0 1rem;
+        gap: $inlineSpacing;
+        align-items: center;
+        justify-content: center;
+        color: inherit;
+        background-color: transparent;
+        width: 100%;
+        height: 3rem;
+        border: none;
+        cursor: pointer;
+        transition-duration: $transitionDuration;
+        transition-property: $actionIconTransition;
+
+        &--activated {
+            color: inherit;
+            background-color: alpha(--primary-200, 0.32);
+
+            border-right: none;
+            border-radius: $borderRadius;
+        }
+
+        &:hover {
+            color: inherit;
+            background-color: alpha(--primary-200, 0.32);
+
+            border-right: none;
+            border-radius: $borderRadius;
+        }
+
+        > i {
+            font-size: 1em;
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+    &__submenu {
+        display: flex;
+        flex-direction: column;
+        gap: $inlineSpacing;
+        list-style: none;
+        margin: 0;
+        padding: 0 0.5rem;
+        width: 100%;
+
+        &--expanded {
+        }
+    }
+
+    &__separator {
+    }
+
+    .sidebar--extended &,
+    .sidebar--fixed & {
+        &__link {
+            justify-content: flex-start;
+
+            span {
+                display: inline-block;
+            }
+        }
+
+        &__submenu {
+            padding: 0 0 0 1rem;
+        }
+
+        &__group {
+            justify-content: start;
+            i {
+                display: none;
+            }
+
+            span {
+                display: block;
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+src/assets/primeng-sapphire
+src/app/template
+src/environments
+node_modules
+build
+coverage
+documentation
+package.json
+package-lock.json
+karma.conf.js

@@ -1,0 +1,88 @@
+//  ############# VALORES UTILIZADOS PELA APLICAÇÃO E PELO PRIMEFLEX #############
+
+$gutter: 0.5rem !default;
+$fieldMargin: 1rem !default;
+$fieldLabelMargin: 0.5rem !default;
+$helperTextMargin: 0.25rem !default;
+
+$spacer: 1rem !default;
+
+//  ############# VALORES DEFINIDOS NO TEMA #############
+
+$contentPadding: var(--content-padding);
+
+$primaryColor: var(--primary-color);
+$primaryTextColor: var(--primary-color-text);
+$primaryLighterColor: var(--primary-50);
+$primaryDarkerColor: var(--primary-900);
+
+$secondaryColor: var(--secondary-color);
+$secondaryTextColor: var(--secondary-color-text);
+$secondaryLighterColor: var(--secondary-50);
+$secondaryDarkerColor: var(--secondary-900);
+
+$tertiaryColor: var(--tertiary-color);
+$tertiaryTextColor: var(--tertiary-color-text);
+$tertiaryLighterColor: var(--tertiary-50);
+$tertiaryDarkerColor: var(--tertiary-900);
+
+$accentColor: var(--accent-color);
+$accentTextColor: var(--accent-color-text);
+
+$emphasis-high: var(--emphasis-high);
+$emphasis-medium: var(--emphasis-medium);
+$emphasis-low: var(--emphasis-low);
+$emphasis-lower: var(--emphasis-lower);
+$overlayColor: var(--overlay-color);
+
+$surfaceGround: var(--surface-ground);
+$surfaceSection: var(--surface-section);
+$surfaceCard: var(--surface-card);
+$surfaceOverlay: var(--surface-overlay);
+$surfaceHover: var(--surface-hover);
+$surfaceBorder: var(--surface-border);
+
+$fontFamily: var(--font-family);
+$fontSize: var(--font-size);
+$fontWeight: var(--font-weight);
+$textColor: var(--text-color);
+$textSecondaryColor: var(--text-color-secondary);
+
+$transitionDuration: var(--transition-duration);
+$formElementTransition: var(--form-element-transition);
+$actionIconTransition: var(--action-icon-transition);
+$listItemTransition: var(--list-item-transition);
+
+$primeIconFontSize: var(--icon-font-size);
+$loadingIconFontSize: var(--loading-icon-font-size);
+
+$borderRadius: var(--border-radius);
+$divider: var(--divider);
+$inlineSpacing: var(--inline-spacing);
+$disabledOpacity: var(--disabled-opacity);
+$maskBg: var(--maskbg);
+
+$errorColor: var(--error-color);
+
+$highlightBg: var(--highlight-bg);
+$highlightTextColor: var(--highlight-text-color);
+
+$scaleXS: var(--scale-xs);
+$scaleSM: var(--scale-sm);
+$scaleLG: var(--scale-lg);
+$scaleXL: var(--scale-xl);
+
+$focusOutlineColor: var(--focus-outline-color);
+$focusOutline: var(--focus-outline);
+$focusOutlineOffset: var(--focus-outline-offset);
+$focusShadow: var(--focus-ring);
+
+$actionIconWidth: var(--action-icon-width);
+$actionIconHeight: var(--action-icon-height);
+$actionIconBg: var(--action-icon-bg);
+$actionIconBorder: var(--action-icon-border);
+$actionIconColor: var(--action-icon-color);
+$actionIconHoverBg: var(--action-icon-hover-bg);
+$actionIconHoverBorderColor: var(--action-icon-hover-border-color);
+$actionIconHoverColor: var(--action-icon-hover-color);
+$actionIconBorderRadius: var(--action-icon-border-radius);

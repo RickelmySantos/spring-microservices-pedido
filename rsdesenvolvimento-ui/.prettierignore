@@ -1,0 +1,6 @@
+src/assets/primeng-sapphire
+src/environments
+node_modules
+build
+coverage
+documentation

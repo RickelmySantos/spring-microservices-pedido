@@ -1,0 +1,44 @@
+.topbar {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    width: calc(100% - var(--page-margin-left));
+    height: 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    font-size: calc(1rem * $scaleLG);
+    background-color: var(--surface-overlay);
+
+    &__start {
+        display: flex;
+        justify-content: flex-start;
+        gap: $inlineSpacing;
+        align-items: center;
+    }
+
+    &__end {
+        display: flex;
+        justify-content: flex-end;
+        gap: $inlineSpacing;
+        align-items: center;
+    }
+
+    &__buttons {
+        display: flex;
+        list-style: none;
+        gap: $inlineSpacing;
+        padding: 0;
+        margin: 0;
+
+        & > li {
+            display: flex;
+            align-items: center;
+            a {
+                @extend %actionButton;
+            }
+        }
+    }
+}

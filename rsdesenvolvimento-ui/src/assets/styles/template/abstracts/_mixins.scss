@@ -1,0 +1,56 @@
+$hd: 500px !default; //Mobile
+$sm: 600px !default; //Tablet
+$md: 900px !default; //Tablet Landscape
+$lg: 1200px !default; //Notebook
+$xl: 1800px !default; //Desktop
+$xxl: 2400px !default; //Huge Desktop / TV
+
+/*
+$breakpoint arguement choices:
+- tablet
+- tablet-landscape
+- notebook
+- desktop
+- tv
+*/
+@mixin responsive($breakpoint) {
+    @if $breakpoint == mobile {
+        @media only screen and (max-width: $hd) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == tablet {
+        @media only screen and (min-width: $sm) {
+            @content;
+        }
+    }
+    @if $breakpoint == tablet-landscape {
+        @media only screen and (min-width: $md) {
+            @content;
+        }
+    }
+    @if $breakpoint == notebook {
+        @media only screen and (min-width: $lg) {
+            @content;
+        }
+    }
+    @if $breakpoint == desktop {
+        @media only screen and (min-width: $xl) {
+            @content;
+        }
+    }
+    @if $breakpoint == tv {
+        @media only screen and (min-width: $xxl) {
+            @content;
+        }
+    }
+}
+
+@mixin defineColor($color-name, $value) {
+    $red: red($value);
+    $green: green($value);
+    $blue: blue($value);
+    #{$color-name}: unquote("rgb(#{$red}, #{$green}, #{$blue})");
+    #{$color-name}-rgb: $red, $green, $blue;
+}
