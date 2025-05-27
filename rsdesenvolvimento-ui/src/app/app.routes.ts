@@ -11,10 +11,7 @@ export const ROUTES: Route[] = [
             { path: 'contato', loadChildren: () => import('./modules/contato/contato.routes') },
         ],
     },
-    // {
-    //     path: 'pages',
-    //     loadChildren: () => import('./layout/'),
-    // },
+
     {
         path: '**',
         redirectTo: 'pages/not-found',

@@ -5,35 +5,83 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-contato',
     template: `
-        <section class="contact" id="contato">
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
             <div class="container">
-                <app-section-title title="Entre em Contato"></app-section-title>
-                <div class="contact-container">
-                    <form class="contact-form">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <input id="nome" type="text" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input id="email" type="email" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="mensagem">Mensagem</label>
-                            <textarea id="mensagem" required></textarea>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%;">Enviar Mensagem</button>
-                    </form>
+                <div class="section-title">
+                    <h2>Contact Us</h2>
+                    <p>We'd love to hear from you! Reach out for reservations, questions, or just to say hello.</p>
+                </div>
 
+                <div class="contact-container">
                     <div class="contact-info">
-                        <h3>Informações</h3>
-                        <!-- <div class="info-item" *ngFor="let info of infos">
-                            <div class="info-icon"><i [class]="info.icon"></i></div>
-                            <div class="info-content">
-                                <h4>{{ info.title }}</h4>
-                                <p>{{ info.details }}</p>
+                        <h3>Visit Our Restaurant</h3>
+                        <p>
+                            <i class="fas fa-map-marker-alt"></i>
+                            123 Avenida Brasil, Miami, FL 33139
+                        </p>
+                        <p>
+                            <i class="fas fa-phone"></i>
+                            (305) 555-0187
+                        </p>
+                        <p>
+                            <i class="fas fa-envelope"></i>
+                            <!-- info@saborbrasileiro.com -->
+                        </p>
+
+                        <h3>Opening Hours</h3>
+                        <p>
+                            <strong>Monday - Thursday:</strong>
+                            11:30am - 10:00pm
+                        </p>
+                        <p>
+                            <strong>Friday - Saturday:</strong>
+                            11:30am - 11:00pm
+                        </p>
+                        <p>
+                            <strong>Sunday:</strong>
+                            12:00pm - 9:00pm
+                        </p>
+
+                        <h3>Follow Us</h3>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-yelp"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="contact-form">
+                        <h3>Send Us a Message</h3>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required />
                             </div>
-                        </div> -->
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" />
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <select id="subject" name="subject">
+                                    <option value="reservation">Reservation</option>
+                                    <option value="question">Question</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
                     </div>
                 </div>
             </div>

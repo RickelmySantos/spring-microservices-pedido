@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from 'src/app/modules/footer/footer.component';
-import { HeaderComponent } from 'src/app/modules/header/HeaderComponent';
+import { HeaderComponent } from 'src/app/modules/header/header.Component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
