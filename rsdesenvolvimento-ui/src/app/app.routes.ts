@@ -4,12 +4,7 @@ export const ROUTES: Route[] = [
     {
         path: '',
         loadComponent: () => import('./layout/layout.component').then(m => m.LayoutComponent),
-        children: [
-            { path: '', loadChildren: () => import('./modules/home/home.routes') },
-            { path: 'cardapio', loadChildren: () => import('./modules/cardapio/cardapio.routes') },
-            { path: 'sobre', loadChildren: () => import('./modules/sobre/sobre.routes') },
-            { path: 'contato', loadChildren: () => import('./modules/contato/contato.routes') },
-        ],
+        children: [{ path: '', loadChildren: () => import('./core/layout/home/home.routes') }],
     },
 
     {

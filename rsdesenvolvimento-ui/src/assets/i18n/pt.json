@@ -45,20 +45,16 @@
         "sim": "Sim",
         "nao": "Não",
         "visualizar": "Visualizar",
-        "emprestimo": "Empréstimo",
         "alterar": "Alterar",
         "editar": "Editar",
         "salvar": "Salvar",
         "fechar": "Fechar",
         "cancelar": "Cancelar",
         "voltar": "Voltar",
-        "selecionar": "Selecionar",
-        "selecionarTodos": "Selecionar Todos",
         "logout": "Encerrar",
         "login": "Realizar Login",
         "preferencias": "Preferências",
-        "marcarComoLida": "Marcar como lida",
-        "marcarTodasComoLida": "Marcar todas como lida"
+        "pedido": "Adcionar ao pedido"
     },
 
     "mensagem": {
