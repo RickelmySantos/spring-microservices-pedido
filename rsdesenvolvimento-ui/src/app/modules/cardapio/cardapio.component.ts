@@ -1,6 +1,8 @@
 import { NgFor } from '@angular/common';
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
+import { EstoqueService } from 'src/app/services/Estoque.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
 import { CardapioMenuComponent } from './menu/cardapio-menu.component';
@@ -20,7 +22,7 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
                 </div>
 
                 <div class="menu-items">
-                    <ng-container *ngFor="let item of items">
+                    <ng-container *ngFor="let item of produtos$ | async">
                         <app-cardapio-menu [item]="item"></app-cardapio-menu>
                     </ng-container>
                 </div>
@@ -32,23 +34,12 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [SharedModule, CardapioMenuComponent, NgFor, CardapioCategoriaComponent],
 })
-export class CardapioComponent {
-    items: MenuCardapio[] = [
-        {
-            categoria: 'entradas',
-            imagem: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-            alt: 'Pão de Queijo',
-            titulo: 'Pão de Queijo',
-            preco: '$6.99',
-            descricao: 'Traditional Brazilian cheese bread made with tapioca flour and Minas cheese, crispy on the outside and chewy on the inside.',
-        },
-        {
-            categoria: 'entradas',
-            imagem: 'https://images.unsplash.com/photo-1511690651692-7e258df116a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-            alt: 'Coxinha',
-            titulo: 'Coxinha',
-            preco: '$7.50',
-            descricao: 'Teardrop-shaped croquettes filled with shredded chicken, cream cheese, and spices, coated in crispy breadcrumbs.',
-        },
-    ];
+export class CardapioComponent implements OnInit {
+    produtos$: Observable<MenuCardapio[]>;
+
+    constructor(private estoqueService: EstoqueService) {}
+
+    ngOnInit(): void {
+        this.produtos$ = this.estoqueService.listarProdutos();
+    }
 }

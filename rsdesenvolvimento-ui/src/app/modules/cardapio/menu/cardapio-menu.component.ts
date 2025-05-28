@@ -6,9 +6,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     selector: 'app-cardapio-menu',
     template: `
         <div class=" menu-item active" [attr.data-categoria]="item.categoria">
-            <img [src]="item.imagem" [alt]="item.alt" />
+            <img [src]="item.imagemUrl" [alt]="item.alt" />
             <div class="menu-item-content">
-                <h3>{{ item.titulo }}</h3>
+                <h3>{{ item.nome }}</h3>
                 <span class="price">{{ item.preco }}</span>
                 <p class="description">{{ item.descricao }}</p>
                 <a href="#" class="add-to-cart">Adcionar ao Pedido</a>

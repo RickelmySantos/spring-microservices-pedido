@@ -1,8 +1,10 @@
 export interface MenuCardapio {
-    categoria: string;
+    id: number;
+    nome: string;
     descricao: string;
     preco: string;
-    titulo: string;
-    imagem: string;
+    categoria: string;
+    estoque: number;
+    imagemUrl: string;
     alt: string;
 }

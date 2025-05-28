@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,47 +22,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/estoque")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EstoqueApi {
 
-  private final EstoqueService service;
+    private final EstoqueService service;
 
-  @PostMapping
-  public ResponseEntity<EstoqueResponseDto> cadastrarProduto(@RequestBody EstoqueRequestDto dto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(this.service.salvar(dto));
-  }
+    @PostMapping
+    public ResponseEntity<EstoqueResponseDto> cadastrarProduto(@RequestBody EstoqueRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.salvar(dto));
+    }
 
-  @GetMapping
-  public ResponseEntity<List<EstoqueResponseDto>> listarProdutos(
-      @RequestParam(required = false) String categoria) {
-    return ResponseEntity.ok(this.service.listarPorCategoria(categoria));
-  }
+    @GetMapping
+    public ResponseEntity<List<EstoqueResponseDto>> listarProdutos(
+            @RequestParam(required = false) String categoria) {
+        return ResponseEntity.ok(this.service.listarPorCategoria(categoria));
+    }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<EstoqueResponseDto> buscarProduto(@PathVariable Long id) {
-    return ResponseEntity.ok(this.service.buscarPorId(id));
-  }
+    @GetMapping("/{id}")
+    public ResponseEntity<EstoqueResponseDto> buscarProduto(@PathVariable Long id) {
+        return ResponseEntity.ok(this.service.buscarPorId(id));
+    }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<EstoqueResponseDto> atualizarProduto(@PathVariable Long id,
-      @RequestBody EstoqueRequestDto dto) {
-    return ResponseEntity.ok(this.service.atualizar(id, dto));
-  }
+    @PutMapping("/{id}")
+    public ResponseEntity<EstoqueResponseDto> atualizarProduto(@PathVariable Long id,
+            @RequestBody EstoqueRequestDto dto) {
+        return ResponseEntity.ok(this.service.atualizar(id, dto));
+    }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> excluirProduto(@PathVariable Long id) {
-    this.service.excluir(id);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirProduto(@PathVariable Long id) {
+        this.service.excluir(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
-  @PostMapping("/validar")
-  public ResponseEntity<Boolean> validarEstoque(@RequestBody List<ReservaEstoqueRequestDto> itens) {
-    boolean disponivel = this.service.validarEstoque(itens);
-    return ResponseEntity.ok(disponivel);
-  }
+    @PostMapping("/validar")
+    public ResponseEntity<Boolean> validarEstoque(
+            @RequestBody List<ReservaEstoqueRequestDto> itens) {
+        boolean disponivel = this.service.validarEstoque(itens);
+        return ResponseEntity.ok(disponivel);
+    }
 
-  @PostMapping("/reservar")
-  public ResponseEntity<Void> reservarEstoque(@RequestBody List<ReservaEstoqueRequestDto> itens) {
-    this.service.reservarEstoque(itens);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
+    @PostMapping("/reservar")
+    public ResponseEntity<Void> reservarEstoque(@RequestBody List<ReservaEstoqueRequestDto> itens) {
+        this.service.reservarEstoque(itens);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }

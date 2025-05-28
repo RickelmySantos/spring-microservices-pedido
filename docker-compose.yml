@@ -1,313 +1,326 @@
-version: "3.8"
-
 services:
-  # === Infraestrutura ===
-  postgres:
-    image: postgres:15
-    container_name: postgres-ms-pedido
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-    restart: unless-stopped
-    healthcheck:
-      test: "pg_isready --username=postgres && psql --username=postgres --list"
-      timeout: 10s
-      retries: 20
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./rsdesenvolvimento-api/infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - rsdesenvolvimento
+    # === Infraestrutura ===
+    postgres:
+        image: postgres:15
+        container_name: postgres-ms-pedido
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+        restart: unless-stopped
+        healthcheck:
+            test: 'pg_isready --username=postgres && psql --username=postgres --list'
+            timeout: 10s
+            retries: 20
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./rsdesenvolvimento-api/infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - rsdesenvolvimento
 
-  rabbitmq:
-    image: rabbitmq:4.1-management
-    container_name: rabbitmq-local
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_PASS: guest
-      RABBITMQ_DEFAULT_USER: guest
-    restart: unless-stopped
-    networks:
-      - rsdesenvolvimento
+    rabbitmq:
+        image: rabbitmq:4.1-management
+        container_name: rabbitmq-local
+        ports:
+            - '5672:5672'
+            - '15672:15672'
+        environment:
+            RABBITMQ_DEFAULT_PASS: guest
+            RABBITMQ_DEFAULT_USER: guest
+        restart: unless-stopped
+        networks:
+            - rsdesenvolvimento
 
-  eureka:
-    build:
-      context: ./rsdesenvolvimento-api/eureka-server
-      dockerfile: Dockerfile
-    container_name: eurekaserver
-    ports:
-      - "8761:8761"
-    environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
-      EUREKA_INSTANCE_IP_ADDRESS: localhost
-      SPRING_PROFILES_ACTIVE: default
-    healthcheck:
-      test: "curl --fail --silent localhost:8761/api/actuator/health | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 60s
-    networks:
-      - rsdesenvolvimento
+    eureka:
+        build:
+            context: ./rsdesenvolvimento-api/eureka-server
+            dockerfile: Dockerfile
+        container_name: eurekaserver
+        ports:
+            - '8761:8761'
+        environment:
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_INSTANCE_IP_ADDRESS: localhost
+            SPRING_PROFILES_ACTIVE: default
+        healthcheck:
+            test: 'curl --fail --silent localhost:8761/api/actuator/health | grep UP || exit 1'
+            interval: 10s
+            timeout: 5s
+            retries: 20
+            start_period: 60s
+        networks:
+            - rsdesenvolvimento
+    api-gatway:
+        build:
+            context: ./rsdesenvolvimento-api/api-gateway
+            dockerfile: Dockerfile
+        container_name: api-gateway
+        ports:
+            - '8080:8080'
+        environment:
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            SPRING_PROFILES_ACTIVE: default
+        depends_on:
+            eureka:
+                condition: service_healthy
+        networks:
+            - rsdesenvolvimento
 
-  # === Observabilidade ===
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./rsdesenvolvimento-api/prometheus.yml:/etc/prometheus/prometheus.yml
-    depends_on:
-      - pedido-service
-      - notificacao-service
-    networks:
-      - rsdesenvolvimento
+    # === Observabilidade ===
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        ports:
+            - '9090:9090'
+        volumes:
+            - ./rsdesenvolvimento-api/prometheus.yml:/etc/prometheus/prometheus.yml
+        depends_on:
+            - pedido-service
+            - notificacao-service
+        networks:
+            - rsdesenvolvimento
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_SECURITY_ADMIN_USER: admin
-    volumes:
-      - grafana_data:/var/lib/grafana
-    depends_on:
-      - prometheus
-    networks:
-      - rsdesenvolvimento
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        ports:
+            - '3000:3000'
+        environment:
+            GF_SECURITY_ADMIN_PASSWORD: admin
+            GF_SECURITY_ADMIN_USER: admin
+        volumes:
+            - grafana_data:/var/lib/grafana
+        depends_on:
+            - prometheus
+        networks:
+            - rsdesenvolvimento
 
-  # loki:
-  #   image: grafana/loki:2.9.1
-  #   container_name: loki
-  #   ports:
-  #     - "3100:3100"
-  #   command: -config.file=/etc/loki/local-config.yml
-  #   # volumes:
-  #   #   - ./loki-config.yml:/etc/loki/local-config.yml
-  #   networks:
-  #     - rsdesenvolvimento
+    # loki:
+    #   image: grafana/loki:2.9.1
+    #   container_name: loki
+    #   ports:
+    #     - "3100:3100"
+    #   command: -config.file=/etc/loki/local-config.yml
+    #   # volumes:
+    #   #   - ./loki-config.yml:/etc/loki/local-config.yml
+    #   networks:
+    #     - rsdesenvolvimento
 
-  # === Serviços de Negócio ===
-  pedido-service:
-    build:
-      context: ./rsdesenvolvimento-api/pedido-service
-      dockerfile: Dockerfile
-    container_name: pedido-service
-    ports:
-      - "8083:8083"
-    volumes:
-      - ./rsdesenvolvimento-api/infra/pedido/api/data:/tmp/import
-    environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+    # === Serviços de Negócio ===
+    pedido-service:
+        build:
+            context: ./rsdesenvolvimento-api/pedido-service
+            dockerfile: Dockerfile
+        container_name: pedido-service
+        ports:
+            - '8083:8083'
+        volumes:
+            - ./rsdesenvolvimento-api/infra/pedido/api/data:/tmp/import
+        environment:
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
 
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      RABBITMQ_USERNAME: guest
-      RABBITMQ_PASSWORD: guest
+            RABBITMQ_HOST: rabbitmq
+            RABBITMQ_PORT: 5672
+            RABBITMQ_USERNAME: guest
+            RABBITMQ_PASSWORD: guest
 
-      RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_FAILURE_RATE_THRESHOLD: 50
-      RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_SLOW_CALL_RATE_THRESHOLD: 50
-      RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_WAIT_DURATION_IN_OPEN_STATE: 10s
-      RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_PERMITTED_CALLS_IN_HALF_OPEN: 3
-      RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_MINIMUM_NUMBER_OF_CALLS: 5
+            RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_FAILURE_RATE_THRESHOLD: 50
+            RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_SLOW_CALL_RATE_THRESHOLD: 50
+            RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_WAIT_DURATION_IN_OPEN_STATE: 10s
+            RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_PERMITTED_CALLS_IN_HALF_OPEN: 3
+            RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_MINIMUM_NUMBER_OF_CALLS: 5
 
-      # Resilience4j - Retry
-      RESILIENCE4J_RETRY_USUARIO_API_MAX_ATTEMPTS: 3
-      RESILIENCE4J_RETRY_USUARIO_API_WAIT_DURATION: 2s
-      RESILIENCE4J_RETRY_USUARIO_API_EXPONENTIAL_BACKOFF_MULTIPLIER: 2
+            # Resilience4j - Retry
+            RESILIENCE4J_RETRY_USUARIO_API_MAX_ATTEMPTS: 3
+            RESILIENCE4J_RETRY_USUARIO_API_WAIT_DURATION: 2s
+            RESILIENCE4J_RETRY_USUARIO_API_EXPONENTIAL_BACKOFF_MULTIPLIER: 2
 
-      FLYWAY_CREATE_SCHEMA: true
-      FLYWAY_ENABLED: true
-      FLYWAY_DEFAULT_SCHEMA: pedido_adm
-      FLYWAY_SCHEMAS: pedido,pedido_aud, pedido_adm
-      FLYWAY_LOCATIONS: filesystem:/tmp/import
+            FLYWAY_CREATE_SCHEMA: true
+            FLYWAY_ENABLED: true
+            FLYWAY_DEFAULT_SCHEMA: pedido_adm
+            FLYWAY_SCHEMAS: pedido,pedido_aud, pedido_adm
+            FLYWAY_LOCATIONS: filesystem:/tmp/import
 
-      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pedido
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_PROFILES_ACTIVE: default
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      JPA_SHOW_SQL: true
+            SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+            SPRING_DATASOURCE_PASSWORD: postgres
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pedido
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_PROFILES_ACTIVE: default
+            JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            JPA_SHOW_SQL: true
 
-      SERVER_PORT: 8083
-      CONTEXT_PATH: /api
-      DEFAULT_LOCALE: pt-BR
-      DEFAULT_TIMEZONE: America/Belem
+            SERVER_PORT: 8083
+            CONTEXT_PATH: /api
+            DEFAULT_LOCALE: pt-BR
+            DEFAULT_TIMEZONE: America/Belem
 
-    depends_on:
-      eureka:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - rsdesenvolvimento
+        depends_on:
+            eureka:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
+        networks:
+            - rsdesenvolvimento
 
-  notificacao-service:
-    build:
-      context: ./rsdesenvolvimento-api/notificacao-service
-      dockerfile: Dockerfile
-    container_name: notificacao-service
-    ports:
-      - "8085:8085"
-    env_file:
-      - ./rsdesenvolvimento-api/.env
-    environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+    notificacao-service:
+        build:
+            context: ./rsdesenvolvimento-api/notificacao-service
+            dockerfile: Dockerfile
+        container_name: notificacao-service
+        ports:
+            - '8085:8085'
+        env_file:
+            - ./rsdesenvolvimento-api/.env
+        environment:
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
 
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      RABBITMQ_USERNAME: guest
-      RABBITMQ_PASSWORD: guest
+            RABBITMQ_HOST: rabbitmq
+            RABBITMQ_PORT: 5672
+            RABBITMQ_USERNAME: guest
+            RABBITMQ_PASSWORD: guest
 
-      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notificacao
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_PROFILES_ACTIVE: default
+            SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+            SPRING_DATASOURCE_PASSWORD: postgres
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notificacao
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_PROFILES_ACTIVE: default
 
-      SERVER_PORT: 8085
-      CONTEXT_PATH: /api
-      DEFAULT_LOCALE: pt-BR
-      DEFAULT_TIMEZONE: America/Belem
+            SERVER_PORT: 8085
+            CONTEXT_PATH: /api
+            DEFAULT_LOCALE: pt-BR
+            DEFAULT_TIMEZONE: America/Belem
 
-    depends_on:
-      eureka:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - rsdesenvolvimento
+        depends_on:
+            eureka:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
+        networks:
+            - rsdesenvolvimento
 
-  pagamento-service:
-    build:
-      context: ./rsdesenvolvimento-api/pagamento-service
-      dockerfile: Dockerfile
-    container_name: pagamento-service
-    ports:
-      - "8084:8084"
-    environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+    pagamento-service:
+        build:
+            context: ./rsdesenvolvimento-api/pagamento-service
+            dockerfile: Dockerfile
+        container_name: pagamento-service
+        ports:
+            - '8084:8084'
+        environment:
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
 
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      RABBITMQ_USERNAME: guest
-      RABBITMQ_PASSWORD: guest
+            RABBITMQ_HOST: rabbitmq
+            RABBITMQ_PORT: 5672
+            RABBITMQ_USERNAME: guest
+            RABBITMQ_PASSWORD: guest
 
-      FLYWAY_CREATE_SCHEMA: true
-      FLYWAY_ENABLED: true
-      FLYWAY_DEFAULT_SCHEMA: pagamento_adm
-      FLYWAY_SCHEMAS: pagamento,pagamento_aud, pagamento_adm
-      FLYWAY_LOCATIONS: filesystem:/tmp/import
+            FLYWAY_CREATE_SCHEMA: true
+            FLYWAY_ENABLED: true
+            FLYWAY_DEFAULT_SCHEMA: pagamento_adm
+            FLYWAY_SCHEMAS: pagamento,pagamento_aud, pagamento_adm
+            FLYWAY_LOCATIONS: filesystem:/tmp/import
 
-      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pagamento
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_PROFILES_ACTIVE: default
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      JPA_SHOW_SQL: true
+            SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+            SPRING_DATASOURCE_PASSWORD: postgres
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pagamento
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_PROFILES_ACTIVE: default
+            JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            JPA_SHOW_SQL: true
 
-      SERVER_PORT: 8084
-      CONTEXT_PATH: /api
-      DEFAULT_LOCALE: pt-BR
-      DEFAULT_TIMEZONE: America/Belem
+            SERVER_PORT: 8084
+            CONTEXT_PATH: /api
+            DEFAULT_LOCALE: pt-BR
+            DEFAULT_TIMEZONE: America/Belem
 
-    depends_on:
-      eureka:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - rsdesenvolvimento
+        depends_on:
+            eureka:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
+        networks:
+            - rsdesenvolvimento
 
-  estoque:
-    build:
-      context: ./rsdesenvolvimento-api/estoque
-      dockerfile: Dockerfile
-    container_name: estoque
-    ports:
-      - "8082:8082"
-    volumes:
-      - ./rsdesenvolvimento-api/infra/estoque/api/data:/tmp/import
-    environment:
-      CONTEXT_PATH: /api
-      DEFAULT_LOCALE: pt-BR
-      DEFAULT_TIMEZONE: America/Belem
+    estoque:
+        build:
+            context: ./rsdesenvolvimento-api/estoque
+            dockerfile: Dockerfile
+        container_name: estoque
+        ports:
+            - '8082:8082'
+        volumes:
+            - ./rsdesenvolvimento-api/infra/estoque/api/data:/tmp/import
+        environment:
+            CONTEXT_PATH: /api
+            DEFAULT_LOCALE: pt-BR
+            DEFAULT_TIMEZONE: America/Belem
 
-      ENVERS_SCHEMA: estoque_aud
-      FLYWAY_CREATE_SCHEMA: true
-      FLYWAY_DEFAULT_SCHEMA: estoque_adm
-      FLYWAY_ENABLED: true
-      FLYWAY_LOCATIONS: filesystem:/tmp/import
-      FLYWAY_SCHEMAS: estoque,estoque_aud, estoque_adm
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      JPA_SHOW_SQL: true
+            ENVERS_SCHEMA: estoque_aud
+            FLYWAY_CREATE_SCHEMA: true
+            FLYWAY_DEFAULT_SCHEMA: estoque_adm
+            FLYWAY_ENABLED: true
+            FLYWAY_LOCATIONS: filesystem:/tmp/import
+            FLYWAY_SCHEMAS: estoque,estoque_aud, estoque_adm
+            JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            JPA_SHOW_SQL: true
 
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
-      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/estoque
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_PROFILES_ACTIVE: default
-      SERVER_PORT: 8082
-    depends_on:
-      eureka:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - rsdesenvolvimento
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+            SPRING_DATASOURCE_PASSWORD: postgres
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/estoque
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_PROFILES_ACTIVE: default
+            SERVER_PORT: 8082
+        depends_on:
+            eureka:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
+        networks:
+            - rsdesenvolvimento
 
-  usuario:
-    build:
-      context: ./rsdesenvolvimento-api/usuario
-      dockerfile: Dockerfile
-    container_name: usuario
-    ports:
-      - "8081:8081"
-    volumes:
-      - ./rsdesenvolvimento-api/infra/usuario/api/data:/tmp/import
-    environment:
-      CONTEXT_PATH: /api
-      DEFAULT_LOCALE: pt-BR
-      DEFAULT_TIMEZONE: America/Belem
+    usuario:
+        build:
+            context: ./rsdesenvolvimento-api/usuario
+            dockerfile: Dockerfile
+        container_name: usuario
+        ports:
+            - '8081:8081'
+        volumes:
+            - ./rsdesenvolvimento-api/infra/usuario/api/data:/tmp/import
+        environment:
+            CONTEXT_PATH: /api
+            DEFAULT_LOCALE: pt-BR
+            DEFAULT_TIMEZONE: America/Belem
 
-      ENVERS_SCHEMA: usuario_aud
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
-      FLYWAY_CREATE_SCHEMA: true
-      FLYWAY_DEFAULT_SCHEMA: usuario_adm
-      FLYWAY_ENABLED: true
-      FLYWAY_LOCATIONS: filesystem:/tmp/import
-      FLYWAY_SCHEMAS: usuario,usuario_aud, usuario_adm
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      JPA_SHOW_SQL: true
+            ENVERS_SCHEMA: usuario_aud
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            FLYWAY_CREATE_SCHEMA: true
+            FLYWAY_DEFAULT_SCHEMA: usuario_adm
+            FLYWAY_ENABLED: true
+            FLYWAY_LOCATIONS: filesystem:/tmp/import
+            FLYWAY_SCHEMAS: usuario,usuario_aud, usuario_adm
+            JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            JPA_SHOW_SQL: true
 
-      SERVER_PORT: 8081
-      SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usuario
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_PROFILES_ACTIVE: default
-    depends_on:
-      eureka:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - rsdesenvolvimento
+            SERVER_PORT: 8081
+            SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
+            SPRING_DATASOURCE_PASSWORD: postgres
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usuario
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_PROFILES_ACTIVE: default
+        depends_on:
+            eureka:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
+        networks:
+            - rsdesenvolvimento
 
 networks:
-  rsdesenvolvimento:
-    driver: bridge
+    rsdesenvolvimento:
+        driver: bridge
 
 volumes:
-  grafana_data:
-  postgres_data:
+    grafana_data:
+    postgres_data:
