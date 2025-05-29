@@ -7,20 +7,23 @@ spring:
         name: api-gateway
     cloud:
         gateway:
-            default-filters:
-                - >-
-                    DedupeResponseHeader=Access-Control-Allow-Origin
-                    Access-Control-Allow-Credentials
-                - 'RewritePath=/{segment}/, /$1'
-            globalcors:
-                cors-configurations:
-                    '[/**]': null
-                allowedOrigins: '*'
-                allowedMethods: '*'
             discovery:
                 locator:
                     enabled: true
                     lower-case-service-id: true
+            default-filters:
+                - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            globalcors:
+                corsConfigurations:
+                    '[/**]':
+                        allowedOrigins: '*'
+                        allowedHeaders: '*'
+                        allowedMethods:
+                            - GET
+                            - POST
+                            - DELETE
+                            - PUT
+                            - OPTIONS
 eureka:
     client:
         fetch-registry: true

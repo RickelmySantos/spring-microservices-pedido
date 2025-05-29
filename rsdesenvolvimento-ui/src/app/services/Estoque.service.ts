@@ -5,7 +5,7 @@ import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 
 @Injectable({ providedIn: 'root' })
 export class EstoqueService {
-    private readonly API = 'http://localhost:8080/api/estoque';
+    private readonly API = 'http://localhost:8080/estoque-api/api/estoque';
 
     constructor(private http: HttpClient) {}
 
@@ -15,5 +15,11 @@ export class EstoqueService {
             params = params.set('categoria', categoria);
         }
         return this.http.get<MenuCardapio[]>(this.API, { params }).pipe(take(1));
+    }
+
+    uploadImagem(file: File): Observable<string> {
+        const formData = new FormData();
+        formData.append('file', file);
+        return this.http.post(`${this.API}/upload`, formData, { responseType: 'text' }).pipe(take(1));
     }
 }
