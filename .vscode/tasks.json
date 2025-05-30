@@ -1,36 +1,57 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Build todos os módulos (skip tests)",
-      "type": "shell",
-      "command": "mvn clean package -DskipTests -T 1",
-      "options": {
-        "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Instalar todos os módulos (skip tests)",
-      "type": "shell",
-      "command": "mvn clean install -DskipTests -T 1",
-      "options": {
-        "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
-      },
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "[all] Build todos os módulos (skip tests)",
+            "type": "shell",
+            "command": "mvn clean package -DskipTests",
+            "options": {
+                "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "[all] Instalar todos os módulos (skip tests)",
+            "type": "shell",
+            "command": "mvn clean install -DskipTests ",
+            "options": {
+                "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "[infra] Start Infrastructure",
+            "type": "process",
+            "command": "${workspaceFolder}/.tools/project/infra.sh",
+            "args": ["start"],
+            "problemMatcher": []
+        },
+        {
+            "label": "[infra] Reset Infrastructure",
+            "type": "process",
+            "command": "${workspaceFolder}/.tools/project/infra.sh",
+            "args": ["reset"],
+            "problemMatcher": []
+        },
+        {
+            "label": "[infra] Stop Infrastructure",
+            "type": "process",
+            "command": "${workspaceFolder}/.tools/project/infra.sh",
+            "args": ["stop"],
+            "problemMatcher": []
+        }
+    ]
 }
