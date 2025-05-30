@@ -1,0 +1,41 @@
+.form-file {
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.75rem;
+    border-width: 2px;
+    border-color: #d1d5db;
+    border-style: dashed;
+    text-align: center;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    transition-duration: 300ms;
+}
+.form-file:hover {
+    border-color: #60a5fa;
+    background-color: #eff6ff;
+}
+
+.input {
+    width: 100%;
+
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
+
+.input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
+
+.input:active {
+    transform: scale(0.95);
+}
+
+.input:focus {
+    border: 2px solid grey;
+}

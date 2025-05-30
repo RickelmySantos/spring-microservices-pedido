@@ -8,7 +8,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     selector: 'app-upload',
     template: `
         <form [formGroup]="form" (ngSubmit)="enviarProduto()" class="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Header -->
             <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
@@ -21,10 +20,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
                 </div>
             </div>
 
-            <!-- Main Content -->
             <div class="p-6">
-                <!-- Upload Area -->
-                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center mb-6 transition-all duration-300 hover:border-blue-400 hover:bg-blue-50">
+                <div class="form-file">
                     <input type="file" id="fileInput" class="file-input" accept="image/*" (change)="onFileSelected($event)" />
                     <label for="fileInput" class="cursor-pointer">
                         <div class="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
@@ -37,59 +34,37 @@ import { SharedModule } from 'src/app/shared/shared.module';
                     <div *ngIf="form.get('imagem')?.invalid && form.get('imagem')?.touched" class="text-red-600 text-sm mt-2">Imagem é obrigatória</div>
                 </div>
 
-                <!-- Additional Info Form -->
                 <div class="mb-6">
-                    <h3 class="text-lg font-medium text-gray-700 mb-4">Image Details</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                            <input
-                                type="text"
-                                id="nome"
-                                formControlName="nome"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                    <h3 class="text-lg font-medium text-gray-700 mb-4">Formulário</h3>
+                    <div class="grid">
+                        <div class="col-6">
+                            <label for="nome" class="text-lg font-bold ">Nome</label>
+                            <input type="text" id="nome" pInputText formControlName="nome" required="true" class="input" />
                             <div *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched" class="text-red-600 text-sm">Nome é obrigatório</div>
                         </div>
-                        <div>
+                        <div class="col-6">
                             <label for="descricao" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                            <textarea
-                                id="descricao"
-                                rows="3"
-                                formControlName="descricao"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"></textarea>
+                            <textarea id="descricao" rows="3" formControlName="descricao" class="input"></textarea>
                             <div *ngIf="form.get('descricao')?.invalid && form.get('descricao')?.touched" class="text-red-600 text-sm">Descrição é obrigatória</div>
                         </div>
-                        <div>
+                        <div class="col-6">
                             <label for="preco" class="block text-sm font-medium text-gray-700 mb-1">Preço</label>
-                            <input
-                                type="text"
-                                id="preco"
-                                formControlName="preco"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                            <input type="text" id="preco" formControlName="preco" class="input" />
                             <div *ngIf="form.get('preco')?.invalid && form.get('preco')?.touched" class="text-red-600 text-sm">Preço é obrigatório</div>
                         </div>
-                        <div>
+                        <div class="col-6">
                             <label for="categoria" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                            <input
-                                type="text"
-                                id="categoria"
-                                formControlName="categoria"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                            <input type="text" id="categoria" formControlName="categoria" class="input" />
                             <div *ngIf="form.get('categoria')?.invalid && form.get('categoria')?.touched" class="text-red-600 text-sm">Categoria é obrigatória</div>
                         </div>
-                        <div>
+                        <div class="col-6">
                             <label for="estoque" class="block text-sm font-medium text-gray-700 mb-1">Estoque</label>
-                            <input
-                                type="text"
-                                id="estoque"
-                                formControlName="estoque"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                            <input type="text" id="estoque" formControlName="estoque" class="input" />
                             <div *ngIf="form.get('estoque')?.invalid && form.get('estoque')?.touched" class="text-red-600 text-sm">Estoque é obrigatório</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row justify-end gap-3">
                     <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition" (click)="form.reset()">Cancelar</button>
                     <button
@@ -103,7 +78,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
                 </div>
             </div>
 
-            <!-- Success Message (hidden by default) -->
             <div *ngIf="uploadSuccess" class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 mx-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
