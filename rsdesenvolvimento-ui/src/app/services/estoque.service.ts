@@ -22,4 +22,12 @@ export class EstoqueService {
         formData.append('file', file);
         return this.http.post(`${this.API}/upload`, formData, { responseType: 'text' }).pipe(take(1));
     }
+
+    salvarProduto(dados: any, imagem: File): Observable<any> {
+        const formData = new FormData();
+        formData.append('dados', new Blob([JSON.stringify(dados)], { type: 'application/json' }));
+        formData.append('imagem', imagem);
+
+        return this.http.post<any>(this.API, formData);
+    }
 }

@@ -2,7 +2,7 @@ import { NgFor } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
-import { EstoqueService } from 'src/app/services/Estoque.service';
+import { EstoqueService } from 'src/app/services/estoque.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
 import { CardapioMenuComponent } from './menu/cardapio-menu.component';

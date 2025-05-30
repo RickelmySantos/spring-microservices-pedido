@@ -32,7 +32,7 @@ public class EstoqueApi {
     private final EstoqueService service;
     private final CloudinaryService cloudinaryService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<EstoqueResponseDto> cadastrarProduto(
             @RequestPart("dados") EstoqueRequestDto dto,
             @RequestPart("imagem") MultipartFile imagem) throws Exception {
