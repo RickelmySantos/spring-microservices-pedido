@@ -24,60 +24,57 @@ import org.springframework.web.server.ResponseStatusException;
 public class PedidoService {
 
 
-  private final PedidoRepository pedidoRepository;
-  private final PedidoMapper pedidoMapper;
-  private final UsuarioClient usuarioClient;
-  private final EstoqueFeignClient estoqueFeignClient;
-  private final NotificacaoProducer notificacaoProducer;
+    private final PedidoRepository pedidoRepository;
+    private final PedidoMapper pedidoMapper;
+    private final UsuarioClient usuarioClient;
+    private final EstoqueFeignClient estoqueFeignClient;
+    private final NotificacaoProducer notificacaoProducer;
 
-  public PedidoResponseDto criarPedido(PedidoRequesteDto dto) {
-    try {
-      UsuarioDto usuario = this.usuarioClient.buscarUsuarioPorId(dto.getUsuarioId());
+    public PedidoResponseDto criarPedido(PedidoRequesteDto dto) {
+        try {
+            UsuarioDto usuario = this.usuarioClient.buscarUsuarioPorId(dto.getUsuarioId());
 
-      boolean disponivel = this.estoqueFeignClient.validarEstoque(dto.getItens());
+            boolean disponivel = this.estoqueFeignClient.validarEstoque(dto.getItens());
 
-      if (!disponivel) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "Estoque insuficiente para um ou mais produtos.");
-      }
+            if (!disponivel) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Estoque insuficiente para um ou mais produtos.");
+            }
 
-      var pedido = this.pedidoMapper.paraEntidade(dto);
-      pedido.setDataHoraCriacao(LocalDateTime.now());
-      pedido.setNomeUsuario(usuario.getNome());
-      pedido.setEmailUsuario(usuario.getEmail());
-      pedido.setStatus(StatusEnum.PENDENTE);
+            var pedido = this.pedidoMapper.paraEntidade(dto);
+            pedido.setDataHoraCriacao(LocalDateTime.now());
+            pedido.setNomeUsuario(usuario.getNome());
+            pedido.setEmailUsuario(usuario.getEmail());
+            pedido.setStatus(StatusEnum.PENDENTE);
 
-      Pedido pedidoSalvo = this.pedidoRepository.save(pedido);
-      PedidoResponseDto response = this.pedidoMapper.paraDto(pedidoSalvo);
+            Pedido pedidoSalvo = this.pedidoRepository.save(pedido);
+            PedidoResponseDto response = this.pedidoMapper.paraDto(pedidoSalvo);
 
-      response.setNomeUsuario(usuario.getNome());
+            response.setNomeUsuario(usuario.getNome());
 
-      // ObjectMapper objectMapper = new ObjectMapper();
-      // String jsonPedido = objectMapper.writeValueAsString(response);
-
-      String mensagem = String.format("Pedido %s criado com sucesso!", pedidoSalvo.getId());
-      this.notificacaoProducer.enviarNotificacao(mensagem);
+            String mensagem = String.format("Pedido %s criado com sucesso!", pedidoSalvo.getId());
+            this.notificacaoProducer.enviarNotificacao(mensagem);
 
 
-      return response;
-    } catch (FeignException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado");
+            return response;
+        } catch (FeignException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado");
+        }
     }
-  }
 
 
-  public void statusPagamento(Long id, String status) {
-    PedidoService.log.info("Atualizando status do pedido com id: {} para {}", id, status);
-    Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
-        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+    public void statusPagamento(Long id, String status) {
+        PedidoService.log.info("Atualizando status do pedido com id: {} para {}", id, status);
+        Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
 
-    try {
-      StatusEnum novoStatus = StatusEnum.valueOf(status.toUpperCase());
-      pedido.setStatus(novoStatus);
-      this.pedidoRepository.save(pedido);
-    } catch (IllegalArgumentException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status inválido");
+        try {
+            StatusEnum novoStatus = StatusEnum.valueOf(status.toUpperCase());
+            pedido.setStatus(novoStatus);
+            this.pedidoRepository.save(pedido);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status inválido");
+        }
     }
-  }
 }
 

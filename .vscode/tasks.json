@@ -52,6 +52,44 @@
             "command": "${workspaceFolder}/.tools/project/infra.sh",
             "args": ["stop"],
             "problemMatcher": []
+        },
+        // {
+        //     "label": "[sonar] Análise SonarQube",
+        //     "type": "shell",
+        //     "command": "mvn clean verify sonar:sonar -Dsonar.projectKey=rsdesenvolvimento -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_0dd4948f4e66756ecc023026e77d37357226742a",
+        //     "options": {
+        //         "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
+        //     },
+        //     "problemMatcher": [],
+        //     "group": {
+        //         "kind": "test",
+        //         "isDefault": false
+        //     },
+        //     "presentation": {
+        //         "reveal": "always",
+        //         "panel": "shared"
+        //     }
+        // }
+        {
+            "label": "[sonar] Análise SonarQube",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk env && mvn clean verify sonar:sonar -Dsonar.projectKey=rsdesenvolvimento -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_0dd4948f4e66756ecc023026e77d37357226742a"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
         }
     ]
 }

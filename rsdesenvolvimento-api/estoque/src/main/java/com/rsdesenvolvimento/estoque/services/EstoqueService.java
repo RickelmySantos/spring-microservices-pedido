@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class EstoqueService {
 
+    private static final String PRODUTO_NAO_ENCONTRADO = "Produto não encontrado";
+
+
     private final EstoqueRepository repository;
     private final EstoqueMapper mapper;
     private final CloudinaryService cloudinaryService;
@@ -37,14 +40,14 @@ public class EstoqueService {
     }
 
     public EstoqueResponseDto buscarPorId(Long id) {
-        Estoque produto = this.repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+        Estoque produto = this.repository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
         return this.mapper.toDto(produto);
     }
 
     public EstoqueResponseDto atualizar(Long id, EstoqueRequestDto dto) {
-        Estoque produtoExistente = this.repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+        Estoque produtoExistente = this.repository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
 
         Estoque atualizado = this.mapper.toEntity(dto);
         atualizado.setId(produtoExistente.getId());
@@ -58,8 +61,8 @@ public class EstoqueService {
 
     public boolean validarEstoque(List<ReservaEstoqueRequestDto> itens) {
         for (ReservaEstoqueRequestDto item : itens) {
-            Estoque produto = this.repository.findById(item.getProdutoId())
-                    .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+            Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(
+                    () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
             if (produto.getEstoque() < item.getQuantidade()) {
                 return false;
             }
@@ -69,8 +72,8 @@ public class EstoqueService {
 
     public void reservarEstoque(List<ReservaEstoqueRequestDto> itens) {
         for (ReservaEstoqueRequestDto item : itens) {
-            Estoque produto = this.repository.findById(item.getProdutoId())
-                    .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+            Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(
+                    () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
 
             produto.setEstoque(produto.getEstoque() - item.getQuantidade());
 

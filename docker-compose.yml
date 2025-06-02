@@ -36,7 +36,7 @@ services:
             retries: 5
 
     sonarqube:
-        image: sonarqube:lts
+        image: sonarqube:9.9.8-community
         container_name: sonarqube
         depends_on:
             - sonarqube-db

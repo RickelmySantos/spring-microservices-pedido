@@ -19,8 +19,7 @@ public class CloudinaryConfig {
     @Value("${cloudinary.api_secret}")
     private String apiSecret;
 
-    @Value("${CLOUDINARY_URL}")
-    private String cloudinaryUrl;
+
 
     @Bean
     public Cloudinary cloudinary() {
@@ -30,10 +29,5 @@ public class CloudinaryConfig {
         config.put("api_secret", this.apiSecret);
         return new Cloudinary(config);
     }
-
-    // @Bean
-    // public Cloudinary cloudinary() {
-    // return new Cloudinary(this.cloudinaryUrl);
-    // }
 
 }

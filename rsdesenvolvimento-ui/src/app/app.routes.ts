@@ -6,7 +6,7 @@ export const ROUTES: Route[] = [
         loadComponent: () => import('./layout/layout.component').then(m => m.LayoutComponent),
         children: [
             { path: '', loadChildren: () => import('./core/layout/home/home.routes') },
-            { path: 'upload', loadChildren: () => import('./modules/upload/upload.routes') },
+            { path: 'upload', loadChildren: () => import('./modules/upload/file-upload.routes') },
         ],
     },
 

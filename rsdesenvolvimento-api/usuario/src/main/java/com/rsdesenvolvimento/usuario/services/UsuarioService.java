@@ -15,60 +15,58 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class UsuarioService {
 
-  private final UsuarioRepository usuarioRepository;
-  private final UsuarioMapper usuarioMapper;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioMapper usuarioMapper;
 
-  // Implementação de métodos de serviço para manipulação de usuários
-
-  public UsuarioResponseDto cadastrar(UsuarioRequestDto dto) {
-    if (this.usuarioRepository.existsByCpf(dto.getCpf())) {
-      throw new IllegalArgumentException("Já existe um usuário cadastrado com esse CPF");
+    public UsuarioResponseDto cadastrar(UsuarioRequestDto dto) {
+        if (this.usuarioRepository.existsByCpf(dto.getCpf())) {
+            throw new IllegalArgumentException("Já existe um usuário cadastrado com esse CPF");
+        }
+        if (this.usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("Já existe um usuário cadastrado com esse e-mail");
+        }
+        Usuario usuario = this.usuarioMapper.toEntity(dto);
+        return this.usuarioMapper.toDto(this.usuarioRepository.save(usuario));
     }
-    if (this.usuarioRepository.existsByEmail(dto.getEmail())) {
-      throw new IllegalArgumentException("Já existe um usuário cadastrado com esse e-mail");
+
+    public UsuarioResponseDto buscarPorId(Long id) {
+        Assert.notNull(id, "Id não pode ser nulo");
+        Assert.isTrue(id > 0, "Id deve ser maior que zero");
+
+        Usuario usuario = this.usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        return this.usuarioMapper.toDto(usuario);
     }
-    Usuario usuario = this.usuarioMapper.toEntity(dto);
-    return this.usuarioMapper.toDto(this.usuarioRepository.save(usuario));
-  }
 
-  public UsuarioResponseDto buscarPorId(Long id) {
-    Assert.notNull(id, "Id não pode ser nulo");
-    Assert.isTrue(id > 0, "Id deve ser maior que zero");
-
-    Usuario usuario = this.usuarioRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-    return this.usuarioMapper.toDto(usuario);
-  }
-
-  public List<UsuarioResponseDto> listarTodos() {
-    return this.usuarioRepository.findAll().stream().map(this.usuarioMapper::toDto)
-        .collect(Collectors.toList());
-  }
-
-  public void deletar(Long id) {
-    Assert.notNull(id, "Id não pode ser nulo");
-    Assert.isTrue(id > 0, "Id deve ser maior que zero");
-    Usuario usuario = this.usuarioRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-    this.usuarioRepository.delete(usuario);
-  }
-
-  public UsuarioResponseDto atualizar(Long id, UsuarioRequestDto dto) {
-    Assert.notNull(id, "Id não pode ser nulo");
-    Assert.notNull(id > 0, "Id deve ser maior que zero");
-
-    Usuario usuario = this.usuarioRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-    if (this.usuarioRepository.existsByCpf(dto.getCpf())) {
-      throw new IllegalArgumentException("Já existe um usuário cadastrado com esse CPF");
+    public List<UsuarioResponseDto> listarTodos() {
+        return this.usuarioRepository.findAll().stream().map(this.usuarioMapper::toDto)
+                .collect(Collectors.toList());
     }
-    if (this.usuarioRepository.existsByEmail(dto.getEmail())) {
-      throw new IllegalArgumentException("Já existe um usuário cadastrado com esse e-mail");
+
+    public void deletar(Long id) {
+        Assert.notNull(id, "Id não pode ser nulo");
+        Assert.isTrue(id > 0, "Id deve ser maior que zero");
+        Usuario usuario = this.usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        this.usuarioRepository.delete(usuario);
     }
-    usuario.setNome(dto.getNome());
-    usuario.setEmail(dto.getEmail());
-    usuario.setCpf(dto.getCpf());
-    return this.usuarioMapper.toDto(this.usuarioRepository.save(usuario));
-  }
+
+    public UsuarioResponseDto atualizar(Long id, UsuarioRequestDto dto) {
+        Assert.notNull(id, "Id não pode ser nulo");
+        Assert.notNull(id > 0, "Id deve ser maior que zero");
+
+        Usuario usuario = this.usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        if (this.usuarioRepository.existsByCpf(dto.getCpf())) {
+            throw new IllegalArgumentException("Já existe um usuário cadastrado com esse CPF");
+        }
+        if (this.usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("Já existe um usuário cadastrado com esse e-mail");
+        }
+        usuario.setNome(dto.getNome());
+        usuario.setEmail(dto.getEmail());
+        usuario.setCpf(dto.getCpf());
+        return this.usuarioMapper.toDto(this.usuarioRepository.save(usuario));
+    }
 
 }

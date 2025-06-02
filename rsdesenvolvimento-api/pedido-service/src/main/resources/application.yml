@@ -1,155 +1,155 @@
 # configurações do servidor
 server:
-  port: ${SERVER_PORT:8083}
-  servlet:
-    context-path: ${CONTEXT_PATH:/api}
+    port: ${SERVER_PORT:8083}
+    servlet:
+        context-path: ${CONTEXT_PATH:/api}
 # Configurações gerais
 spring:
-  profiles:
-    active:
-      - "@activatedProfile@"
-  application:
-    name: pedido-service
-  flyway:
-    enabled: ${FLYWAY_ENABLED:false}
-    baseline-on-migrate: true
-    baseline-version: 0
-    baseline-description: Pedido Baseline
-    create-schemas: ${FLYWAY_CREATE_SCHEMA:false}
-    default-schema: ${FLYWAY_DEFAULT_SCHEMA:pedido_adm}
-    schemas: ${FLYWAY_SCHEMAS:pedido,pedido_aud, pedido_adm}
-    url: ${SPRING_DATASOURCE_URL}
-    user: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
-  datasource:
-    url: "${SPRING_DATASOURCE_URL}"
-    username: "${SPRING_DATASOURCE_USERNAME}"
-    password: "${SPRING_DATASOURCE_PASSWORD}"
-    driver-class-name: "${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}"
-  h2:
-    console:
-      enabled: false
-  jpa:
-    hibernate:
-      database-platform: "${JPA_DIALECT:org.hibernate.dialect.PostgreSQLDialect}"
-      ddl-auto: none
-    open-in-view: false
-    show-sql: ${JPA_SHOW_SQL:false}
-    properties:
-      hibernate:
-        jdbc:
-          time_zone: UTC
-        format_sql: ${JPA_FORMAT_SQL:false}
-        default_schema: ${DB_SCHEMA:"pedido"}
-      org:
+    profiles:
+        active:
+            - '@activatedProfile@'
+    application:
+        name: pedido-service
+    flyway:
+        enabled: ${FLYWAY_ENABLED:false}
+        baseline-on-migrate: true
+        baseline-version: 0
+        baseline-description: Pedido Baseline
+        create-schemas: ${FLYWAY_CREATE_SCHEMA:false}
+        default-schema: ${FLYWAY_DEFAULT_SCHEMA:pedido_adm}
+        schemas: ${FLYWAY_SCHEMAS:pedido,pedido_aud, pedido_adm}
+        url: ${SPRING_DATASOURCE_URL}
+        user: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+        locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
+    datasource:
+        url: '${SPRING_DATASOURCE_URL}'
+        username: '${SPRING_DATASOURCE_USERNAME}'
+        password: '${SPRING_DATASOURCE_PASSWORD}'
+        driver-class-name: '${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}'
+    h2:
+        console:
+            enabled: false
+    jpa:
+        database-platform: '${JPA_DIALECT:org.hibernate.dialect.PostgreSQLDialect}'
         hibernate:
-          envers:
-            default_schema: ${ENVERS_SCHEMA:"pedido_aud"}
-      javax.persistence.schema-generation.scripts:
-        action: none
-    sql:
-      init:
-        mode: never
-  rabbitmq:
-    host: ${RABBITMQ_HOST:rabbitmq}
-    port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
-    virtual-host: /
-    listener:
-      simple:
-        concurrency: 1
-        max-concurrency: 10
+            ddl-auto: none
+        open-in-view: false
+        show-sql: ${JPA_SHOW_SQL:false}
+        properties:
+            hibernate:
+                jdbc:
+                    time_zone: UTC
+                format_sql: ${JPA_FORMAT_SQL:false}
+                default_schema: ${DB_SCHEMA:"pedido"}
+            org:
+                hibernate:
+                    envers:
+                        default_schema: ${ENVERS_SCHEMA:"pedido_aud"}
+            javax.persistence.schema-generation.scripts:
+                action: none
+        sql:
+            init:
+                mode: never
+    rabbitmq:
+        host: ${RABBITMQ_HOST:rabbitmq}
+        port: ${RABBITMQ_PORT:5672}
+        username: ${RABBITMQ_USERNAME:guest}
+        password: ${RABBITMQ_PASSWORD:guest}
+        virtual-host: /
+        listener:
+            simple:
+                concurrency: 1
+                max-concurrency: 10
 
 eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: "${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}"
-  instance:
-    leaseRenewalIntervalInSeconds: 5
-    leaseExpirationDurationInSeconds: 10
+    client:
+        fetch-registry: true
+        register-with-eureka: true
+        service-url:
+            defaultZone: '${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}'
+    instance:
+        leaseRenewalIntervalInSeconds: 5
+        leaseExpirationDurationInSeconds: 10
 resilience4j:
-  circuitbreaker:
-    instances:
-      usuario-api:
-        failureRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_FAILURE_RATE_THRESHOLD:50}
-        slowCallRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_SLOW_CALL_RATE_THRESHOLD:50}
-        waitDurationInOpenState: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_WAIT_DURATION_IN_OPEN_STATE:10s}
-        permittedNumberOfCallsInHalfOpenState: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_PERMITTED_CALLS_IN_HALF_OPEN:3}
-        minimumNumberOfCalls: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_MINIMUM_NUMBER_OF_CALLS:5}
-  retry:
-    instances:
-      usuario-api:
-        maxAttempts: ${RESILIENCE4J_RETRY_USUARIO_API_MAX_ATTEMPTS:3}
-        waitDuration: ${RESILIENCE4J_RETRY_USUARIO_API_WAIT_DURATION:2s}
-        exponentialBackoffMultiplier: ${RESILIENCE4J_RETRY_USUARIO_API_EXPONENTIAL_BACKOFF_MULTIPLIER:2}
-        retryExceptions:
-          - org.springframework.web.client.HttpClientErrorException
-          - java.net.UnknownHostException
-          - java.net.ConnectException
-          - feign.RetryableException
+    circuitbreaker:
+        instances:
+            usuario-api:
+                failureRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_FAILURE_RATE_THRESHOLD:50}
+                slowCallRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_SLOW_CALL_RATE_THRESHOLD:50}
+                waitDurationInOpenState: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_WAIT_DURATION_IN_OPEN_STATE:10s}
+                permittedNumberOfCallsInHalfOpenState: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_PERMITTED_CALLS_IN_HALF_OPEN:3}
+                minimumNumberOfCalls: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_MINIMUM_NUMBER_OF_CALLS:5}
+    retry:
+        instances:
+            usuario-api:
+                maxAttempts: ${RESILIENCE4J_RETRY_USUARIO_API_MAX_ATTEMPTS:3}
+                waitDuration: ${RESILIENCE4J_RETRY_USUARIO_API_WAIT_DURATION:2s}
+                exponentialBackoffMultiplier: ${RESILIENCE4J_RETRY_USUARIO_API_EXPONENTIAL_BACKOFF_MULTIPLIER:2}
+                retryExceptions:
+                    - org.springframework.web.client.HttpClientErrorException
+                    - java.net.UnknownHostException
+                    - java.net.ConnectException
+                    - feign.RetryableException
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-    endpoint:
-      health:
-        probes:
-          enabled: true
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    health:
+        readiness-state:
+            enabled: true
+        liveness-state:
+            enabled: true
+        endpoint:
+            health:
+                probes:
+                    enabled: true
 logging:
-  level:
-    com.rsdesenvolvimento.pedido_service.core.client: DEBUG
-    feign: DEBUG
-    org.springframework.cloud.openfeign: DEBUG
-    io.github.resilience4j: DEBUG
+    level:
+        com.rsdesenvolvimento.pedido_service.core.client: DEBUG
+        feign: DEBUG
+        org.springframework.cloud.openfeign: DEBUG
+        io.github.resilience4j: DEBUG
 
 ---
 ################################################
 # configurações específicas para profile LOCAL #
 ################################################
-spring:
-  config:
-    activate:
-      on-profile: local
-  flyway:
-    enabled: true
-    cleanDisabled: false
-    create-schemas: true
-    url: jdbc:postgresql://localhost:5432/pedido
-  datasource:
-    url: jdbc:postgresql://localhost:5432/pedido
-    username: postgres
-    password: postgres
-  jpa:
-    # show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-      javax.persistence.schema-generation.scripts:
-        action: drop-and-create
-        create-source: metadata
-        create-target: target/create.sql
-        drop-source: metadata
-        drop-target: target/drop.sql
-# configurações de logging
-logging:
-  level:
-    org:
-      flywaydb: debug
-      hibernate:
-        type.descriptor.sql.BasicBinder: info
-      springframework:
-        web:
-          filter: info
-          client: debug
-        transaction: error
+# spring:
+#   config:
+#     activate:
+#       on-profile: local
+#   flyway:
+#     enabled: true
+#     cleanDisabled: false
+#     create-schemas: true
+#     url: jdbc:postgresql://localhost:5432/pedido
+#   datasource:
+#     url: jdbc:postgresql://localhost:5432/pedido
+#     username: postgres
+#     password: postgres
+#   jpa:
+#     # show-sql: true
+#     properties:
+#       hibernate:
+#         format_sql: true
+#       javax.persistence.schema-generation.scripts:
+#         action: drop-and-create
+#         create-source: metadata
+#         create-target: target/create.sql
+#         drop-source: metadata
+#         drop-target: target/drop.sql
+# # configurações de logging
+# logging:
+#   level:
+#     org:
+#       flywaydb: debug
+#       hibernate:
+#         type.descriptor.sql.BasicBinder: info
+#       springframework:
+#         web:
+#           filter: info
+#           client: debug
+#         transaction: error

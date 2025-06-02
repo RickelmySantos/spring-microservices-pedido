@@ -81,10 +81,15 @@ management:
                     enabled: true
 
 cloudinary:
-    cloud-name: ${CLOUDINARY_CLOUD_NAME}
-    api-key: ${CLOUDINARY_API_KEY}
-    api-secret: ${CLOUDINARY_API_SECRET}
-    cloudinary-url: ${CLOUDINARY_URL}
+    cloud_name: ${CLOUDINARY_CLOUD_NAME}
+    api_key: ${CLOUDINARY_API_KEY}
+    api_secret: ${CLOUDINARY_API_SECRET}
+
+    # Descomentar para rodar o SonarQube
+# cloudinary:
+#     cloud_name: rsdesenvolvimento-estoque-api
+#     api_key: 198152423354888
+#     api_secret: OT3yW8hP0Ytl47h-FWOHb11-kTE
 ---
 ################################################
 # configurações específicas para profile LOCAL #

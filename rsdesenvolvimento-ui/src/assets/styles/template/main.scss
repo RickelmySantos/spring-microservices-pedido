@@ -16,16 +16,16 @@
 @import "base/animations";
 @import "base/helpers";
 
-// 4. Layout
-
-// 5. Components
+// 4. Component
+@import "components/buttons";
 @import "components/components";
-@import "components/header";
-@import "components/hero";
-@import "components/footer";
-@import "components/cardapio";
-@import "components/contato";
-@import "components/upload";
+// 5. Layout
+@import "layout/header";
+@import "layout/hero";
+@import "layout/footer";
+@import "layout/cardapio";
+@import "layout/contato";
+@import "layout/upload";
 
 // 6. General Pages
 @import "pages/pages";

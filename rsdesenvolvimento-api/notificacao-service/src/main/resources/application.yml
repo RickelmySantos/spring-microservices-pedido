@@ -1,42 +1,43 @@
 server:
-  port: ${SERVER_PORT:8085}
-  servlet:
-    context-path: ${CONTEXT_PATH:/api}
+    port: ${SERVER_PORT:8085}
+    servlet:
+        context-path: ${CONTEXT_PATH:/api}
 
 spring:
-  application:
-    name: notificacao-service
-  rabbitmq:
-    host: ${RABBITMQ_HOST:rabbitmq}
-    port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
-    virtual-host: /
-    listener:
-      simple:
-        concurrency: 1
-        max-concurrency: 10
+    application:
+        name: notificacao-service
+    rabbitmq:
+        host: ${RABBITMQ_HOST:rabbitmq}
+        port: ${RABBITMQ_PORT:5672}
+        username: ${RABBITMQ_USERNAME:guest}
+        password: ${RABBITMQ_PASSWORD:guest}
+        virtual-host: /
+        listener:
+            simple:
+                concurrency: 1
+                max-concurrency: 10
 eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    serviceUrl:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}
+    client:
+        fetch-registry: true
+        register-with-eureka: true
+        serviceUrl:
+            defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-    endpoint:
-      health:
-        probes:
-          enabled: true
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    health:
+        readiness-state:
+            enabled: true
+        liveness-state:
+            enabled: true
+        endpoint:
+            health:
+                probes:
+                    enabled: true
 sendgrid:
-  api:
-    key: ${SENDGRID_API_KEY}
+    api:
+        # key: ${SENDGRID_API_KEY}
+        key: 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
