@@ -4,7 +4,7 @@
         {
             "label": "[all] Build todos os módulos (skip tests)",
             "type": "shell",
-            "command": "mvn clean package -DskipTests",
+            "command": "bash -c 'source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk env && mvn clean package -DskipTests'",
             "options": {
                 "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
             },
@@ -21,7 +21,7 @@
         {
             "label": "[all] Instalar todos os módulos (skip tests)",
             "type": "shell",
-            "command": "mvn clean install -DskipTests ",
+            "command": "bash -c 'source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk env && mvn clean install -DskipTests'",
             "options": {
                 "cwd": "${workspaceFolder}/rsdesenvolvimento-api"
             },

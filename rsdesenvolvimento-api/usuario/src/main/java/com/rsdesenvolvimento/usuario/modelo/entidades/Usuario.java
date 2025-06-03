@@ -23,9 +23,9 @@ import org.hibernate.envers.Audited;
 @Entity
 @Audited
 @AuditOverride(forClass = EntidadeBase.class)
-@Table(name = "TB_USUARIO", uniqueConstraints = {})
 @SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_USUARIO",
         initialValue = 1, allocationSize = 1)
+@Table(name = "TB_USUARIO", uniqueConstraints = {})
 public class Usuario extends EntidadeBase {
 
 
