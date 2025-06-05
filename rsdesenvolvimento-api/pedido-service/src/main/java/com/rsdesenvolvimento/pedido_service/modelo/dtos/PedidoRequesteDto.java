@@ -17,9 +17,6 @@ public class PedidoRequesteDto {
     @NotNull(message = "A descrição não pode ser nula")
     private String descricao;
 
-    @NotNull(message = "O usuário ID não pode ser nulo")
-    private String usuarioId;
-
     private List<ReservaEstoqueRequestDto> itens;
 
 }
