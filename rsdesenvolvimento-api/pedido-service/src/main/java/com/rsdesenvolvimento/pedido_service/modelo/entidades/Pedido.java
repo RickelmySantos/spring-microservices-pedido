@@ -29,20 +29,23 @@ import org.hibernate.envers.Audited;
 @AuditOverride(forClass = EntidadeBase.class)
 @Table(name = "TB_PEDIDO", uniqueConstraints = {})
 @SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_PEDIDO",
-    initialValue = 1, allocationSize = 1)
+        initialValue = 1, allocationSize = 1)
 public class Pedido extends EntidadeBase {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private Long usuarioId;
-  @Column(nullable = false)
-  private String descricao;
-  @Column(name = "NOME_USUARIO", nullable = false, length = 100)
-  private String nomeUsuario;
-  @Column(name = "EMAIL_USUARIO", nullable = false, length = 50)
-  @Email
-  private String emailUsuario;
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, name = "status_pedido")
-  private StatusEnum status;
+    ;
+
+    @Column(name = "USUARIO_ID", nullable = false)
+    private String usuarioId;
+    @Column(nullable = false)
+    private String descricao;
+    @Column(name = "NOME_USUARIO", nullable = false, length = 100)
+    private String nomeUsuario;
+    @Column(name = "EMAIL_USUARIO", nullable = false, length = 50)
+    @Email
+    private String emailUsuario;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "status_pedido")
+    private StatusEnum status;
 }

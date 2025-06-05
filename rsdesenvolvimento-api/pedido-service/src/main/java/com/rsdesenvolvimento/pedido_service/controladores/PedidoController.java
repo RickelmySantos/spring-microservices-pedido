@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,16 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class PedidoController {
 
-  private final PedidoService pedidoService;
+    private final PedidoService pedidoService;
 
-  @PostMapping
-  public ResponseEntity<PedidoResponseDto> criar(@RequestBody PedidoRequesteDto dto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.criarPedido(dto));
-  }
+    @PostMapping
+    public ResponseEntity<PedidoResponseDto> criar(@AuthenticationPrincipal Jwt jwt,
+            @RequestBody PedidoRequesteDto dto) {
+        String userId = jwt.getClaimAsString("sub");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.pedidoService.criarPedido(userId, dto));
+    }
 
-  @PutMapping("/{id}/status")
-  public ResponseEntity<Void> atualizarStatus(@PathVariable Long id, @RequestParam String status) {
-    this.pedidoService.statusPagamento(id, status);
-    return ResponseEntity.ok().build();
-  }
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
+            @RequestParam String status) {
+        this.pedidoService.statusPagamento(id, status);
+        return ResponseEntity.ok().build();
+    }
 }

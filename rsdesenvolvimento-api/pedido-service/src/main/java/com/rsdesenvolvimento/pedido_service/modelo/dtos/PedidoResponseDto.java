@@ -13,11 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PedidoResponseDto {
 
-  private Long id;
-  private String descricao;
-  private Long usuarioId;
-  private String nomeUsuario;
-  private String emailUsuario;
-  private LocalDateTime dataHoraCriacao;
-  private StatusEnum status;
+    private Long id;
+    private String descricao;
+    private String usuarioId;
+    private String nomeUsuario;
+    private String emailUsuario;
+    private LocalDateTime dataHoraCriacao;
+    private StatusEnum status;
 }
