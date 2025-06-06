@@ -4,8 +4,10 @@ import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { ROUTES } from 'src/app/app.routes';
 import { httpLoaderFactory } from 'src/app/core/translate/translate-loader-factory';
+import { environments } from 'src/environments/environments';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
@@ -20,6 +22,12 @@ bootstrapApplication(AppComponent, {
                     provide: TranslateModule,
                     useFactory: httpLoaderFactory,
                     deps: [HttpClient],
+                },
+            }),
+            OAuthModule.forRoot({
+                resourceServer: {
+                    sendAccessToken: true,
+                    allowedUrls: [environments.apiUrl],
                 },
             })
         ),

@@ -2,7 +2,6 @@ package com.rsdesenvolvimento.pedido_service.services;
 
 import com.rsdesenvolvimento.pedido_service.core.client.EstoqueFeignClient;
 import com.rsdesenvolvimento.pedido_service.core.client.NotificacaoProducer;
-import com.rsdesenvolvimento.pedido_service.core.client.UsuarioClient;
 import com.rsdesenvolvimento.pedido_service.core.config.SecurityUtil;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoRequesteDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoResponseDto;
@@ -26,13 +25,11 @@ public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final PedidoMapper pedidoMapper;
-    private final UsuarioClient usuarioClient;
     private final EstoqueFeignClient estoqueFeignClient;
     private final NotificacaoProducer notificacaoProducer;
 
     public PedidoResponseDto criarPedido(String userId, PedidoRequesteDto dto) {
         try {
-            // UsuarioDto usuario = this.usuarioClient.buscarUsuarioPorId(dto.getUsuarioId());
 
             String username = SecurityUtil.getUsername();
             String email = SecurityUtil.getUserEmail();

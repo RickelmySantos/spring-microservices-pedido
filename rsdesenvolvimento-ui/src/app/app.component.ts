@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -11,6 +12,20 @@ import { RouterOutlet } from '@angular/router';
     standalone: true,
     imports: [RouterOutlet],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = 'rsdesenvolvimento-ui';
+    isLoggedIn = false;
+
+    constructor(private oauthService: AuthService) {}
+
+    ngOnInit(): void {
+        this.isLoggedIn = this.oauthService.isLoggedIn();
+        if (!this.isLoggedIn) {
+            this.oauthService.login();
+        }
+    }
+
+    login() {
+        this.oauthService.login();
+    }
 }
