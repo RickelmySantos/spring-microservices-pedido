@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { ROUTES } from 'src/app/app.routes';
 import { httpLoaderFactory } from 'src/app/core/translate/translate-loader-factory';
-import { environments } from 'src/environments/environments';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
@@ -24,12 +23,7 @@ bootstrapApplication(AppComponent, {
                     deps: [HttpClient],
                 },
             }),
-            OAuthModule.forRoot({
-                resourceServer: {
-                    sendAccessToken: true,
-                    allowedUrls: [environments.apiUrl],
-                },
-            })
+            OAuthModule.forRoot()
         ),
     ],
 }).catch(err => console.error(err));

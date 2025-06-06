@@ -14,18 +14,10 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 })
 export class AppComponent implements OnInit {
     title = 'rsdesenvolvimento-ui';
-    isLoggedIn = false;
 
     constructor(private oauthService: AuthService) {}
 
     ngOnInit(): void {
-        this.isLoggedIn = this.oauthService.isLoggedIn();
-        if (!this.isLoggedIn) {
-            this.oauthService.login();
-        }
-    }
-
-    login() {
-        this.oauthService.login();
+        this.oauthService.initializeAuthentication();
     }
 }

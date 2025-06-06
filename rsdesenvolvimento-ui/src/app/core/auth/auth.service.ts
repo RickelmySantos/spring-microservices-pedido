@@ -13,6 +13,16 @@ export class AuthService {
         this.oauthService.disablePKCE = false;
     }
 
+    async initializeAuthentication(): Promise<void> {
+        await this.oauthService.loadDiscoveryDocument();
+
+        const hasValidToken = await this.oauthService.tryLogin();
+
+        if (!hasValidToken || !this.oauthService.hasValidAccessToken()) {
+            this.oauthService.initLoginFlow();
+        }
+    }
+
     login(): void {
         this.oauthService.initLoginFlow();
     }
