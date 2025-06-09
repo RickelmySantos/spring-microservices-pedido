@@ -21,6 +21,10 @@ services:
     keycloak:
         image: bitnami/keycloak:latest
         container_name: keycloak
+        volumes:
+            - ./rsdesenvolvimento-api/infra/keycloak/import:/import
+            - ./rsdesenvolvimento-api/infra/keycloak/scripts:/docker-entrypoint-initdb.d
+
         ports:
             - '8086:8080'
         environment:
