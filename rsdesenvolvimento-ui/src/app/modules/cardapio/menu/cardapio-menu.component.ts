@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { PedidoService } from 'src/app/services/pedido.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -24,22 +25,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 export class CardapioMenuComponent {
     @Input()
     item!: MenuCardapio;
+    // pedido: Pedido;
 
-    constructor(private pedidoService: PedidoService) {}
+    constructor(private pedidoService: PedidoService, private usuarioService: UsuarioService) {}
 
-    pedido = {
-        descricao: 'Pedido de Picanha Grelhada e Suco Natural Laranja',
-        usuarioId: 2,
-        itens: [{ produtoId: 1, quantidade: 1 }],
-    };
-    fazerPedido() {
-        this.pedidoService.registrarPedido(this.pedido).subscribe(
-            response => {
-                console.log('Pedido registrado com sucesso!', response);
-            },
-            error => {
-                console.error('Erro ao registrar pedido', error);
-            }
-        );
-    }
+    fazerPedido() {}
 }
