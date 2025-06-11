@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { LoginOptions, OAuthService } from 'angular-oauth2-oidc';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from 'src/app/core/auth/auth-config';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthService {
     private readonly oauthService: OAuthService = inject(OAuthService);
 
@@ -13,14 +13,26 @@ export class AuthService {
         this.oauthService.disablePKCE = false;
     }
 
-    async initializeAuthentication(): Promise<void> {
-        await this.oauthService.loadDiscoveryDocument();
+    async initAuth(): Promise<void> {
+        try {
+            await this.oauthService.loadDiscoveryDocument();
+            await this.oauthService.tryLoginCodeFlow();
 
-        const hasValidToken = await this.oauthService.tryLogin();
+            if (this.hasValidToken()) {
+                console.debug('Token de acesso válido:', this.oauthService.getAccessToken());
+                return;
+            }
 
-        if (!hasValidToken || !this.oauthService.hasValidAccessToken()) {
-            this.oauthService.initLoginFlow();
+            this.login();
+        } catch (error) {
+            console.error('Erro ao inicializar autenticação:', error);
+            this.oauthService.logOut();
+            this.login();
         }
+    }
+
+    public hasValidToken(): boolean {
+        return this.oauthService.hasValidAccessToken();
     }
 
     login(): void {
@@ -51,13 +63,13 @@ export class AuthService {
         return this.oauthService.getAccessToken();
     }
 
-    private hasValidAccessToken(): boolean {
-        return this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken();
-    }
+    // private hasValidAccessToken(): boolean {
+    //     return this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken();
+    // }
 
-    private async loadToken(): Promise<boolean> {
-        return await this.oauthService.loadDiscoveryDocumentAndTryLogin({} as LoginOptions).catch(err => {
-            return this.oauthService.loadDiscoveryDocumentAndLogin();
-        });
-    }
+    // private async loadToken(): Promise<boolean> {
+    //     return await this.oauthService.loadDiscoveryDocumentAndTryLogin({} as LoginOptions).catch(err => {
+    //         return this.oauthService.loadDiscoveryDocumentAndLogin();
+    //     });
+    // }
 }

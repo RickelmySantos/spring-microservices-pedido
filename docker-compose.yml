@@ -211,7 +211,7 @@ services:
             JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             JPA_SHOW_SQL: true
 
-            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/rsdesenvolvimento-api
+            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8680/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
 
             SERVER_PORT: 8083
             CONTEXT_PATH: /api
