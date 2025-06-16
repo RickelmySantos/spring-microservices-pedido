@@ -40,6 +40,7 @@ services:
             KEYCLOAK_DATABASE_SCHEMA: keycloak
             KEYCLOAK_LOG_LEVEL: error
             KEYCLOAK_HTTP_RELATIVE_PATH: /auth
+            KC_HOSTNAME_URL: http://keycloak:8080/auth
             KEYCLOAK_EXTRA_ARGS: -Dkeycloak.profile.feature.scripts=enabled
         depends_on:
             postgres:
@@ -122,6 +123,7 @@ services:
         environment:
             EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
             SPRING_PROFILES_ACTIVE: default
+            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL
         depends_on:
             eureka:
                 condition: service_healthy
@@ -211,7 +213,7 @@ services:
             JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             JPA_SHOW_SQL: true
 
-            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8680/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
+            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
 
             SERVER_PORT: 8083
             CONTEXT_PATH: /api
@@ -223,6 +225,9 @@ services:
                 condition: service_healthy
             postgres:
                 condition: service_healthy
+            keycloak:
+                condition: service_healthy
+
         networks:
             - rsdesenvolvimento
 

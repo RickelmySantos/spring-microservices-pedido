@@ -53,9 +53,9 @@ init()
                 appClientId="$(kcadm.sh create clients -r ${REALM_DEFAULT} -f ./import/clients/rsdesenvolvimento-ui.json --id --config ./tmp/kcadm.config 2>/dev/null)"
                 echo "Client da Aplicação criado com sucesso: ${appClientId}"
 
-                # echo "Configurando Client da Aplicação..."
-                # appClientId="$(kcadm.sh create clients -r ${REALM_DEFAULT} -f ./import/clients/rsdesenvolvimento-api.json --id --config ./tmp/kcadm.config 2>/dev/null)"
-                # echo "Client da Aplicação criado com sucesso: ${appClientId}"
+                echo "Configurando Client da Aplicação..."
+                appClientId="$(kcadm.sh create clients -r ${REALM_DEFAULT} -f ./import/clients/rsdesenvolvimento-api.json --id --config ./tmp/kcadm.config 2>/dev/null)"
+                echo "Client da Aplicação criado com sucesso: ${appClientId}"
 
 
 

@@ -15,14 +15,13 @@ export class AuthService {
 
     async initAuth(): Promise<void> {
         try {
-            await this.oauthService.loadDiscoveryDocument();
+            await this.oauthService.loadDiscoveryDocumentAndTryLogin();
             await this.oauthService.tryLoginCodeFlow();
 
-            if (this.hasValidToken()) {
+            if (this.isLoggedIn()) {
                 console.debug('Token de acesso válido:', this.oauthService.getAccessToken());
                 return;
             }
-
             this.login();
         } catch (error) {
             console.error('Erro ao inicializar autenticação:', error);

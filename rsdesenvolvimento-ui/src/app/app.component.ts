@@ -18,11 +18,6 @@ export class AppComponent implements OnInit {
     constructor(private oauthService: AuthService) {}
 
     ngOnInit(): void {
-        this.oauthService.initAuth().then(() => {
-            if (!this.oauthService.hasValidToken()) {
-                console.log('Token de acesso inválido ou não encontrado. Iniciando fluxo de login.');
-                this.oauthService.login();
-            }
-        });
+        this.oauthService.initAuth();
     }
 }
