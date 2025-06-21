@@ -14,19 +14,24 @@ export class AuthService {
     }
 
     async initAuth(): Promise<void> {
-        try {
-            await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-            await this.oauthService.tryLoginCodeFlow();
-
-            if (this.isLoggedIn()) {
-                console.debug('Token de acesso válido:', this.oauthService.getAccessToken());
-                return;
-            }
-            this.login();
-        } catch (error) {
-            console.error('Erro ao inicializar autenticação:', error);
-            this.oauthService.logOut();
-            this.login();
+        // try {
+        //     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+        //     await this.oauthService.tryLoginCodeFlow();
+        //     if (this.isLoggedIn()) {
+        //         console.debug('Token de acesso válido:', this.oauthService.getAccessToken());
+        //         return;
+        //     }
+        //     this.login();
+        // } catch (error) {
+        //     console.error('Erro ao inicializar autenticação:', error);
+        //     this.oauthService.logOut();
+        //     this.login();
+        // }
+        await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+        if (!this.oauthService.hasValidAccessToken()) {
+            this.oauthService.initLoginFlow();
+        } else {
+            console.debug('Login silencioso bem-sucedido. Token válido encontrado.');
         }
     }
 

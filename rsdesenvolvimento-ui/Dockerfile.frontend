@@ -1,0 +1,57 @@
+
+# FROM node:20.13.1-alpine3.19 AS builder
+
+# WORKDIR /app
+
+
+# COPY package*.json ./
+# RUN npm ci
+
+# COPY . .
+
+
+# RUN npm run build
+
+# RUN npx tsc -p tsconfig.json
+
+# FROM node:20.13.1-alpine3.19
+
+# RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# # Define o diretório de trabalho
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN npm install --omit=dev
+
+
+# COPY --from=builder /app/dist/rsdesenvolvimento-ui ./dist/rsdesenvolvimento-ui
+
+# COPY --from=builder /app/dist/out-tsc ./dist/out-tsc
+
+
+# RUN chown -R appuser:appgroup /app
+
+# USER appuser
+
+# EXPOSE 4200
+
+# CMD [ "node", "dist/out-tsc/server/server.js" ]
+
+FROM node:20.13.1-alpine3.19
+
+RUN apk add --no-cache gettext
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 4200
+
+# CMD ["npm", "start"]
+CMD ["/bin/sh", "-c", "envsubst < /app/src/assets/env.js > /app/src/assets/env.js.tmp && mv /app/src/assets/env.js.tmp /app/src/assets/env.js && exec npm start"]

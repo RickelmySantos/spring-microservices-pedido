@@ -8,6 +8,9 @@
         "build": "ng build --configuration=production",
         "watch": "ng build --watch",
         "test": "ng test",
+        "build:server": "tsc -p server/server.tsconfig.json",
+        "build:all": "npm run build && npm run build:server",
+        "start:prod": "node dist-server/server.js",
         "format-code": "prettier --config .prettierrc \"src/**/*{.ts,.html,.js,.json,.css,.scss}\" --write",
         "fix-code": "npx eslint \"./src/**/*{.ts,.html}\" --fix"
     },

@@ -10,7 +10,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     const authStorage: OAuthStorage = inject(OAuthStorage);
 
     const url = req.url.toLowerCase();
-    if (!allowedUrls.find(u => url.startsWith(u))) {
+    if (!allowedUrls.find(u => url.startsWith(u.toLowerCase()))) {
         console.debug('`[AuthInterceptor]  Não foi necessário incluir cabeçalho Bearer na requisição');
         return next(req);
     }

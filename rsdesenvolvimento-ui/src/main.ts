@@ -1,5 +1,5 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
+import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -10,6 +10,10 @@ import { authInterceptor } from 'src/app/core/auth/auth.interceptor';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { httpLoaderFactory } from 'src/app/core/translate/translate-loader-factory';
 import { AppComponent } from './app/app.component';
+
+export function initializeAuth(authService: AuthService): () => Promise<void> {
+    return () => authService.initAuth();
+}
 
 bootstrapApplication(AppComponent, {
     providers: [
@@ -27,12 +31,19 @@ bootstrapApplication(AppComponent, {
                 },
             })
         ),
+        // {
+        //     provide: AuthService,
+        //     useFactory: () => {
+        //         const service = new AuthService();
+        //         return service;
+        //     },
+        // },
+        AuthService,
         {
-            provide: AuthService,
-            useFactory: () => {
-                const service = new AuthService();
-                return service;
-            },
+            provide: APP_INITIALIZER,
+            useFactory: initializeAuth,
+            deps: [AuthService],
+            multi: true,
         },
     ],
 }).catch(err => console.error(err));

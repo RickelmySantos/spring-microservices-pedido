@@ -40,8 +40,8 @@ services:
             KEYCLOAK_DATABASE_SCHEMA: keycloak
             KEYCLOAK_LOG_LEVEL: error
             KEYCLOAK_HTTP_RELATIVE_PATH: /auth
-            KC_HOSTNAME_URL: http://keycloak:8080/auth
             KEYCLOAK_EXTRA_ARGS: -Dkeycloak.profile.feature.scripts=enabled
+            KEYCLOAK_FRONTEND_URL: http://keycloak:8080/auth
         depends_on:
             postgres:
                 condition: service_healthy
@@ -113,17 +113,19 @@ services:
             start_period: 60s
         networks:
             - rsdesenvolvimento
-    api-gatway:
+    api-gateway:
         build:
             context: ./rsdesenvolvimento-api/api-gateway
             dockerfile: Dockerfile
         container_name: api-gateway
         ports:
             - '8080:8080'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         environment:
             EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
             SPRING_PROFILES_ACTIVE: default
-            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL
+            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://host.docker.internal:8086/auth/realms/REALM_LOCAL
         depends_on:
             eureka:
                 condition: service_healthy
@@ -311,11 +313,11 @@ services:
         networks:
             - rsdesenvolvimento
 
-    estoque:
+    estoque-api:
         build:
             context: ./rsdesenvolvimento-api/estoque
             dockerfile: Dockerfile
-        container_name: estoque
+        container_name: estoque-api
         ports:
             - '8082:8082'
         env_file:
@@ -386,6 +388,34 @@ services:
                 condition: service_healthy
             postgres:
                 condition: service_healthy
+        networks:
+            - rsdesenvolvimento
+
+    angular-app:
+        build:
+            context: ./rsdesenvolvimento-ui
+            dockerfile: Dockerfile.frontend
+        container_name: angular-app
+        ports:
+            - '4200:4200'
+        volumes:
+            - ./rsdesenvolvimento-ui:/app
+            - /app/node_modules
+        environment:
+            CHOKIDAR_USEPOLLING: true
+            IMAGE_VERSION: 1.0.0
+            AMBIENTE: Local
+            BASE_URL: http://localhost:8080
+            API_URL: http://localhost:8080/api
+            DEFAULT_TIMEZONE: America/Belem
+            DEFAULT_LOCALE: pt-BR
+            LOGGING_LEVEL: debug
+
+            OAUTH_ISSUER: http://keycloak:8080/auth/realms/REALM_LOCAL
+            OAUTH_CLIENT_ID: rsdesenvolvimento-ui
+
+            REQUIRE_HTTPS: false
+
         networks:
             - rsdesenvolvimento
 

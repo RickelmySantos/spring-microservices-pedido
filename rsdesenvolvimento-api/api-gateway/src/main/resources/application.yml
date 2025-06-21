@@ -1,34 +1,40 @@
 server:
     port: 8080
-    servlet:
-        context-path: /api
 spring:
     application:
-        name: api-gateway
-        # cloud:
-        # gateway:
-        # discovery:
-        #     locator:
-        #         enabled: true
-        #         lower-case-service-id: true
-        # default-filters:
-        #     - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-        # globalcors:
-        #     corsConfigurations:
-        #         '[/**]':
-        #             allowedOrigins: 'http://localhost:4200'
-        #             allowedHeaders: '*'
-        #             allowedMethods:
-        #                 - GET
-        #                 - POST
-        #                 - DELETE
-        #                 - PUT
-        #                 - OPTIONS
+        name:
+            api-gateway
+
+            # cloud:
+            # gateway:
+            # discovery:
+            #     locator:
+            #         enabled: true
+            #         lower-case-service-id: true
+            # default-filters:
+            #     - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            # globalcors:
+            #     corsConfigurations:
+            #         '[/**]':
+            #             allowedOrigins: 'http://localhost:4200'
+            #             allowedHeaders: '*'
+            #             allowedMethods:
+            #                 - GET
+            #                 - POST
+            #                 - DELETE
+            #                 - PUT
+            #                 - OPTIONS
     security:
         oauth2:
             resourceserver:
                 jwt:
-                    issuer-uri: ${OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://keycloak:8080/auth/realms/REALM_LOCAL}
+                    issuer-uri: ${OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://localhost:8086/auth/realms/REALM_LOCAL}
+logging:
+    level:
+        root: INFO
+        org.springframework.security: TRACE
+        org.springframework.web.reactive: DEBUG
+        reactor.netty.http.client: DEBUG
 
 eureka:
     client:
