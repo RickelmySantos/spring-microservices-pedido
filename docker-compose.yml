@@ -41,7 +41,7 @@ services:
             KEYCLOAK_LOG_LEVEL: error
             KEYCLOAK_HTTP_RELATIVE_PATH: /auth
             KEYCLOAK_EXTRA_ARGS: -Dkeycloak.profile.feature.scripts=enabled
-            KEYCLOAK_FRONTEND_URL: http://keycloak:8080/auth
+            # KEYCLOAK_FRONTEND_URL: http://keycloak:8086/auth
         depends_on:
             postgres:
                 condition: service_healthy
@@ -120,12 +120,12 @@ services:
         container_name: api-gateway
         ports:
             - '8080:8080'
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
+        # extra_hosts:
+        #     - 'host.docker.internal:host-gateway'
         environment:
             EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
             SPRING_PROFILES_ACTIVE: default
-            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://host.docker.internal:8086/auth/realms/REALM_LOCAL
+            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL
         depends_on:
             eureka:
                 condition: service_healthy
@@ -411,7 +411,7 @@ services:
             DEFAULT_LOCALE: pt-BR
             LOGGING_LEVEL: debug
 
-            OAUTH_ISSUER: http://keycloak:8080/auth/realms/REALM_LOCAL
+            OAUTH_ISSUER: http://localhost:8086/auth/realms/REALM_LOCAL
             OAUTH_CLIENT_ID: rsdesenvolvimento-ui
 
             REQUIRE_HTTPS: false

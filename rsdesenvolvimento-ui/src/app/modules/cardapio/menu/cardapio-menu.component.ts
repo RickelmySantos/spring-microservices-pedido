@@ -24,7 +24,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 export class CardapioMenuComponent {
     @Input()
     item!: MenuCardapio;
-    // pedido: Pedido;
 
     constructor(private pedidoService: PedidoService) {}
 

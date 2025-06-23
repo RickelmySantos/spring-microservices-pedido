@@ -22,18 +22,6 @@ import reactor.core.publisher.Mono;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    // @Bean
-    // public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
-    // http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-    // .authorizeExchange(exchange -> exchange.pathMatchers(HttpMethod.OPTIONS,
-    // "/**")
-    // .permitAll().pathMatchers("/estoque-api/**").permitAll()
-    // .pathMatchers("/pedidos-service/**").permitAll().anyExchange().authenticated())
-    // .oauth2ResourceServer(
-    // oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec.jwt(jwtSpec -> jwtSpec
-    // .jwtAuthenticationConverter(this.grantedAuthoritiesExtractor())));
-    // return http.build();
-    // }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

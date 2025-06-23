@@ -1,6 +1,6 @@
 import { NgFor } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { EstoqueService } from 'src/app/services/estoque.service';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -18,11 +18,11 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
                 </div>
 
                 <div class="menu-categories">
-                    <app-cardapio-categoria></app-cardapio-categoria>
+                    <app-cardapio-categoria [categoriaAtiva]="categoriaSelecionada$ | async" (onCategoriaChange)="onCategoriaChange($event)"></app-cardapio-categoria>
                 </div>
 
                 <div class="menu-items">
-                    <ng-container *ngFor="let item of produtos$ | async">
+                    <ng-container *ngFor="let item of produtosFiltrados$ | async">
                         <app-cardapio-menu [item]="item"></app-cardapio-menu>
                     </ng-container>
                 </div>
@@ -35,11 +35,26 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
     imports: [SharedModule, CardapioMenuComponent, NgFor, CardapioCategoriaComponent],
 })
 export class CardapioComponent implements OnInit {
+    categoriaSelecionada$ = new BehaviorSubject<string>('all');
+
+    produtosFiltrados$: Observable<MenuCardapio[]>;
     produtos$: Observable<MenuCardapio[]>;
 
     constructor(private estoqueService: EstoqueService) {}
 
     ngOnInit(): void {
-        this.produtos$ = this.estoqueService.listarProdutos();
+        const todosProdutos$ = this.estoqueService.listarProdutos();
+        this.produtosFiltrados$ = combineLatest([todosProdutos$, this.categoriaSelecionada$]).pipe(
+            map(([produtos, categoria]) => {
+                if (categoria === 'all') {
+                    return produtos;
+                }
+                return produtos.filter(produto => produto.categoria === categoria);
+            })
+        );
+    }
+
+    onCategoriaChange(categoria: string): void {
+        this.categoriaSelecionada$.next(categoria);
     }
 }
