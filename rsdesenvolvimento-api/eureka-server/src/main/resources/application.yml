@@ -1,31 +1,31 @@
 server:
-  port: 8761
-  servlet:
-    context-path: /api
+    port: 8761
+    # servlet:
+    # context-path: /api
 spring:
-  application:
-    name: eurekaserver
-  # config:
-  #   import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
+    application:
+        name: eurekaserver
+    # config:
+    #   import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
 
 eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/api/eureka/}
+    client:
+        register-with-eureka: false
+        fetch-registry: false
+        service-url:
+            defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-    endpoint:
-      health:
-        probes:
-          enabled: true
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    health:
+        readiness-state:
+            enabled: true
+        liveness-state:
+            enabled: true
+        endpoint:
+            health:
+                probes:
+                    enabled: true

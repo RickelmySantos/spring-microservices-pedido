@@ -1,54 +1,75 @@
 {
-  "configurations": [
-    {
-      "type": "java",
-      "name": "EurekaServerApplication",
-      "request": "launch",
-      "mainClass": "com.rsdesenvolvimento.eureka_server.EurekaServerApplication",
-      "projectName": "eureka-server",
-      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=33565 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=eureka-server"
-    },
-    {
-      "type": "java",
-      "name": "Spring Boot-UsuarioApplication<usuario>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "com.rsdesenvolvimento.usuario.UsuarioApplication",
-      "projectName": "usuario",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env",
-      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=39621 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=usuario"
-    },
-    {
-      "type": "java",
-      "name": "Spring Boot-PedidoServiceApplication<pedido-service>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "com.rsdesenvolvimento.pedido_service.PedidoServiceApplication",
-      "projectName": "pedido-service",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env",
-      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=35009 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=pedido-service"
-    },
-    {
-      "type": "java",
-      "name": "Spring Boot-PagamentoServiceApplication<pagamento-service>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "com.rsdesenvolvimento.pagamento_service.PagamentoServiceApplication",
-      "projectName": "pagamento-service",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env"
-    },
-    {
-      "type": "java",
-      "name": "Spring Boot-NotificacaoServiceApplication<notificacao-service>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "com.rsdesenvolvimento.notificacao_service.NotificacaoServiceApplication",
-      "projectName": "notificacao-service",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env"
-    }
-  ]
+    "configurations": [
+        {
+            "type": "java",
+            "name": "EurekaServerApplication",
+            "request": "launch",
+            "mainClass": "com.rsdesenvolvimento.eureka_server.EurekaServerApplication",
+            "projectName": "eureka-server",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=33565 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=eureka-server"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-UsuarioApplication<usuario>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rsdesenvolvimento.usuario.UsuarioApplication",
+            "projectName": "usuario",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=39621 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=usuario"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PedidoServiceApplication<pedido-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rsdesenvolvimento.pedido_service.PedidoServiceApplication",
+            "projectName": "pedido-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=35009 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=pedido-service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PagamentoServiceApplication<pagamento-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rsdesenvolvimento.pagamento_service.PagamentoServiceApplication",
+            "projectName": "pagamento-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-NotificacaoServiceApplication<notificacao-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rsdesenvolvimento.notificacao_service.NotificacaoServiceApplication",
+            "projectName": "notificacao-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ApiGatewayApplication<api-gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rsdesenvolvimento.api_gateway.ApiGatewayApplication",
+            "projectName": "api-gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=42965 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=api-gateway"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EstoqueApplication<estoque>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rsdesenvolvimento.estoque.EstoqueApplication",
+            "projectName": "estoque",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
 }

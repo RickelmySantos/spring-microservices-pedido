@@ -5,7 +5,7 @@ import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 
 @Injectable({ providedIn: 'root' })
 export class EstoqueService {
-    private readonly API = 'http://localhost:8082/api/estoque';
+    private readonly API = 'http://localhost:8080/estoque-api/api/estoque';
 
     constructor(private http: HttpClient) {}
 

@@ -38,15 +38,25 @@ public class SecurityConfig {
         return source;
     }
 
+
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
-        http.cors(cors -> cors.configurationSource(this.corsConfigurationSource()));
+        http
 
-        http.csrf(ServerHttpSecurity.CsrfSpec::disable).authorizeExchange(exchange -> exchange
-                .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
 
-                .pathMatchers("/estoque-api/**").permitAll().pathMatchers("/pedido-service/**")
-                .permitAll().pathMatchers("/usuario/**").permitAll().anyExchange().authenticated())
+                .cors(cors -> cors.configurationSource(this.corsConfigurationSource()))
+
+                .authorizeExchange(exchange -> exchange
+
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .pathMatchers("/estoque-api/**").permitAll()
+                        .pathMatchers("/pedido-service/**").permitAll().pathMatchers("/usuario/**")
+                        .permitAll()
+
+
+                        .anyExchange().authenticated())
+
                 .oauth2ResourceServer(
                         oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec.jwt(jwtSpec -> jwtSpec
                                 .jwtAuthenticationConverter(this.grantedAuthoritiesExtractor())));

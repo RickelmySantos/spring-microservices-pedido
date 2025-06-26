@@ -81,9 +81,9 @@ management:
                     enabled: true
 
 cloudinary:
-    cloud_name: ${CLOUDINARY_CLOUD_NAME}
-    api_key: ${CLOUDINARY_API_KEY}
-    api_secret: ${CLOUDINARY_API_SECRET}
+    cloud_name: ${CLOUDINARY_CLOUD_NAME:rsdesenvolvimento}
+    api_key: ${CLOUDINARY_API_KEY:198152423354888}
+    api_secret: ${CLOUDINARY_API_SECRET:OT3yW8hP0Ytl47h-FWOHb11-kTE}
 
     # Descomentar para rodar o SonarQube
 # cloudinary:
