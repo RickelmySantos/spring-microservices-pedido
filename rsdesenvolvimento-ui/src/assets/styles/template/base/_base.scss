@@ -69,3 +69,9 @@ a {
     margin: 0 auto;
     padding: 0 2rem;
 }
+
+:root {
+    @each $key, $value in $colorsPalette {
+        #{ $key }: #{$value};
+    }
+}

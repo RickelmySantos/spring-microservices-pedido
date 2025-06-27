@@ -5,13 +5,14 @@
 @import "abstracts/mixins";
 @import "abstracts/variables";
 @import "abstracts/placeholders";
+@import "abstracts/colors";
+@import "abstracts/fonts";
 
 // 2. Vendors
-@import "vendors/vendors";
+// @import "vendors/vendors";
 
 // 3. Base
 @import "base/base";
-@import "base/fonts";
 @import "base/typography";
 @import "base/animations";
 @import "base/helpers";
@@ -29,6 +30,3 @@
 
 // 6. General Pages
 @import "pages/pages";
-
-// 7. Themes
-// @import "themes/light-theme";

@@ -1,13 +1,3 @@
-/* Modern Color Palette */
-:root {
-    --primary: #2c5e1a; /* Deep green */
-    --secondary: #f2c12e; /* Gold */
-    --accent: #d94f30; /* Terra cotta */
-    --dark: #1a1a1a;
-    --light: #f8f8f8;
-    --gray: #e0e0e0;
-}
-
 section {
     padding: 10rem 0;
 }
@@ -69,7 +59,7 @@ header.scrolled {
 .logo {
     font-size: 28px;
     font-weight: 800;
-    color: var(--primary);
+    color: var(--green-900);
     display: flex;
     align-items: center;
 }
@@ -93,7 +83,7 @@ nav ul li {
 nav ul li a {
     font-weight: 600;
     font-size: 15px;
-    color: var(--dark);
+    color: var(--primary-text);
 }
 
 nav ul li a:hover {
@@ -145,7 +135,7 @@ nav ul li a:hover::after {
 
 .hero .btn-outline:hover {
     background: white;
-    color: var(--dark);
+    color: var(--primary-text);
 }
 
 /* Menu Section */
@@ -166,7 +156,7 @@ nav ul li a:hover::after {
     padding: 12px 25px;
     margin: 0 5px;
     font-weight: 600;
-    color: var(--dark);
+    color: var(--primary-text);
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 4px;
@@ -233,7 +223,7 @@ nav ul li a:hover::after {
 .menu-item .add-to-cart {
     display: inline-block;
     background-color: var(--secondary);
-    color: var(--dark);
+    color: var(--primary-text);
     padding: 8px 20px;
     border-radius: 4px;
     font-weight: 600;
@@ -345,7 +335,7 @@ nav ul li a:hover::after {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--dark);
+    color: var(--primary-text);
 }
 
 .form-group input,
@@ -370,84 +360,6 @@ nav ul li a:hover::after {
 .form-group textarea {
     height: 150px;
     resize: vertical;
-}
-
-/* Footer */
-footer {
-    background-color: var(--dark);
-    color: white;
-    padding: 80px 0 30px;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 60px;
-}
-
-.footer-column h4 {
-    font-size: 18px;
-    margin-bottom: 25px;
-    color: var(--secondary);
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.footer-column h4::after {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 2px;
-    background-color: var(--secondary);
-    bottom: 0;
-    left: 0;
-}
-
-.footer-column p {
-    margin-bottom: 15px;
-    opacity: 0.8;
-}
-
-.footer-links li {
-    margin-bottom: 12px;
-    list-style: none;
-}
-
-.footer-links a:hover {
-    color: var(--secondary);
-    padding-left: 5px;
-}
-
-.social-links {
-    display: flex;
-    margin-top: 20px;
-}
-
-.social-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-}
-
-.social-links a:hover {
-    background-color: var(--secondary);
-    color: var(--dark);
-    transform: translateY(-3px);
-}
-
-.copyright {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 30px;
-    text-align: center;
-    opacity: 0.7;
-    font-size: 14px;
 }
 
 /* Responsive Styles */

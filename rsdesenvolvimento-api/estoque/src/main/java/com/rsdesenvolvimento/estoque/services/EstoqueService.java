@@ -8,6 +8,9 @@ import com.rsdesenvolvimento.estoque.modelo.mappers.EstoqueMapper;
 import com.rsdesenvolvimento.estoque.repositorios.EstoqueRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +25,7 @@ public class EstoqueService {
     private final EstoqueMapper mapper;
     private final CloudinaryService cloudinaryService;
 
-
+    @CachePut(value = "estoque", key = "#produtoRequestDTO.id")
     public EstoqueResponseDto salvar(EstoqueRequestDto produtoRequestDTO, MultipartFile imagem)
             throws Exception {
         String url = this.cloudinaryService.uploadImage(imagem);
@@ -32,6 +35,7 @@ public class EstoqueService {
         return this.mapper.toDto(this.repository.save(produto));
     }
 
+    @Cacheable(value = "estoque", key = "#categoria !=null ? #categoria : 'all'")
     public List<EstoqueResponseDto> listarPorCategoria(String categoria) {
         List<Estoque> produtos = categoria != null && !categoria.isEmpty()
                 ? this.repository.findByCategoria(categoria)
@@ -70,6 +74,7 @@ public class EstoqueService {
         return true;
     }
 
+    @CacheEvict(value = "estoque", allEntries = true)
     public void reservarEstoque(List<ReservaEstoqueRequestDto> itens) {
         for (ReservaEstoqueRequestDto item : itens) {
             Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(

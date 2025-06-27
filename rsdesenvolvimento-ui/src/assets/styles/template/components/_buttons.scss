@@ -14,7 +14,7 @@
 }
 
 .btn:hover {
-    background-color: var(--accent);
+    // background-color: var(--accent);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -28,4 +28,38 @@
 .btn-outline:hover {
     background: var(--primary);
     color: white;
+}
+
+.btn {
+    display: inline-block;
+    padding: $spacing-small $spacing-medium;
+    border-radius: $border-radius-default;
+    font-family: $font-primary;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    &--primary {
+        // background-color: $color-orange-accent;
+        // color: $color-white;
+
+        &:hover {
+            // background-color: $color-orange-hover;
+        }
+    }
+    &--secondary {
+        background-color: transparent;
+        // color: $color-green-jungle;
+        // border: 2px solid $color-green-jungle;
+
+        &:hover {
+            // background-color: $color-green-jungle;
+            // color: $color-white;
+        }
+    }
 }

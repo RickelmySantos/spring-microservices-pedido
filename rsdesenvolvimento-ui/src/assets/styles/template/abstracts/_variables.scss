@@ -26,8 +26,10 @@ $tertiaryTextColor: var(--tertiary-color-text);
 $tertiaryLighterColor: var(--tertiary-50);
 $tertiaryDarkerColor: var(--tertiary-900);
 
-$accentColor: var(--accent-color);
-$accentTextColor: var(--accent-color-text);
+// $accentColor: var(--accent-color);
+// $accentTextColor: var(--accent-color-text);
+
+// $color-green-jungle: var(--color-green-jungle);
 
 $emphasis-high: var(--emphasis-high);
 $emphasis-medium: var(--emphasis-medium);
@@ -86,3 +88,9 @@ $actionIconHoverBg: var(--action-icon-hover-bg);
 $actionIconHoverBorderColor: var(--action-icon-hover-border-color);
 $actionIconHoverColor: var(--action-icon-hover-color);
 $actionIconBorderRadius: var(--action-icon-border-radius);
+
+$spacing-small: 8px;
+$spacing-medium: 16px;
+$spacing-large: 32px;
+
+$border-radius-default: 8px;
