@@ -1,43 +1,84 @@
+@use "../abstracts" as *;
+
 .hero {
     height: 100dvh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1469&q=80");
-    background-size: cover;
-    background-position: center;
+    color: var(--text-color-light);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: white;
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(var(--text-primary-charcoal), 0.5);
+        z-index: 1;
+    }
 
-    .hero-content {
+    background-image: url("https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1469&q=80");
+    background-size: cover;
+    background-position: center;
+
+    &__content {
+        position: relative;
+        z-index: 2;
         max-width: 80rem;
         padding: 0 2rem;
+    }
 
-        h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
+    &__titulo {
+        font-family: $font-jost;
+        font-size: 5.2rem;
+        font-weight: $font-weight-bold;
+        line-height: 1.2;
+        margin-bottom: 2rem;
+
+        // Ajustes responsivos com nosso mixin
+        @include responsive(tablet) {
+            font-size: 4.8rem;
         }
-
-        p {
-            font-size: 1.25rem;
-            margin-bottom: 3rem;
-        }
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-content h2 {
-        font-size: 2.5rem;
     }
 
-    .hero-content p {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-content h2 {
+    &__subtitulo {
+        font-family: $font-inter;
         font-size: 2rem;
+        margin-bottom: 3.5rem;
+        opacity: 0.9;
+        line-height: 1.7;
+        max-width: 65rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &__botoes {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 1.5rem 3rem;
+        font-size: 1.8rem;
+
+        &--primario {
+            background-color: var(--yellow-tucupi);
+            color: var(--text-primary-charcoal);
+        }
+
+        &--secundario {
+            background-color: transparent;
+            color: var(--text-color-light);
+            border: 2px solid var(--text-color-light);
+
+            &:hover {
+                background-color: var(--text-color-light);
+                color: var(--text-primary-charcoal);
+            }
+        }
     }
 }

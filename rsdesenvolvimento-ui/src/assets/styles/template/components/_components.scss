@@ -1,3 +1,4 @@
+@use "../abstracts" as *;
 .fluid-content {
     display: flex;
     flex: 1 1 auto;
@@ -39,12 +40,6 @@
     }
 }
 
-.layout-containerblock {
-    display: flex;
-    flex: 1 1 autor;
-    max-width: 129rem;
-}
-
 .custom-scrollbar {
     &::-webkit-scrollbar {
         width: 6px;
@@ -61,14 +56,14 @@
     }
 }
 
-*:focus,
-[role="checkbox"]:hover,
-[role="button"]:hover,
-button:hover,
-a:hover {
-    outline: 0.3rem solid var(--primary-color) !important;
-    outline-offset: 0.2rem !important;
-}
+// *:focus,
+// [role="checkbox"]:hover,
+// [role="button"]:hover,
+// button:hover,
+// a:hover {
+//     outline: 0.3rem solid var(--primary-color) !important;
+//     outline-offset: 0.2rem !important;
+// }
 
 .menu {
     *:focus,

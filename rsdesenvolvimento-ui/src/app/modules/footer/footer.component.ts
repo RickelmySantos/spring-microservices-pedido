@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ContatoComponent } from '../contato/contato.component';
 
 @Component({
     selector: 'app-footer',
@@ -57,6 +58,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule],
+    imports: [SharedModule, ContatoComponent],
 })
 export class FooterComponent {}

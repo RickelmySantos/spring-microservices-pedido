@@ -7,7 +7,7 @@ $primary-400: #01426a;
 $primary-300: #013b5f;
 $primary-200: #013555;
 $primary-100: #012e4a;
-$primary-50: #012135;
+$primary-50: #000000;
 
 $secondary-900: #e6f2ef;
 $secondary-800: #cce5df;
@@ -285,7 +285,27 @@ $rose-200: #be123c;
 $rose-100: #9f1239;
 $rose-50: #881337;
 
-$primary-text: #000;
+$primary-color-black: #000;
+$accent: #ff5722;
+
+$color-primaria-verde-mata: #064e3b;
+$color-destaque-amarelo-tucupi: #f59e0b;
+$color-secundaria-acai-roxo: #581c87;
+
+// --- Cores de Texto ---
+$color-texto-principal-carvao: #1c1917;
+$color-texto-secundario-cinza: #78716c;
+
+// --- Cores de Fundo e Superfície ---
+$color-fundo-castanha: #fafaf9;
+$color-fundo-argila: #a8a29e;
+
+// --- Cores de Feedback ---
+$color-sucesso: #16a34a;
+$color-erro: #dc2626;
+
+// --- Cores Neutras para Texto sobre Fundos Coloridos ---
+$color-texto-claro: #fafaf9;
 
 $colorsPalette: (
     --primary-50: $primary-50,
@@ -575,5 +595,17 @@ $colorsPalette: (
     --rose-800: $rose-800,
     --rose-900: $rose-900,
 
-    --primary-text: $primary-text,
+    --primary-color-black: $primary-color-black,
+    --accent: $accent,
+
+    --green-forest: $color-primaria-verde-mata,
+    --yellow-tucupi: $color-destaque-amarelo-tucupi,
+    --purple-acai: $color-secundaria-acai-roxo,
+    --text-primary-charcoal: $color-texto-principal-carvao,
+    --text-color-gray: $color-texto-secundario-cinza,
+    --color-brown: $color-fundo-castanha,
+    --color-clay: $color-fundo-argila,
+    --color-success: $color-sucesso,
+    --color-error: $color-erro,
+    --text-color-light: $color-texto-claro,
 );

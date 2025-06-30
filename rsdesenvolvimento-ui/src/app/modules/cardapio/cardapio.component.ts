@@ -10,18 +10,18 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
 @Component({
     selector: 'app-cardapio',
     template: `
-        <section id="menu" class="menu">
+        <section id="menu" class="menu-section">
             <div class="container">
-                <div class="section-title">
+                <div class="menu-section__title">
                     <h2>Nosso Cardápio</h2>
-                    <p>Descubra as ricas tradições culinárias do Brasil por meio do nosso menu cuidadosamente elaborado com pratos de todas as regiões do país.</p>
+                    <p>Descubra as ricas tradições culinárias da Amazônia através de nosso menu cuidadosamente elaborado.</p>
                 </div>
 
-                <div class="menu-categories">
+                <div class="menu-section__categories">
                     <app-cardapio-categoria [categoriaAtiva]="categoriaSelecionada$ | async" (onCategoriaChange)="onCategoriaChange($event)"></app-cardapio-categoria>
                 </div>
 
-                <div class="menu-items">
+                <div class="menu-section__items">
                     <ng-container *ngFor="let item of produtosFiltrados$ | async">
                         <app-cardapio-menu [item]="item"></app-cardapio-menu>
                     </ng-container>

@@ -7,13 +7,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-menu-item',
     template: `
-        <!-- <ul>
-            <li><a href="#home">Inicio</a></li>
-            <li><a href="#menu">Cardapio</a></li>
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#contact">Contato</a></li>
-        </ul> -->
-
         <ng-container *ngIf="item && item.visible !== false">
             <ng-container>
                 <li class="menu__item" [class.disabled]="item.disabled">

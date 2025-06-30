@@ -14,10 +14,4 @@ import { SharedModule } from 'src/app/shared/shared.module';
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [SharedModule, MenuComponent],
 })
-export class HeaderComponent {
-    menuOpen = false;
-
-    toggleMenu() {
-        this.menuOpen = !this.menuOpen;
-    }
-}
+export class HeaderComponent {}

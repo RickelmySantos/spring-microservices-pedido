@@ -1,3 +1,4 @@
+@use "../abstracts" as *;
 * {
     text-rendering: optimizeLegibility;
     -o-text-rendering: optimizeLegibility;
@@ -18,7 +19,7 @@ html {
 
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) var(--primary-color-text);
+    scrollbar-color: var(--primary-color-black) var(--primary-color-black);
 
     // @include responsive(tablet) {
     //     font-size: 56.25%; //1rem = 9px => 9px/16px=56.25%

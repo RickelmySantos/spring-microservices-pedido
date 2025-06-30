@@ -1,32 +1,21 @@
-// @charset "UTF-8";
+// 1. Base
+@use "base/animations";
+@use "base/base";
+@use "base/helpers";
+@use "base/typography";
 
-// 1. Abstract (Configuration and Helpers)
-@import "abstracts/functions";
-@import "abstracts/mixins";
-@import "abstracts/variables";
-@import "abstracts/placeholders";
-@import "abstracts/colors";
-@import "abstracts/fonts";
+// 2. Layout
+@use "layout/cardapio";
+@use "layout/contato";
+@use "layout/footer";
+@use "layout/header";
+@use "layout/hero";
+@use "layout/sobre";
+@use "layout/upload";
 
-// 2. Vendors
-// @import "vendors/vendors";
+@use "components/buttons";
+@use "components/components";
+@use "components/form";
 
-// 3. Base
-@import "base/base";
-@import "base/typography";
-@import "base/animations";
-@import "base/helpers";
-
-// 4. Component
-@import "components/buttons";
-@import "components/components";
-// 5. Layout
-@import "layout/header";
-@import "layout/hero";
-@import "layout/footer";
-@import "layout/cardapio";
-@import "layout/contato";
-@import "layout/upload";
-
-// 6. General Pages
-@import "pages/pages";
+// 3. Pages
+@use "pages/pages";
