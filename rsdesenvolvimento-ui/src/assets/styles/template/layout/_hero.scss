@@ -2,7 +2,7 @@
 
 .hero {
     height: 100dvh;
-    color: var(--text-color-light);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,13 +31,13 @@
     }
 
     &__titulo {
+        // color: var(p-neutral-900);
         font-family: $font-jost;
         font-size: 5.2rem;
         font-weight: $font-weight-bold;
         line-height: 1.2;
         margin-bottom: 2rem;
 
-        // Ajustes responsivos com nosso mixin
         @include responsive(tablet) {
             font-size: 4.8rem;
         }
@@ -66,7 +66,7 @@
         font-size: 1.8rem;
 
         &--primario {
-            background-color: var(--yellow-tucupi);
+            background-color: var(--p-yellow-tucupi);
             color: var(--text-primary-charcoal);
         }
 

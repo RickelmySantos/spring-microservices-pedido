@@ -6,13 +6,18 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-cardapio-menu',
     template: `
-        <div class=" menu-item active" [attr.data-categoria]="item.categoria">
-            <img [src]="item.imagemUrl" [alt]="item.alt" />
-            <div class="menu-item-content">
-                <h3>{{ item.nome }}</h3>
-                <span class="price">{{ item.preco }}</span>
-                <p class="description">{{ item.descricao }}</p>
-                <a class="add-to-cart" (click)="realizarPedido()">Adcionar ao Pedido</a>
+        <div class="cardapio-menu-item" [attr.data-categoria]="item.categoria">
+            <img class="menu-item__image" [src]="item.imagemUrl" [alt]="item.alt" />
+
+            <div class="cardapio-menu-item__content">
+                <h3 class="cardapio-menu-item__title">{{ item.nome }}</h3>
+
+                <p class="cardapio-menu-item__description">{{ item.descricao }}</p>
+
+                <div class="cardapio-menu-item__footer">
+                    <span class="cardapio-menu-item__price">{{ item.preco }}</span>
+                    <button type="button" class="cardapio-menu-item__add-to-cart-btn" (click)="realizarPedido()">Adicionar</button>
+                </div>
             </div>
         </div>
     `,

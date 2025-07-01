@@ -7,19 +7,19 @@ import { MenuItemComponent } from '../menu-item/menu-item.component';
 @Component({
     selector: 'app-menu',
     template: `
-        <div class=" header-container">
-            <div class="logo">
-                <i class="fas fa-utensils"></i>
-                <span>Sabor Brasileiro</span>
+        <section class="menu-bar container">
+            <div class="menu-bar__logo">
+                <a href="/">Sabor Brasileiro</a>
             </div>
-            <nav>
+
+            <nav class="menu-bar__nav">
                 <ul>
                     <ng-container *ngFor="let item of menu">
                         <app-menu-item [item]="item"></app-menu-item>
                     </ng-container>
                 </ul>
             </nav>
-        </div>
+        </section>
     `,
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -19,7 +19,7 @@ html {
 
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-color-black) var(--primary-color-black);
+    scrollbar-color: var(--p-primary-color-black) var(--p-primary-color-black);
 
     // @include responsive(tablet) {
     //     font-size: 56.25%; //1rem = 9px => 9px/16px=56.25%
@@ -50,12 +50,12 @@ body {
     margin: 0;
     min-height: 100%;
     box-sizing: border-box;
-    background: var(--surface-ground);
+    background: var(--p-surface-ground);
     color: var(--text-color);
     font-family: var(--font-family);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: p-grayscale;
 }
 
 a {

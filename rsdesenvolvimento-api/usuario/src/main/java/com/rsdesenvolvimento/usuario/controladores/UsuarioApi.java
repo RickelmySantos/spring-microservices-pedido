@@ -22,33 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuarios")
 public class UsuarioApi {
 
-  private final UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-  @PostMapping
-  public ResponseEntity<UsuarioResponseDto> cadastrarUsuario(
-      @RequestBody UsuarioRequestDto usuario) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(this.usuarioService.cadastrar(usuario));
-  }
+    @PostMapping
+    public ResponseEntity<UsuarioResponseDto> cadastrarUsuario(
+            @RequestBody UsuarioRequestDto usuario) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.usuarioService.cadastrar(usuario));
+    }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable Long id) {
-    return ResponseEntity.status(HttpStatus.OK).body(this.usuarioService.buscarPorId(id));
-  }
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.usuarioService.buscarPorId(id));
+    }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<UsuarioResponseDto> atualizarUsuario(@PathVariable Long id,
-      @Valid @RequestBody UsuarioRequestDto dto) {
-    return ResponseEntity.status(HttpStatus.OK).body(this.usuarioService.atualizar(id, dto));
-  }
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDto> atualizarUsuario(@PathVariable Long id,
+            @Valid @RequestBody UsuarioRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.usuarioService.atualizar(id, dto));
+    }
 
-  @DeleteMapping("/{id}")
-  public void deleteUsuario(@PathVariable Long id) {
-    this.usuarioService.deletar(id);
-    ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
+    @DeleteMapping("/{id}")
+    public void deleteUsuario(@PathVariable Long id) {
+        this.usuarioService.deletar(id);
+        ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
-  @GetMapping
-  public ResponseEntity<List<UsuarioResponseDto>> listarAll() {
-    return ResponseEntity.ok(this.usuarioService.listarTodos());
-  }
+    @GetMapping
+    public ResponseEntity<List<UsuarioResponseDto>> listarAll() {
+        return ResponseEntity.ok(this.usuarioService.listarTodos());
+    }
 }

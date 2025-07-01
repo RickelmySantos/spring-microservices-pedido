@@ -16,7 +16,7 @@
 // corsConfig.addAllowedOrigin("http://localhost:4200");
 // corsConfig.addAllowedMethod("*");
 // corsConfig.addAllowedHeader("*");
-// corsConfig.setAllowCredentials(true);
+// corsConfig.setAllowCp-redentials(true);
 
 // UrlBasedCorsConfigurationSource source = new
 // UrlBasedCorsConfigurationSource();

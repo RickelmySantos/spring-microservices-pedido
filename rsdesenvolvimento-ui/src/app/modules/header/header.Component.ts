@@ -5,7 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-header',
     template: `
-        <header id="header">
+        <header id="header" class="header">
             <app-menu></app-menu>
         </header>
     `,

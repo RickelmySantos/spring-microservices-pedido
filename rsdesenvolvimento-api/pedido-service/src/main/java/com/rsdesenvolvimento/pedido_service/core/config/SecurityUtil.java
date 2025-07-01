@@ -11,48 +11,48 @@ import org.springframework.stereotype.Component;
 public class SecurityUtil implements UsuarioPort {
 
 
-    // public static String getUserId() {
+  // public static String getUserId() {
 
-    // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+  // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    // if (auth instanceof JwtAuthenticationToken) {
-    // var token = (JwtAuthenticationToken) auth;
-    // return (String) token.getTokenAttributes().get("sub");
-    // }
-    // return null;
-    // }
+  // if (auth instanceof JwtAuthenticationToken) {
+  // var token = (JwtAuthenticationToken) auth;
+  // return (String) token.getTokenAttributes().get("sub");
+  // }
+  // return null;
+  // }
 
-    // public static String getUsername() {
-    // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+  // public static String getUsername() {
+  // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    // if (auth instanceof JwtAuthenticationToken) {
-    // var token = (JwtAuthenticationToken) auth;
-    // return (String) token.getTokenAttributes().get("preferred_username");
-    // }
-    // return null;
-    // }
+  // if (auth instanceof JwtAuthenticationToken) {
+  // var token = (JwtAuthenticationToken) auth;
+  // return (String) token.getTokenAttributes().get("preferp-red_username");
+  // }
+  // return null;
+  // }
 
-    // public static String getUserEmail() {
-    // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+  // public static String getUserEmail() {
+  // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    // if (auth instanceof JwtAuthenticationToken) {
-    // var token = (JwtAuthenticationToken) auth;
-    // return (String) token.getTokenAttributes().get("email");
-    // }
-    // return null;
-    // }
+  // if (auth instanceof JwtAuthenticationToken) {
+  // var token = (JwtAuthenticationToken) auth;
+  // return (String) token.getTokenAttributes().get("email");
+  // }
+  // return null;
+  // }
 
-    @Override
-    public Usuario buscarUsuario() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof JwtAuthenticationToken) {
-            var tokrn = (JwtAuthenticationToken) auth;
-            return new Usuario((String) tokrn.getTokenAttributes().get("sub"),
-                    (String) tokrn.getTokenAttributes().get("preferred_username"),
-                    (String) tokrn.getTokenAttributes().get("email"));
-        }
-        return null;
+  @Override
+  public Usuario buscarUsuario() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth instanceof JwtAuthenticationToken) {
+      var tokrn = (JwtAuthenticationToken) auth;
+      return new Usuario((String) tokrn.getTokenAttributes().get("sub"),
+          (String) tokrn.getTokenAttributes().get("preferp-red_username"),
+          (String) tokrn.getTokenAttributes().get("email"));
     }
+    return null;
+  }
 
 
 }

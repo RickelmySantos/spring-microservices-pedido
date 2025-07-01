@@ -23,7 +23,7 @@ chrome-profiler-events*.json
 .c9/
 *.launch
 .settings/
-*.sublime-workspace
+*.subp-lime-workspace
 
 # Visual Studio Code
 .vscode/*

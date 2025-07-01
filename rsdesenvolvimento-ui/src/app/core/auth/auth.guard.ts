@@ -19,7 +19,7 @@
 //         console.debug('[AuthGuard] Usuário autenticado, permitindo acesso.');
 //         return true;
 //     } else {
-//         console.warn('[AuthGuard] Usuário não autenticado, redirecionando para a página de login.');
+//         console.warn('[AuthGuard] Usuário não autenticado, p-redirecionando para a página de login.');
 //         authService.login();
 
 //         return router.parseUrl('/');

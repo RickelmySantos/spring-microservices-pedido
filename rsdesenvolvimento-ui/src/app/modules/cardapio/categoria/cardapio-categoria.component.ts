@@ -5,7 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-cardapio-categoria',
     template: `
-        <div class="menu-categories">
+        <div class="cardapio-categoria">
             <button *ngFor="let categoria of categorias" [class.active]="categoriaAtiva === categoria.value" (click)="selecionarCategoria(categoria.value)">
                 {{ categoria.label }}
             </button>

@@ -61,7 +61,7 @@
 // [role="button"]:hover,
 // button:hover,
 // a:hover {
-//     outline: 0.3rem solid var(--primary-color) !important;
+//     outline: 0.3rem solid var(--p-primary-color) !important;
 //     outline-offset: 0.2rem !important;
 // }
 
@@ -69,6 +69,6 @@
     *:focus,
     button:hover,
     a:hover {
-        outline-color: var(--primary-color-text) !important;
+        outline-color: var(--p-primary-color-text) !important;
     }
 }

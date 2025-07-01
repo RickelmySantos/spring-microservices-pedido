@@ -12,7 +12,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
             <div [ngClass]="{ 'mb-4': !code }"><img src="assets/images/error/{{ image }}.svg" class="h-auto w-7" /></div>
             <p *ngIf="!!code" class="font-extrabold text-9xl text-primary">{{ code }}</p>
             <p *ngIf="!!title" class="font-extrabold text-4xl">{{ title }}</p>
-            <p *ngIf="!!description" class="text-color-secondary text-lg font-medium">{{ description }}</p>
+            <p *ngIf="!!description" class="text-color-p-secondary text-lg font-medium">{{ description }}</p>
             <div class="flex justify-content-center gap-4 pt-6">
                 <button *ngIf="showVoltar" pButton pRipple class="p-button-raised p-button-lg p-button-text" [routerLink]="['/']">
                     <fa-icon [icon]="['fas', 'arrow-left-long']" size="lg" class="mr-2"></fa-icon>

@@ -1,15 +1,19 @@
-// 1. Base
+// 1. Vendors
+// @use "vendors/vendors";
+
+// 2. Base
 @use "base/animations";
 @use "base/base";
 @use "base/helpers";
 @use "base/typography";
 
-// 2. Layout
+// 3. Layout
 @use "layout/cardapio";
 @use "layout/contato";
 @use "layout/footer";
 @use "layout/header";
 @use "layout/hero";
+@use "layout/menu";
 @use "layout/sobre";
 @use "layout/upload";
 
@@ -17,5 +21,5 @@
 @use "components/components";
 @use "components/form";
 
-// 3. Pages
+// 4. Pages
 @use "pages/pages";

@@ -51,11 +51,11 @@
                 justify-content: center;
                 font-size: 1.25rem;
 
-                &.orange {
+                &.p-orange {
                     background-color: #d97706;
                 }
 
-                &.green {
+                &.p-green {
                     background-color: #059669;
                 }
             }
@@ -82,7 +82,7 @@
 
 .about-text h3 {
     font-size: 28px;
-    color: var(--primary);
+    color: var(--p-primary);
     margin-bottom: 20px;
 }
 

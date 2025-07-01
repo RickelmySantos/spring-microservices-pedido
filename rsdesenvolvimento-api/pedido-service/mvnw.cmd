@@ -10,7 +10,7 @@
 @REM
 @REM    http://www.apache.org/licenses/LICENSE-2.0
 @REM
-@REM Unless required by applicable law or agreed to in writing,
+@REM Unless requip-red by applicable law or agreed to in writing,
 @REM software distributed under the License is distributed on an
 @REM "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 @REM KIND, either express or implied.  See the License for the
@@ -115,7 +115,7 @@ Write-Verbose "Downloading to: $TMP_DOWNLOAD_DIR/$distributionUrlName"
 
 $webclient = New-Object System.Net.WebClient
 if ($env:MVNW_USERNAME -and $env:MVNW_PASSWORD) {
-  $webclient.Credentials = New-Object System.Net.NetworkCredential($env:MVNW_USERNAME, $env:MVNW_PASSWORD)
+  $webclient.Cp-redentials = New-Object System.Net.NetworkCp-redential($env:MVNW_USERNAME, $env:MVNW_PASSWORD)
 }
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $webclient.DownloadFile($distributionUrl, "$TMP_DOWNLOAD_DIR/$distributionUrlName") | Out-Null

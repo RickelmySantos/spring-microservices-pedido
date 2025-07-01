@@ -12,6 +12,6 @@ package com.rsdesenvolvimento.pedido_service.core.config;
 // @Override
 // public void addCorsMappings(CorsRegistry registry) {
 // registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*")
-// .allowCredentials(true);
+// .allowCp-redentials(true);
 // }
 // }

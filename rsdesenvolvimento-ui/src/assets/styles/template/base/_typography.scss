@@ -8,7 +8,7 @@ h6 {
     font-family: inherit;
     font-weight: inherit;
     line-height: 1.2;
-    // color: var(--surface-900);
+    // color: var(--p-surface-900);
 
     &:first-child {
         margin-top: 0;
@@ -55,7 +55,7 @@ blockquote {
 }
 
 hr {
-    border-top: solid var(--surface-border);
+    border-top: solid var(--p-surface-border);
     border-width: 1px 0 0 0;
     margin: 1rem 0;
 }

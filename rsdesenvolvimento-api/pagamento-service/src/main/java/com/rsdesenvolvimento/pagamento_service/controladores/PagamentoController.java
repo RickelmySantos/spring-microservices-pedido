@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PagamentoController {
 
-  private final PagamentoService pagamentoService;
+    private final PagamentoService pagamentoService;
 
-  @PutMapping
-  public ResponseEntity<Pagamento> pagar(@RequestBody PagamentoRequestDto dto) {
-    return ResponseEntity.ok(this.pagamentoService.processarPagamento(dto));
-  }
+    @PutMapping
+    public ResponseEntity<Pagamento> pagar(@RequestBody PagamentoRequestDto dto) {
+        return ResponseEntity.ok(this.pagamentoService.processarPagamento(dto));
+    }
 
 }

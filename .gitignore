@@ -60,7 +60,7 @@ docker-compose.override.yml
 **/pom.xml.versionsBackup
 **/pom.xml.next
 **/release.properties
-**/dependency-reduced-pom.xml
+**/dependency-p-reduced-pom.xml
 **/buildNumber.properties
 **/.mvn/timing.properties
 

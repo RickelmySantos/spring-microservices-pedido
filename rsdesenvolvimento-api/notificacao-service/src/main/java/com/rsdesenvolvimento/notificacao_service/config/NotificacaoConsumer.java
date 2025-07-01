@@ -28,14 +28,14 @@ public class NotificacaoConsumer {
                 content = "<h2 style='color: green;'>Pagamento do pedido #" + pedidoId
                         + " confirmado com sucesso!</h2>"
                         + "<p>Obrigado por confiar em nossa plataforma. Seu pedido está sendo processado.</p>"
-                        + "<hr><p style='font-size: 12px; color: gray;'>Este e-mail é automático, por favor não responda.</p>";
+                        + "<hr><p style='font-size: 12px; color: p-gray;'>Este e-mail é automático, por favor não responda.</p>";
             } else {
                 subject = "Confirmação do seu pedido! 📦";
                 content =
                         """
                                 <h2 style='color: #3498db;'>Seu pedido foi confirmado e está aguardando o pagamento!</h2>\
                                 <p>Obrigado por escolher nossa empresa!</p>\
-                                <hr><p style='font-size: 12px; color: gray;'>Este e-mail é automático, por favor não responda.</p>""";
+                                <hr><p style='font-size: 12px; color: p-gray;'>Este e-mail é automático, por favor não responda.</p>""";
             }
 
             this.notificacaoService.enviarEmail(to, subject, content);

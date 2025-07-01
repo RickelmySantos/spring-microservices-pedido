@@ -11,20 +11,20 @@ $spacer: 1rem !default;
 
 $contentPadding: var(--content-padding);
 
-$primaryColor: var(--primary-color);
-$primaryTextColor: var(--primary-color-text);
-$primaryLighterColor: var(--primary-50);
-$primaryDarkerColor: var(--primary-900);
+$p-primaryColor: var(--p-primary-color);
+$p-primaryTextColor: var(--p-primary-color-text);
+$p-primaryLighterColor: var(--p-primary-50);
+$p-primaryDarkerColor: var(--p-primary-900);
 
-$secondaryColor: var(--secondary-color);
-$secondaryTextColor: var(--secondary-color-text);
-$secondaryLighterColor: var(--secondary-50);
-$secondaryDarkerColor: var(--secondary-900);
+$p-secondaryColor: var(--p-secondary-color);
+$p-secondaryTextColor: var(--p-secondary-color-text);
+$p-secondaryLighterColor: var(--p-secondary-50);
+$p-secondaryDarkerColor: var(--p-secondary-900);
 
-$tertiaryColor: var(--tertiary-color);
-$tertiaryTextColor: var(--tertiary-color-text);
-$tertiaryLighterColor: var(--tertiary-50);
-$tertiaryDarkerColor: var(--tertiary-900);
+$p-tertiaryColor: var(--p-tertiary-color);
+$p-tertiaryTextColor: var(--p-tertiary-color-text);
+$p-tertiaryLighterColor: var(--p-tertiary-50);
+$p-tertiaryDarkerColor: var(--p-tertiary-900);
 
 $emphasis-high: var(--emphasis-high);
 $emphasis-medium: var(--emphasis-medium);
@@ -32,18 +32,18 @@ $emphasis-low: var(--emphasis-low);
 $emphasis-lower: var(--emphasis-lower);
 $overlayColor: var(--overlay-color);
 
-$surfaceGround: var(--surface-ground);
-$surfaceSection: var(--surface-section);
-$surfaceCard: var(--surface-card);
-$surfaceOverlay: var(--surface-overlay);
-$surfaceHover: var(--surface-hover);
-$surfaceBorder: var(--surface-border);
+$p-surfaceGround: var(--p-surface-ground);
+$p-surfaceSection: var(--p-surface-section);
+$p-surfaceCard: var(--p-surface-card);
+$p-surfaceOverlay: var(--p-surface-overlay);
+$p-surfaceHover: var(--p-surface-hover);
+$p-surfaceBorder: var(--p-surface-border);
 
 $fontFamily: var(--font-family);
 $fontSize: var(--font-size);
 $fontWeight: var(--font-weight);
 $textColor: var(--text-color);
-$textSecondaryColor: var(--text-color-secondary);
+$textp-secondaryColor: var(--text-color-p-secondary);
 
 $transitionDuration: var(--transition-duration);
 $formElementTransition: var(--form-element-transition);

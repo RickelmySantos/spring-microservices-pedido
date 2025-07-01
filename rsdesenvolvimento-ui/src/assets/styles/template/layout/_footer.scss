@@ -1,6 +1,6 @@
 @use "../abstracts" as *;
 footer {
-    background-color: var(--green-900);
+    background-color: var(--p-green-900);
     color: white;
     padding: 4rem 0 4rem;
 }
@@ -15,7 +15,7 @@ footer {
 .footer-column h4 {
     font-size: 1.8rem;
     margin-bottom: 2.5rem;
-    color: var(--secondary);
+    color: var(--p-secondary);
     position: relative;
     padding-bottom: 10px;
 }
@@ -25,7 +25,7 @@ footer {
     position: absolute;
     width: 4rem;
     height: 2px;
-    background-color: var(--secondary);
+    background-color: var(--p-secondary);
     bottom: 0;
     left: 0;
 }
@@ -41,7 +41,7 @@ footer {
 }
 
 .footer-links a:hover {
-    color: var(--secondary);
+    color: var(--p-secondary);
     padding-left: 5px;
 }
 
@@ -63,8 +63,8 @@ footer {
 }
 
 .social-links a:hover {
-    background-color: var(--secondary);
-    color: var(--primary-text);
+    background-color: var(--p-secondary);
+    color: var(--p-primary-text);
     transform: translateY(-3px);
 }
 
