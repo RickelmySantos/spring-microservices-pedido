@@ -114,8 +114,8 @@ $p-orange-800: #ffedd5;
 $p-orange-700: #fed7aa;
 $p-orange-600: #fdba74;
 $p-orange-500: #fb923c;
-$p-orange-400: #f97316;
-$p-orange-300: #ea580c;
+$p-orange-400: #f97316; // para button
+$p-orange-300: #e97122;
 $p-orange-200: #c2410c;
 $p-orange-100: #9a3412;
 $p-orange-50: #7c2d12;
@@ -135,7 +135,7 @@ $p-yellow-900: #fefce8;
 $p-yellow-800: #fef9c3;
 $p-yellow-700: #fef08a;
 $p-yellow-600: #fde047;
-$p-yellow-500: #facc15;
+$p-yellow-500: #ffd166;
 $p-yellow-400: #eab308;
 $p-yellow-300: #ca8a04;
 $p-yellow-200: #a16207;
@@ -284,28 +284,9 @@ $p-rose-300: #e11d48;
 $p-rose-200: #be123c;
 $p-rose-100: #9f1239;
 $p-rose-50: #881337;
+$p-rose-40: #9c0d38;
 
-// $p-primary-color-black: #000;
-// $accent: #ff5722;
-
-// $color-primaria-verde-mata: #064e3b;
-// $color-destaque-amarelo-tucupi: #f59e0b;
-// $color-secundaria-acai-roxo: #581c87;
-
-// // --- Cores de Texto ---
-// $color-texto-principal-carvao: #1c1917;
-// $color-texto-secundario-cinza: #78716c;
-
-// // --- Cores de Fundo e Superfície ---
-// $color-fundo-castanha: #fafaf9;
-// $color-fundo-argila: #a8a29e;
-
-// // --- Cores de Feedback ---
-// $color-sucesso: #16a34a;
-// $color-erro: #dc2626;
-
-// // --- Cores Neutras para Texto sobre Fundos Coloridos ---
-// $color-texto-claro: #fafaf9;
+// PALETA DE CORES PRINCIPAL
 
 $colorsPalette: (
     --p-primary-50: $p-primary-50,
@@ -584,6 +565,7 @@ $colorsPalette: (
     --p-pink-800: $p-pink-800,
     --p-pink-900: $p-pink-900,
 
+    --p-rose-40: $p-rose-40,
     --p-rose-50: $p-rose-50,
     --p-rose-100: $p-rose-100,
     --p-rose-200: $p-rose-200,
@@ -606,5 +588,5 @@ $colorsPalette: (
     // --color-clay: $color-fundo-argila,
     // --color-success: $color-sucesso,
     // --color-error: $color-erro,
-    // --text-color-light: $color-texto-claro,,,,,
+    // --text-color-light: $color-texto-claro,,,,,,,,,,,,,,
 );

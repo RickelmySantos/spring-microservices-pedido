@@ -1,83 +1,68 @@
 @use "../abstracts" as *;
 
 .hero {
-    height: 100dvh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     position: relative;
-    &::before {
-        content: "";
+    height: 24rem;
+    max-height: 700px;
+    background-color: #9c0d38;
+    color: white;
+    overflow: hidden;
+    @media (min-width: 768px) {
+        height: 100vh;
+    }
+
+    &__imagem {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(var(--text-primary-charcoal), 0.5);
-        z-index: 1;
-    }
 
-    background-image: url("https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1469&q=80");
-    background-size: cover;
-    background-position: center;
-
-    &__content {
-        position: relative;
-        z-index: 2;
-        max-width: 80rem;
-        padding: 0 2rem;
-    }
-
-    &__titulo {
-        // color: var(p-neutral-900);
-        font-family: $font-jost;
-        font-size: 5.2rem;
-        font-weight: $font-weight-bold;
-        line-height: 1.2;
-        margin-bottom: 2rem;
-
-        @include responsive(tablet) {
-            font-size: 4.8rem;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
         }
     }
-
-    &__subtitulo {
-        font-family: $font-inter;
-        font-size: 2rem;
-        margin-bottom: 3.5rem;
-        opacity: 0.9;
-        line-height: 1.7;
-        max-width: 65rem;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    &__botoes {
+    .container {
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 1rem;
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
+        position: relative;
+        z-index: 10;
 
-    .btn {
-        padding: 1.5rem 3rem;
-        font-size: 1.8rem;
+        .content {
+            max-width: 42rem;
 
-        &--primario {
-            background-color: var(--p-yellow-tucupi);
-            color: var(--text-primary-charcoal);
-        }
+            h1 {
+                font-size: 2.25rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
 
-        &--secundario {
-            background-color: transparent;
-            color: var(--text-color-light);
-            border: 2px solid var(--text-color-light);
+                @media (min-width: 768px) {
+                    font-size: 3.75rem;
+                }
 
-            &:hover {
-                background-color: var(--text-color-light);
-                color: var(--text-primary-charcoal);
+                .highlight {
+                    color: #ffd166;
+                }
+            }
+
+            p {
+                font-size: 1.125rem;
+                margin-bottom: 2rem;
+
+                @media (min-width: 768px) {
+                    font-size: 1.25rem;
+                }
+            }
+
+            .btn-hero {
+                @include button;
             }
         }
     }

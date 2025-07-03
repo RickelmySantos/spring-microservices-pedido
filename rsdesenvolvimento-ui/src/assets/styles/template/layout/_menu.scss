@@ -9,8 +9,11 @@
         font-family: $font-inter;
         font-size: 2.4rem;
         font-weight: $font-weight-bold;
-        color: var(--p-emerald-50);
+        color: var(--p-surface-900);
         text-decoration: none;
+        span {
+            color: var(--p-yellow-500);
+        }
     }
     &__nav {
         ul {
@@ -28,28 +31,12 @@
             font-family: $font-inter;
             font-weight: $font-weight-semibold;
             font-size: 1.6rem;
-            color: var(--p-stone-50);
+            color: var(--p-surface-900);
             text-decoration: none;
             padding-bottom: 0.8rem;
             position: relative;
-
-            &::after {
-                content: "";
-                position: absolute;
-                width: 0;
-                height: 2px;
-                background-color: var(--p-amber-400);
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                transition: width 0.3s ease;
-            }
             &:hover {
-                color: var(--green-forest);
-
-                &::after {
-                    width: 100%;
-                }
+                color: var(--p-orange-400);
             }
         }
     }

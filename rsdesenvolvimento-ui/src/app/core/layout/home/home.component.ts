@@ -5,13 +5,20 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-home',
     template: `
-        <section id="home" class="hero">
-            <div class="hero__content">
-                <h1 class="hero__titulo">Sabores Brasileiros Autênticos em Cada Mordida</h1>
-                <p class="hero__subtitulo">Experimente os sabores vibrantes do Brasil com nossos pratos cuidadosamente elaborados com receitas tradicionais e os ingredientes mais frescos.</p>
-                <div class="hero__botoes">
-                    <a href="#menu" class="btn btn--primario">Cardápio</a>
-                    <a href="#contato" class="btn btn--secundario">Reservas</a>
+        <section class="hero">
+            <div class="hero__imagem">
+                <img src="/assets/image/hero-image.png" alt="Comida Brasileira" />
+            </div>
+
+            <div class="container">
+                <div class="content">
+                    <h1>
+                        Descubra os
+                        <span class="highlight">Sabores</span>
+                        do Brasil
+                    </h1>
+                    <p>Autêntica culinária brasileira com ingredientes frescos e receitas tradicionais.</p>
+                    <a href="#menu" class="btn-hero">Explorar Cardápio</a>
                 </div>
             </div>
         </section>

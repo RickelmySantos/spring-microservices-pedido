@@ -46,3 +46,18 @@ $xxl: 2400px !default; //Huge Desktop / TV
     #{$color-name}: unquote("rgb(#{$p-red}, #{$p-green}, #{$p-blue})");
     #{$color-name}-rgb: $p-red, $p-green, $p-blue;
 }
+
+@mixin button {
+    display: inline-block;
+    background-color: var(--p-yellow-500);
+    color: var(--p-rose-40);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+        background-color: var(--p-yellow-400);
+    }
+}

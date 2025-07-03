@@ -1,8 +1,9 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { EstoqueService } from 'src/app/services/estoque.service';
+import { PedidoService } from 'src/app/services/pedido.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
 import { CardapioMenuComponent } from './menu/cardapio-menu.component';
@@ -19,9 +20,11 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
 
                 <app-cardapio-categoria [categoriaAtiva]="categoriaSelecionada$ | async" (onCategoriaChange)="onCategoriaChange($event)"></app-cardapio-categoria>
 
-                <div class="cardapio__menu">
-                    <ng-container *ngFor="let item of produtosFiltrados$ | async">
-                        <app-cardapio-menu [item]="item"></app-cardapio-menu>
+                <div class="cardapio-menu-list ">
+                    <ng-container *ngIf="produtosFiltrados$ | async as produtos">
+                        <ng-container *ngFor="let item of produtos">
+                            <app-cardapio-menu [item]="item" (adiconarProduto)="realizarPedido($event)"></app-cardapio-menu>
+                        </ng-container>
                     </ng-container>
                 </div>
             </div>
@@ -30,7 +33,7 @@ import { CardapioMenuComponent } from './menu/cardapio-menu.component';
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, CardapioMenuComponent, NgFor, CardapioCategoriaComponent],
+    imports: [SharedModule, CardapioMenuComponent, NgFor, NgIf, CardapioCategoriaComponent],
 })
 export class CardapioComponent implements OnInit {
     categoriaSelecionada$ = new BehaviorSubject<string>('all');
@@ -38,7 +41,7 @@ export class CardapioComponent implements OnInit {
     produtosFiltrados$: Observable<MenuCardapio[]>;
     produtos$: Observable<MenuCardapio[]>;
 
-    constructor(private estoqueService: EstoqueService) {}
+    constructor(private estoqueService: EstoqueService, private pedidoService: PedidoService) {}
 
     ngOnInit(): void {
         const todosProdutos$ = this.estoqueService.listarProdutos();
@@ -54,5 +57,16 @@ export class CardapioComponent implements OnInit {
 
     onCategoriaChange(categoria: string): void {
         this.categoriaSelecionada$.next(categoria);
+    }
+
+    realizarPedido(item: MenuCardapio) {
+        this.pedidoService.criarPedido(item).subscribe({
+            next: () => {
+                console.log('Pedido realizado com sucesso!');
+            },
+            error: error => {
+                console.error('Erro ao realizar o pedido:', error);
+            },
+        });
     }
 }

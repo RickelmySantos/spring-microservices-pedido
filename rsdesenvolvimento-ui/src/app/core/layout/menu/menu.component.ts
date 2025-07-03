@@ -9,7 +9,12 @@ import { MenuItemComponent } from '../menu-item/menu-item.component';
     template: `
         <section class="menu-bar container">
             <div class="menu-bar__logo">
-                <a href="/">Sabor Brasileiro</a>
+                <i class="fas fa-utensils text-2xl"></i>
+
+                <a href="#" class="text-2xl font-bold">
+                    Sabores
+                    <span>Brasil</span>
+                </a>
             </div>
 
             <nav class="menu-bar__nav">
@@ -19,6 +24,7 @@ import { MenuItemComponent } from '../menu-item/menu-item.component';
                     </ng-container>
                 </ul>
             </nav>
+            <div></div>
         </section>
     `,
     standalone: true,
