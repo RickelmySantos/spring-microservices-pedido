@@ -2,6 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { CardapioService } from 'src/app/services/cardapio.service';
+import { CarrinhoService } from 'src/app/services/carrinho.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
 import { CardapioCardComponent } from './menu/cardapio-menu.component';
@@ -32,14 +33,18 @@ import { CardapioCardComponent } from './menu/cardapio-menu.component';
     imports: [SharedModule, CardapioCardComponent, NgFor, NgIf, CardapioCategoriaComponent],
 })
 export class CardapioComponent {
-    constructor(protected cardapioState: CardapioService) {}
+    constructor(protected cardapioState: CardapioService, private carrinhoService: CarrinhoService) {}
 
     onCategoriaChange(categoria: string): void {
         this.cardapioState.selecionarCategoria(categoria);
     }
 
+    // realizarPedido(item: MenuCardapio): void {
+    //     this.cardapioState.realizarPedido(item);
+    // }
+
     realizarPedido(item: MenuCardapio): void {
-        this.cardapioState.realizarPedido(item);
+        this.carrinhoService.adicionarItem(item);
     }
     trackByProdutoId(index: number, item: MenuCardapio): string | number {
         return item.id;
