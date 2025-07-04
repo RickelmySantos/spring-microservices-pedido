@@ -39,10 +39,6 @@ export class CardapioComponent {
         this.cardapioState.selecionarCategoria(categoria);
     }
 
-    // realizarPedido(item: MenuCardapio): void {
-    //     this.cardapioState.realizarPedido(item);
-    // }
-
     realizarPedido(item: MenuCardapio): void {
         this.carrinhoService.adicionarItem(item);
     }

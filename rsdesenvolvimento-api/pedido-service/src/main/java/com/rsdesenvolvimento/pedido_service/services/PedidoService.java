@@ -30,6 +30,7 @@ public class PedidoService {
     public PedidoResponseDto criarPedido(PedidoRequesteDto dto) {
 
         Usuario usuario = this.usuarioPort.buscarUsuario();
+        PedidoService.log.info("Usuário obtido: {}", usuario);
 
         this.estoqueService.validarEstoque(dto.getItens());
 

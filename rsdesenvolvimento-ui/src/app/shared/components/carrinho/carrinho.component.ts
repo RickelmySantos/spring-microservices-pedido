@@ -72,24 +72,38 @@ export class CarrinhoComponent implements OnInit {
     close() {
         this.isVisible = false;
     }
-
     finalizarPedido(): void {
+        console.log('Tentando finalizar pedido...');
+        if (!this.carrinhoItem.length) {
+            alert('Seu carrinho está vazio... 😔');
+            return;
+        }
+
+        const pedidoValido = this.carrinhoItem.every(item => item.quantidade && item.quantidade > 0);
+
+        if (!pedidoValido) {
+            alert('Alguns itens possuem quantidade inválida...');
+            return;
+        }
+
         const pedido = {
             descricao: 'Pedido de múltiplos itens',
-            item: this.carrinhoItem.map(i => ({
+            itens: this.carrinhoItem.map(i => ({
                 produtoId: i.id,
-                quantidade: i.quantidade || 1,
+                quantidade: i.quantidade,
             })),
         };
 
+        console.log('Enviando payload:', pedido);
+
         this.pedidoService.registrarPedido(pedido).subscribe({
             next: () => {
-                alert('Pedido realizado com sucesso! 🍽️');
+                alert('Pedido realizado com sucesso! 🎉');
                 this.carrinhoService.limparCarrinho();
                 this.close();
             },
             error: () => {
-                alert('Erro ao finalizar o pedido, senhor...');
+                alert('Houve um problema ao finalizar seu pedido... 😔');
             },
         });
     }

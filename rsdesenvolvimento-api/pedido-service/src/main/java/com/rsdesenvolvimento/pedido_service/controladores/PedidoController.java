@@ -26,6 +26,7 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<PedidoResponseDto> criar(@RequestBody PedidoRequesteDto dto) {
+        PedidoController.log.info("Pedido recebido: {}", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.criarPedido(dto));
     }
 

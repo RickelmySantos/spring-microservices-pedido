@@ -18,13 +18,15 @@ export class PedidoService {
         const headers = new HttpHeaders({
             Authorization: `Bearer ${token}`,
         });
+        console.log('Enviando para API:', this.API_URL, pedido);
+
         return this.http.post(this.API_URL, pedido, { headers });
     }
 
     criarPedido(item: MenuCardapio): Observable<any> {
         const novoPedido = {
             descricao: `Pedido de ${item.nome}`,
-            item: [
+            itens: [
                 {
                     produtoId: item.id,
                     quantidade: 1,

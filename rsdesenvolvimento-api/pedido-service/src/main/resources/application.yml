@@ -19,14 +19,14 @@ spring:
         create-schemas: ${FLYWAY_CREATE_SCHEMA:false}
         default-schema: ${FLYWAY_DEFAULT_SCHEMA:pedido_adm}
         schemas: ${FLYWAY_SCHEMAS:pedido,pedido_aud, pedido_adm}
-        url: ${SPRING_DATASOURCE_URL}
-        user: ${SPRING_DATASOURCE_USERNAME}
-        password: ${SPRING_DATASOURCE_PASSWORD}
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pedido}
+        user: ${SPRING_DATASOURCE_USERNAME:postgres}
+        password: ${SPRING_DATASOURCE_PASSWORD:postgres}
         locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
     datasource:
-        url: '${SPRING_DATASOURCE_URL}'
-        username: '${SPRING_DATASOURCE_USERNAME}'
-        password: '${SPRING_DATASOURCE_PASSWORD}'
+        url: '${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pedido}'
+        username: '${SPRING_DATASOURCE_USERNAME:postgres}'
+        password: '${SPRING_DATASOURCE_PASSWORD:postgres}'
         driver-class-name: '${SPRING_DATASOURCE_DRIVER-CLASS_NAME:org.postgresql.Driver}'
     h2:
         console:
@@ -66,11 +66,10 @@ spring:
         oauth2:
             resourceserver:
                 jwt:
-                    jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs}
+                    # jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs}
+                    jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://localhost:8086/auth/realms/REALM_LOCAL/protocol/openid-connect/certs}
                     # jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://keycloak:8680/auth/realms/REALM_LOCAL}
                     # issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://keycloak:8080/auth/realms/REALM_LOCAL}
-                    audiences:
-                        - rsdesenvolvimento-api
 
 eureka:
     client:
