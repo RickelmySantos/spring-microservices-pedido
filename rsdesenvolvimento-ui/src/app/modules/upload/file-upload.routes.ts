@@ -1,9 +1,8 @@
 import { Route } from '@angular/router';
-import { FileUploadComponent } from 'src/app/modules/upload/file-upload.component';
 
 export default [
     {
         path: '',
-        component: FileUploadComponent,
+        loadComponent: () => import('src/app/modules/upload/file-upload.component').then(m => m.FileUploadComponent),
     },
 ] as Route[];

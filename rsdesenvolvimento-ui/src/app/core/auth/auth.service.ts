@@ -14,19 +14,6 @@ export class AuthService {
     }
 
     async initAuth(): Promise<void> {
-        // try {
-        //     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-        //     await this.oauthService.tryLoginCodeFlow();
-        //     if (this.isLoggedIn()) {
-        //         console.debug('Token de acesso válido:', this.oauthService.getAccessToken());
-        //         return;
-        //     }
-        //     this.login();
-        // } catch (error) {
-        //     console.error('Erro ao inicializar autenticação:', error);
-        //     this.oauthService.logOut();
-        //     this.login();
-        // }
         await this.oauthService.loadDiscoveryDocumentAndTryLogin();
         if (!this.oauthService.hasValidAccessToken()) {
             this.oauthService.initLoginFlow();
@@ -66,14 +53,4 @@ export class AuthService {
     getToken() {
         return this.oauthService.getAccessToken();
     }
-
-    // private hasValidAccessToken(): boolean {
-    //     return this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken();
-    // }
-
-    // private async loadToken(): Promise<boolean> {
-    //     return await this.oauthService.loadDiscoveryDocumentAndTryLogin({} as LoginOptions).catch(err => {
-    //         return this.oauthService.loadDiscoveryDocumentAndLogin();
-    //     });
-    // }
 }

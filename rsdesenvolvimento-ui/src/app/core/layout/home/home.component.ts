@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CardapioComponent } from 'src/app/modules/cardapio/cardapio.component';
+import { DepoimentoComponent } from 'src/app/shared/components/depoimentos/depoimento.component';
+import { NewsletterComponent } from 'src/app/shared/components/newsletter/newsletter.component';
+import { SobreComponent } from 'src/app/shared/components/sobre/sobre.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -23,10 +26,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
             </div>
         </section>
         <app-cardapio></app-cardapio>
+        <app-sobre></app-sobre>
+        <app-depoimento></app-depoimento>
+        <app-newsletter></app-newsletter>
     `,
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, CardapioComponent],
+    imports: [SharedModule, CardapioComponent, SobreComponent, DepoimentoComponent, NewsletterComponent],
 })
 export class HomeComponent {}

@@ -1,16 +1,152 @@
-// ===== FONTES =====
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Lato:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Jost:wght@100..900&display=swap");
+// ===== INTER =====
 
-// Famílias de fonte
+/* inter-regular - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/assets/fonts/inter-v19-latin-regular.woff2") format("woff2");
+}
+/* inter-600 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    src: url("/assets/fonts/inter-v19-latin-600.woff2") format("woff2");
+}
+/* inter-700 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/inter-v19-latin-700.woff2") format("woff2");
+}
+/* inter-800 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/assets/fonts/inter-v19-latin-800.woff2") format("woff2");
+}
+
+// ===== MONTSERRAT =====
+
+@font-face {
+    font-display: swap;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/assets/fonts/montserrat-v30-latin-regular.woff2") format("woff2");
+}
+/* montserrat-600 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    src: url("/assets/fonts/montserrat-v30-latin-600.woff2") format("woff2");
+}
+/* montserrat-700 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/montserrat-v30-latin-700.woff2") format("woff2");
+}
+/* montserrat-800 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/assets/fonts/montserrat-v30-latin-800.woff2") format("woff2");
+}
+
+// ===== POPPINGS =====
+
+@font-face {
+    font-display: swap;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/assets/fonts/poppins-v23-latin-regular.woff2") format("woff2");
+}
+/* poppins-600 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 600;
+    src: url("/assets/fonts/poppins-v23-latin-600.woff2") format("woff2");
+}
+/* poppins-700 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/poppins-v23-latin-700.woff2") format("woff2");
+}
+/* poppins-800 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/assets/fonts/poppins-v23-latin-800.woff2") format("woff2");
+}
+
+// ===== JOST =====
+
+@font-face {
+    font-display: swap;
+    font-family: "Jost";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/assets/fonts/jost-v19-latin-regular.woff2") format("woff2");
+}
+/* jost-600 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Jost";
+    font-style: normal;
+    font-weight: 600;
+    src: url("/assets/fonts/jost-v19-latin-600.woff2") format("woff2");
+}
+/* jost-700 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Jost";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/jost-v19-latin-700.woff2") format("woff2");
+}
+/* jost-800 - latin */
+@font-face {
+    font-display: swap;
+    font-family: "Jost";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/assets/fonts/jost-v19-latin-800.woff2") format("woff2");
+}
+
+/* ============================================= */
+/* VARIÁVEIS DE FONTES (Sass)           */
+/* ============================================= */
+
 $font-poppins: "Poppins", sans-serif;
 $font-lato: "Lato", sans-serif;
 $font-montserrat: "Montserrat", sans-serif;
+$font-playfair: "Playfair Display", serif;
 $font-inter: "Inter", sans-serif;
 $font-jost: "Jost", sans-serif;
 
-// Pesos de fonte
-$font-weight: 400 !default;
+$font-weight: 400;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
+$font-weight-black: 900;

@@ -1,7 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FileUploadModule } from 'primeng/fileupload';
 import { EstoqueService } from 'src/app/services/estoque.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -96,7 +95,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, ReactiveFormsModule, NgIf, FileUploadModule],
+    imports: [SharedModule, ReactiveFormsModule, NgIf],
     styles: `
         .file-input {
             opacity: 0;

@@ -1,0 +1,18 @@
+@use "../../abstracts/" as abstracts;
+
+.p-editor-container {
+    .p-editor-content {
+        .ql-editor {
+            // TODO Ajustar estrutura para utilizar valores das variáveis do tema
+            // font-family: $fontFamily;
+            // font-size: $inputTextFontSize;
+            // color: $inputTextColor;
+            // background: $inputBg;
+
+            font-family: abstracts.$fontFamily;
+            font-size: 1rem;
+            color: #334155;
+            background: #fff;
+        }
+    }
+}

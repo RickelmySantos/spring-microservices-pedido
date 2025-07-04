@@ -14,7 +14,6 @@ export class PedidoService {
 
     registrarPedido(pedido: any) {
         const token = this.oauthService.getAccessToken();
-        console.log('Token enviado:', token);
 
         const headers = new HttpHeaders({
             Authorization: `Bearer ${token}`,

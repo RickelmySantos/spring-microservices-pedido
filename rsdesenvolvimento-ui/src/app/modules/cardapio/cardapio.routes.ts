@@ -1,9 +1,8 @@
 import { Route } from '@angular/router';
-import { CardapioComponent } from 'src/app/modules/cardapio/cardapio.component';
 
 export default [
     {
         path: '',
-        component: CardapioComponent,
+        loadComponent: () => import('./cardapio.component').then(m => m.CardapioComponent),
     },
 ] as Route[];

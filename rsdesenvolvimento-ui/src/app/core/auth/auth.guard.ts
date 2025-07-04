@@ -1,27 +1,19 @@
-// import { inject } from '@angular/core';
-// import { CanMatchFn, Router, UrlTree } from '@angular/router';
-// import { firstValueFrom, of } from 'rxjs';
-// import { AuthService } from 'src/app/core/auth/auth.service';
-// import { environments } from 'src/environments/environments';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
-// export const authGuard: CanMatchFn = async (): Promise<boolean | UrlTree> => {
-//     if (!environments.securityEnabled) {
-//         console.warn('[AuthGuard] Segurança desativada, permitindo acesso a todas as rotas.');
-//         return firstValueFrom(of(true));
-//     }
-//     console.debug('[AuthGuard] Segurança ativada, verificando autenticação do usuário.');
-//     const authService = inject(AuthService);
-//     const router = inject(Router);
+let authInitialized = false;
 
-//     await authService.waitUntilReady();
+export const authGuard: CanActivateFn = async (RouteConfigLoadEnd, state) => {
+    const authService: AuthService = inject(AuthService);
 
-//     if (authService.isLoggedIn()) {
-//         console.debug('[AuthGuard] Usuário autenticado, permitindo acesso.');
-//         return true;
-//     } else {
-//         console.warn('[AuthGuard] Usuário não autenticado, p-redirecionando para a página de login.');
-//         authService.login();
+    if (!authInitialized) {
+        await authService.initAuth();
+        authInitialized = true;
+    }
+    if (authService.isLoggedIn()) {
+        return true;
+    }
 
-//         return router.parseUrl('/');
-//     }
-// };
+    return false;
+};
