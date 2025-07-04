@@ -14,13 +14,16 @@
 @use "layout/header";
 @use "layout/hero";
 @use "layout/menu";
-@use "layout/sobre";
+
 @use "layout/upload";
 
 @use "components/buttons";
-@use "components/cards";
+@use "components/card";
 @use "components/components";
 @use "components/form";
+@use "components/depoimento";
+@use "components/newsletter";
+@use "components/sobre";
 
 // 4. Pages
 @use "pages/pages";

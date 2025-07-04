@@ -1,0 +1,105 @@
+@use "../abstracts" as *;
+
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+
+.botao-principal {
+    background-color: var(--p-gray-100);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 10rem;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken($p-gray-100, 5%);
+    }
+}
+
+.depoimentos-secao {
+    background-color: var(--p-gray-900);
+    padding: 4rem 1rem;
+
+    .cabecalho-secao {
+        text-align: center;
+        margin-bottom: 3rem;
+
+        .titulo-secao {
+            font-size: 3.6rem;
+            font-weight: 700;
+            color: var(--p-gray-100);
+            margin-bottom: 1rem;
+        }
+
+        .subtitulo-secao {
+            color: var(--p-gray-300);
+            max-width: 42rem;
+            margin: 0 auto;
+            font-size: 1.6rem;
+        }
+    }
+
+    .depoimentos__grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+
+        @media (min-width: $breakpoint-md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: $breakpoint-lg) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .cartao-depoimento {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+        &__estrelas {
+            color: var(--p-amber-500);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        &__texto {
+            color: var(--p-gray-300);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        &__autor-info {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .autor-info {
+        &__imagem {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+
+        &__nome {
+            font-weight: 700;
+            color: var(--p-gray-100);
+        }
+
+        &__cargo {
+            font-size: 0.875rem;
+            color: var(--p-gray-100);
+        }
+    }
+
+    .rodape-secao {
+        text-align: center;
+        margin-top: 3rem;
+    }
+}
