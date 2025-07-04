@@ -1,48 +1,8 @@
-# **/HELP.md
-# **/target/
-# !**/.mvn/wrapper/maven-wrapper.jar
-# !**/src/main/**/target/
-# !**/src/test/**/target/
 
-# **/.apt_generated
-# **/.classpath
-# **/.factorypath
-# **/.project
-# **/.settings
-# **/.springBeans
-# **/.sts4-cache
-
-# **/.idea
-# **/*.iws
-# **/*.iml
-# **/*.ipr
-
-# **/nbproject/private/
-# **/nbbuild/
-# **/dist/
-# **/nbdist/
-# **/.nb-gradle/
-# **/build/
-# !**/src/main/**/build/
-# !**/src/test/**/build/
-
-# output/
-
-# *.bak
-# *.swp
-# *.log
-
-# .share
-# .app
-
-# .histfile
-# *~
-
-# .env
 # Node modules and Angular dist (frontend)
-rsdesenvolvimento-ui/node_modules/
-rsdesenvolvimento-ui/dist/
-rsdesenvolvimento-ui/.angular/
+**/node_modules/
+**/dist/
+**/.angular/
 
 # Environment files
 .env
