@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from 'src/app/modules/footer/footer.component';
 import { HeaderComponent } from 'src/app/modules/header/header.Component';
@@ -16,7 +16,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     `,
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [SharedModule, HeaderComponent, FooterComponent, RouterOutlet],
 })
 export class LayoutComponent {}

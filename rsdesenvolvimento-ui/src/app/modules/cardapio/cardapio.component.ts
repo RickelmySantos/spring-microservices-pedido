@@ -1,7 +1,7 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
-import { CardapioService } from 'src/app/services/cardapio.service';
+import { CardapioState } from 'src/app/services/cardapio.service';
 import { CarrinhoService } from 'src/app/services/carrinho.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
@@ -30,10 +30,10 @@ import { CardapioCardComponent } from './menu/cardapio-menu.component';
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, CardapioCardComponent, NgFor, NgIf, CardapioCategoriaComponent],
+    imports: [SharedModule, NgFor, NgIf, CardapioCategoriaComponent, CardapioCardComponent],
 })
 export class CardapioComponent {
-    constructor(protected cardapioState: CardapioService, private carrinhoService: CarrinhoService) {}
+    constructor(protected cardapioState: CardapioState, protected carrinhoService: CarrinhoService) {}
 
     onCategoriaChange(categoria: string): void {
         this.cardapioState.selecionarCategoria(categoria);

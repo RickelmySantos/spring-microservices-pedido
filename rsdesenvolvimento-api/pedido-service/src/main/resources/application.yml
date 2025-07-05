@@ -53,7 +53,7 @@ spring:
             init:
                 mode: never
     rabbitmq:
-        host: ${RABBITMQ_HOST:rabbitmq}
+        host: ${RABBITMQ_HOST:localhost}
         port: ${RABBITMQ_PORT:5672}
         username: ${RABBITMQ_USERNAME:guest}
         password: ${RABBITMQ_PASSWORD:guest}
@@ -68,8 +68,6 @@ spring:
                 jwt:
                     # jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs}
                     jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://localhost:8086/auth/realms/REALM_LOCAL/protocol/openid-connect/certs}
-                    # jwk-set-uri: ${OAUTH2_RESOURCESERVER_JWK_SET_URI:http://keycloak:8680/auth/realms/REALM_LOCAL}
-                    # issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://keycloak:8080/auth/realms/REALM_LOCAL}
 
 eureka:
     client:
