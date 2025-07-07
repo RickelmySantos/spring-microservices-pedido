@@ -4,6 +4,7 @@ import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { MenuItem } from 'primeng/api';
 import { SharedModule } from 'src/app/shared/shared.module';
+
 import { CarrinhoComponent } from '../../../shared/components/carrinho/carrinho.component';
 import { MenuItemComponent } from '../menu-item/menu-item.component';
 
@@ -41,6 +42,8 @@ import { MenuItemComponent } from '../menu-item/menu-item.component';
     imports: [SharedModule, NgFor, MenuItemComponent, CarrinhoComponent],
 })
 export class MenuComponent {
+    isCarrinhoVisible = false;
+
     constructor(library: FaIconLibrary) {
         library.addIcons(faCartShopping);
     }
@@ -56,4 +59,8 @@ export class MenuComponent {
         { name: 'Feijoada', quantity: 1 },
         { name: 'Pão de Queijo', quantity: 3 },
     ];
+
+    openCarrinho(): void {
+        this.isCarrinhoVisible = !this.isCarrinhoVisible;
+    }
 }

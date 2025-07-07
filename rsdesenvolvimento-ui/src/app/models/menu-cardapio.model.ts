@@ -2,7 +2,7 @@ export interface MenuCardapio {
     id: number;
     nome: string;
     descricao: string;
-    preco: string;
+    preco: number;
     categoria: string;
     estoque: number;
     imagemUrl: string;

@@ -21,7 +21,7 @@ import { CardapioCardComponent } from './menu/cardapio-menu.component';
 
                 <div class="cardapio__grid">
                     <ng-container *ngIf="cardapioState.produtosFiltrados$ | async as produtos">
-                        <app-cardapio-card *ngFor="let item of produtos; trackBy: trackByProdutoId" [item]="item" (adiconarProduto)="realizarPedido($event)"></app-cardapio-card>
+                        <app-cardapio-card *ngFor="let item of produtos; trackBy: trackByProdutoId" [item]="item" (adiconarProduto)="adcionarProduto($event)"></app-cardapio-card>
                     </ng-container>
                 </div>
             </div>
@@ -39,7 +39,7 @@ export class CardapioComponent {
         this.cardapioState.selecionarCategoria(categoria);
     }
 
-    realizarPedido(item: MenuCardapio): void {
+    adcionarProduto(item: MenuCardapio): void {
         this.carrinhoService.adicionarItem(item);
     }
     trackByProdutoId(index: number, item: MenuCardapio): string | number {

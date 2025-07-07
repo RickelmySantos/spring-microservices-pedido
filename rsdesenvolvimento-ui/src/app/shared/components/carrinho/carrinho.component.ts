@@ -1,128 +1,57 @@
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, Input, OnInit } from '@angular/core';
-import { ItemCarrinho } from 'src/app/models/itemCarrinho.model';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import { AlterarQuantidadeEvent } from 'src/app/models/alterarQuantidade.model';
 import { CarrinhoService } from 'src/app/services/carrinho.service';
-import { PedidoService } from 'src/app/services/pedido.service';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CarrinhoModalComponent } from './carrinho-modal.component';
 
 @Component({
     selector: 'app-carrinho',
     template: `
-        <div class="modal-backdrop" *ngIf="isVisible" (click)="close()"></div>
-
-        <div class="modal" *ngIf="isVisible">
-            <div class="modal-content">
-                <h2>Seu Pedido</h2>
-
-                <div class="carrinho-itens">
-                    <div *ngFor="let item of carrinhoItem" class="carrinho-item">
-                        <img [src]="item.imagemUrl" [alt]="item.nome" class="item-img" />
-
-                        <div class="item-info">
-                            <h3>{{ item.nome }}</h3>
-                            <p>{{ item.preco | currency : 'BRL' }}</p>
-                            <div class="item-controle">
-                                <button (click)="alterarQuantidade(item, -1)">–</button>
-                                <span>{{ item.quantidade }}</span>
-                                <button (click)="alterarQuantidade(item, 1)">+</button>
-                            </div>
-                        </div>
-
-                        <div class="item-total">
-                            {{ calcularSubtotal(item) | currency : 'BRL' }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="carrinho-total">
-                    <strong>Total:</strong>
-                    {{ calcularTotal() | currency : 'BRL' }}
-                </div>
-
-                <div class="carrinho-acoes">
-                    <button (click)="finalizarPedido()">Finalizar Pedido</button>
-                    <button (click)="close()">Fechar</button>
-                </div>
-            </div>
-        </div>
+        <app-carrinho-modal
+            [itens]="itensCarrinho$ | async"
+            [total]="totalCarrinho$ | async"
+            [isVisible]="isVisible"
+            [isLoading]="isLoading"
+            (fechar)="onFecharModal()"
+            (finalizarPedido)="onFinalizarPedido()"
+            (alterarQuantidade)="onAlterarQuantidade($event)"></app-carrinho-modal>
     `,
-    styleUrl: './carrinho.component.scss',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, NgIf, NgFor, CurrencyPipe],
+    imports: [SharedModule, CarrinhoModalComponent],
 })
-export class CarrinhoComponent implements OnInit {
+export class CarrinhoComponent {
     protected readonly carrinhoService: CarrinhoService = inject(CarrinhoService);
-    protected readonly pedidoService: PedidoService = inject(PedidoService);
 
-    @Input() carrinhoItem: any[] = [];
-    isVisible = false;
+    protected readonly itensCarrinho$ = this.carrinhoService.itensCarrinho$;
+    protected readonly totalCarrinho$ = this.carrinhoService.totalCarrinho$;
 
-    ngOnInit(): void {
-        this.carrinhoService.itensCarrinho$.subscribe(itens => {
-            this.carrinhoItem = itens;
-        });
-    }
+    public isVisible = false;
+    public isLoading = false;
 
-    open() {
-        console.log('Abrindo modal do carrinho');
+    open(): void {
         this.isVisible = true;
     }
 
-    close() {
+    onFecharModal(): void {
         this.isVisible = false;
     }
-    finalizarPedido(): void {
-        console.log('Tentando finalizar pedido...');
-        if (!this.carrinhoItem.length) {
-            alert('Seu carrinho está vazio... 😔');
-            return;
-        }
 
-        const pedidoValido = this.carrinhoItem.every(item => item.quantidade && item.quantidade > 0);
-
-        if (!pedidoValido) {
-            alert('Alguns itens possuem quantidade inválida...');
-            return;
-        }
-
-        const pedido = {
-            descricao: 'Pedido de múltiplos itens',
-            itens: this.carrinhoItem.map(i => ({
-                produtoId: i.id,
-                quantidade: i.quantidade,
-            })),
-        };
-
-        console.log('Enviando payload:', pedido);
-
-        this.pedidoService.registrarPedido(pedido).subscribe({
+    onFinalizarPedido(): void {
+        this.isLoading = true;
+        this.carrinhoService.finalizarPedido().subscribe({
             next: () => {
+                this.isLoading = false;
                 alert('Pedido realizado com sucesso! 🎉');
-                this.carrinhoService.limparCarrinho();
-                this.close();
+                this.onFecharModal();
             },
-            error: () => {
-                alert('Houve um problema ao finalizar seu pedido... 😔');
+            error: err => {
+                this.isLoading = false;
+                alert(err.message);
             },
         });
     }
-
-    alterarQuantidade(item: ItemCarrinho, delta: number): void {
-        item.quantidade += delta;
-        if (item.quantidade <= 0) {
-            this.carrinhoItem = this.carrinhoItem.filter(i => i.id !== item.id);
-        }
-        this.carrinhoService.atualizarCarrinho([...this.carrinhoItem]);
-    }
-
-    calcularSubtotal(item: ItemCarrinho): number {
-        return parseFloat(item.preco) * item.quantidade;
-    }
-
-    calcularTotal(): number {
-        return this.carrinhoItem.reduce((total, item) => {
-            return total + parseFloat(item.preco) * item.quantidade;
-        }, 0);
+    onAlterarQuantidade(event: AlterarQuantidadeEvent): void {
+        this.carrinhoService.alterarQuantidade(event.item.id, event.delta);
     }
 }
