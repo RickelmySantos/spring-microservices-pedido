@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +29,8 @@ interface Depoimento {
                         </div>
                         <p class="cartao-depoimento__texto">"{{ depoimento.texto }}"</p>
                         <div class="cartao-depoimento__autor-info">
-                            <img [src]="depoimento.imagemUrl" [alt]="'Foto de ' + depoimento.autor" class="autor-info__imagem" />
+                            <!-- <img [src]="depoimento.imagemUrl" [alt]="'Foto de ' + depoimento.autor" class="autor-info__imagem" /> -->
+                            <img [ngSrc]="depoimento.imagemUrl" [alt]="'Foto de ' + depoimento.autor" class="autor-info__imagem" width="33" height="33" />
                             <div>
                                 <h4 class="autor-info__nome">{{ depoimento.autor }}</h4>
                                 <p class="autor-info__cargo">{{ depoimento.cargo }}</p>
@@ -47,7 +48,7 @@ interface Depoimento {
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, NgFor],
+    imports: [SharedModule, NgFor, NgOptimizedImage],
 })
 export class DepoimentoComponent {
     iconeEstrelaCheia = faStar;
@@ -60,21 +61,21 @@ export class DepoimentoComponent {
             texto: 'A experiência no Sabores do Brasil foi incrível! O pato no tucupi estava perfeito, exatamente como lembrava da minha viagem ao Pará. Ambiente aconchegante e atendimento impecável.',
             autor: 'Ana Carolina',
             cargo: 'Food Blogger',
-            imagemUrl: 'https://randomuser.me/api/portraits/women/32.jpg',
+            imagemUrl: '32_awjwrn',
         },
         {
             estrelas: 5,
             texto: 'Como nordestino que mora longe de casa, encontrar um acarajé tão autêntico aqui em São Paulo foi emocionante. O sabor me transportou direto para a Bahia. Recomendo muito!',
             autor: 'Carlos Eduardo',
             cargo: 'Advogado',
-            imagemUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
+            imagemUrl: '75_pkg2bb',
         },
         {
             estrelas: 4.5,
             texto: 'Levei uns amigos estrangeiros para conhecer a culinária brasileira e ficaram maravilhados! O rodízio de pratos regionais foi perfeito para mostrar a diversidade do nosso país. Voltaremos com certeza!',
             autor: 'Juliana Santos',
             cargo: 'Guia de Turismo',
-            imagemUrl: 'https://randomuser.me/api/portraits/women/63.jpg',
+            imagemUrl: '63_dix2bn',
         },
     ];
 

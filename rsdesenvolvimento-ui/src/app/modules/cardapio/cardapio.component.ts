@@ -1,5 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { CardapioState } from 'src/app/services/cardapio.service';
 import { CarrinhoService } from 'src/app/services/carrinho.service';
@@ -20,7 +21,7 @@ import { CardapioCardComponent } from './menu/cardapio-menu.component';
                 <app-cardapio-categoria [categoriaAtiva]="cardapioState.categoriaSelecionada$ | async" (onCategoriaChange)="onCategoriaChange($event)"></app-cardapio-categoria>
 
                 <div class="cardapio__grid">
-                    <ng-container *ngIf="cardapioState.produtosFiltrados$ | async as produtos">
+                    <ng-container *ngIf="produtos$ | async as produtos">
                         <app-cardapio-card *ngFor="let item of produtos; trackBy: trackByProdutoId" [item]="item" (adiconarProduto)="adcionarProduto($event)"></app-cardapio-card>
                     </ng-container>
                 </div>
@@ -33,7 +34,20 @@ import { CardapioCardComponent } from './menu/cardapio-menu.component';
     imports: [SharedModule, NgFor, NgIf, CardapioCategoriaComponent, CardapioCardComponent],
 })
 export class CardapioComponent {
-    constructor(protected cardapioState: CardapioState, protected carrinhoService: CarrinhoService) {}
+    private readonly cloudinaryBaseUrl = 'https://res.cloudinary.com/rsdesenvolvimento-estoque-api/image/upload/';
+
+    produtos$: Observable<MenuCardapio[]>;
+
+    constructor(protected cardapioState: CardapioState, protected carrinhoService: CarrinhoService) {
+        this.produtos$ = this.cardapioState.produtosFiltrados$.pipe(
+            map(produtos =>
+                produtos.map(produto => ({
+                    ...produto,
+                    imagemUrl: produto.imagemUrl.replace(this.cloudinaryBaseUrl, ''),
+                }))
+            )
+        );
+    }
 
     onCategoriaChange(categoria: string): void {
         this.cardapioState.selecionarCategoria(categoria);

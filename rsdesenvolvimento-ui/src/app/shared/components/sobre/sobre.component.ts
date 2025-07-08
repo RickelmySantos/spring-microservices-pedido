@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faHeart, faLeaf, faSmile, faUtensils } from '@fortawesome/free-solid-svg-icons';
@@ -17,10 +17,11 @@ interface Diferencial {
             <div class="container">
                 <div class="sobre__layout">
                     <div class="sobre__imagem-container">
-                        <img
+                        <!-- <img
                             src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
                             alt="Sobre Nós"
-                            class="sobre__imagem" />
+                            class="sobre__imagem" /> -->
+                        <img ngSrc="image-sobre-section_o9wsy5" alt="Sobre Nós" class="sobre__imagem" width="600" height="450" />
                     </div>
                     <div class="sobre__texto-container">
                         <h2 class="titulo-secao">Nossa História</h2>
@@ -50,7 +51,7 @@ interface Diferencial {
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, NgFor],
+    imports: [SharedModule, NgFor, NgOptimizedImage],
 })
 export class SobreComponent {
     diferenciais: Diferencial[] = [

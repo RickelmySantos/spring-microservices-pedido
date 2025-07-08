@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -8,7 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     template: `
         <article class="cardapio-card" [attr.data-category]="item.categoria">
             <figure class="cardapio-card__figure">
-                <img [src]="item.imagemUrl" [alt]="item.alt" class="cardapio-card__image" />
+                <img [ngSrc]="item.imagemUrl" [alt]="item.alt" class="cardapio-card__image" width="300" height="174" />
                 <span class="cardapio-card__badge">{{ item.categoria }}</span>
             </figure>
 
@@ -30,7 +30,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, CurrencyPipe],
+    imports: [SharedModule, CurrencyPipe, NgOptimizedImage],
 })
 export class CardapioCardComponent {
     @Input()

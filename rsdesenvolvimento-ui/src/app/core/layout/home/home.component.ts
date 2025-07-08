@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CardapioComponent } from 'src/app/modules/cardapio/cardapio.component';
 import { DepoimentoComponent } from 'src/app/shared/components/depoimentos/depoimento.component';
@@ -10,7 +11,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     template: `
         <section class="hero">
             <div class="hero__imagem">
-                <img src="/assets/image/hero-image.png" alt="Comida Brasileira" />
+                <!-- <img src="/assets/image/hero-image.png" alt="Comida Brasileira" /> -->
+                <img ngSrc="hero-image_upl5pp" alt="Comida Brasileira" width="1570" height="700" sizes="100vw" priority />
             </div>
 
             <div class="container">
@@ -31,7 +33,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     `,
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [SharedModule, CardapioComponent, SobreComponent, DepoimentoComponent, NewsletterComponent],
+    imports: [SharedModule, NgOptimizedImage, CardapioComponent, SobreComponent, DepoimentoComponent, NewsletterComponent],
 })
 export class HomeComponent {
     highlightTitle = 'Sabores do Brasil';

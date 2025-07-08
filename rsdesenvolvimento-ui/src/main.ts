@@ -7,6 +7,7 @@ import { ROUTES } from 'src/app/app.routes';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 
+import { provideCloudinaryLoader } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { AppComponent } from 'src/app/app.component';
@@ -23,6 +24,7 @@ bootstrapApplication(AppComponent, {
         provideRouter(ROUTES),
         provideHttpClient(withInterceptors([authInterceptor])),
         provideOAuthClient(),
+        provideCloudinaryLoader('https://res.cloudinary.com/rsdesenvolvimento-estoque-api'),
         importProvidersFrom(
             BrowserModule,
             BrowserAnimationsModule,

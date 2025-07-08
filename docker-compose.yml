@@ -103,6 +103,8 @@ services:
             - '8761:8761'
         environment:
             EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_REGISTER-WITH-EUREKA: 'false'
+            EUREKA_CLIENT_FETCH-REGISTRY: 'false'
             EUREKA_INSTANCE_IP_ADDRESS: localhost
             SPRING_PROFILES_ACTIVE: default
         healthcheck:
@@ -391,30 +393,45 @@ services:
         networks:
             - rsdesenvolvimento
 
-    angular-app:
+    rsdesenvolvimento-ui:
         build:
             context: ./rsdesenvolvimento-ui
             dockerfile: Dockerfile.frontend
-        container_name: angular-app
+        container_name: rsdesenvolvimento-ui
         ports:
-            - '4200:4200'
+            - '4200:80'
         volumes:
             - ./rsdesenvolvimento-ui:/app
             - /app/node_modules
         environment:
-            CHOKIDAR_USEPOLLING: true
-            IMAGE_VERSION: 1.0.0
-            AMBIENTE: Local
-            BASE_URL: http://localhost:8080
-            API_URL: http://localhost:8080/api
-            DEFAULT_TIMEZONE: America/Belem
-            DEFAULT_LOCALE: pt-BR
-            LOGGING_LEVEL: debug
+            # CHOKIDAR_USEPOLLING: true
+            # IMAGE_VERSION: 1.0.0
+            # AMBIENTE: Local
+            # BASE_URL: http://localhost:4200/
+            # API_URL: http://localhost:8080
+            # DEFAULT_TIMEZONE: America/Belem
+            # DEFAULT_LOCALE: pt-BR
+            # LOGGING_LEVEL: debug
 
-            OAUTH_ISSUER: http://localhost:8086/auth/realms/REALM_LOCAL
-            OAUTH_CLIENT_ID: rsdesenvolvimento-ui
+            # OAUTH_ISSUER: http://localhost:8086/auth/realms/REALM_LOCAL
+            # OAUTH_CLIENT_ID: rsdesenvolvimento-ui
 
-            REQUIRE_HTTPS: false
+            # REQUIRE_HTTPS: false
+            - OAUTH_ISSUER=http://localhost:8086/auth/realms/REALM_LOCAL
+            - OAUTH_CLIENT_ID=rsdesenvolvimento-ui
+            - API_URL=http://localhost:8080
+            - BASE_URL=http://localhost:4200/
+            - DEFAULT_TIMEZONE=America/Belem
+            - DEFAULT_LOCALE=pt-BR
+            - REQUIRE_HTTPS=false
+
+        depends_on:
+            eureka:
+                condition: service_healthy
+            api-gateway:
+                condition: service_healthy
+            keycloak:
+                condition: service_healthy
 
         networks:
             - rsdesenvolvimento
