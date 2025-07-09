@@ -14,11 +14,19 @@ export class AuthService {
     }
 
     async initAuth(): Promise<void> {
-        await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-        if (!this.oauthService.hasValidAccessToken()) {
+        try {
+            await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+            if (!this.oauthService.hasValidAccessToken()) {
+                this.oauthService.initLoginFlow();
+            } else {
+                console.debug('Login silencioso bem-sucedido. Token válido encontrado.');
+            }
+        } catch (e) {
+            console.error('Erro ao carregar discovery document ou tentar login:', e);
+            if (e instanceof Error && 'details' in e && typeof (e as any).details === 'string') {
+                console.log('Detalhes do erro:', e.details);
+            }
             this.oauthService.initLoginFlow();
-        } else {
-            console.debug('Login silencioso bem-sucedido. Token válido encontrado.');
         }
     }
 
