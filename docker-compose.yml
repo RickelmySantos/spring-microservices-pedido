@@ -102,7 +102,7 @@ services:
         ports:
             - '8761:8761'
         environment:
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
             EUREKA_CLIENT_REGISTER-WITH-EUREKA: 'false'
             EUREKA_CLIENT_FETCH-REGISTRY: 'false'
             EUREKA_INSTANCE_IP_ADDRESS: localhost
@@ -125,7 +125,7 @@ services:
         # extra_hosts:
         #     - 'host.docker.internal:host-gateway'
         environment:
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
             SPRING_PROFILES_ACTIVE: default
             OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL
         depends_on:
@@ -185,7 +185,7 @@ services:
         volumes:
             - ./rsdesenvolvimento-api/infra/pedido/api/data:/tmp/import
         environment:
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
 
             RABBITMQ_HOST: rabbitmq
             RABBITMQ_PORT: 5672
@@ -245,7 +245,7 @@ services:
         env_file:
             - ./rsdesenvolvimento-api/.env
         environment:
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
 
             RABBITMQ_HOST: rabbitmq
             RABBITMQ_PORT: 5672
@@ -281,7 +281,7 @@ services:
         volumes:
             - ./rsdesenvolvimento-api/infra/pagamento/api/data:/tmp/import
         environment:
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
 
             RABBITMQ_HOST: rabbitmq
             RABBITMQ_PORT: 5672
@@ -340,7 +340,7 @@ services:
             JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             JPA_SHOW_SQL: true
 
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
             SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
             SPRING_DATASOURCE_PASSWORD: postgres
             SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/estoque
@@ -370,7 +370,7 @@ services:
             DEFAULT_TIMEZONE: America/Belem
 
             ENVERS_SCHEMA: usuario_aud
-            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/api/eureka/
+            EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
             FLYWAY_CREATE_SCHEMA: true
             FLYWAY_DEFAULT_SCHEMA: usuario_adm
             FLYWAY_ENABLED: true
@@ -400,9 +400,9 @@ services:
         container_name: rsdesenvolvimento-ui
         ports:
             - '4200:80'
-        volumes:
-            - ./rsdesenvolvimento-ui:/app
-            - /app/node_modules
+        # volumes:
+        #     - ./rsdesenvolvimento-ui:/app
+        #     - /app/node_modules
         environment:
             # CHOKIDAR_USEPOLLING: true
             # IMAGE_VERSION: 1.0.0
@@ -424,6 +424,7 @@ services:
             - DEFAULT_TIMEZONE=America/Belem
             - DEFAULT_LOCALE=pt-BR
             - REQUIRE_HTTPS=false
+            - PRODUCTION=false
 
         depends_on:
             eureka:

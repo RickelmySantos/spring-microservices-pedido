@@ -14,7 +14,7 @@
 # EXPOSE 4200
 
 # # CMD ["npm", "start"]
-# CMD ["/bin/sh", "-c", "envsubst < /app/src/assets/env.js > /app/src/assets/env.js.tmp && mv /app/src/assets/env.js.tmp /app/src/assets/env.js && exec npm start"]
+# CMD ["/bin/sh", "-c", "envsubst < /app/src/assets/env.template.js > /app/src/assets/env.template.js.tmp && mv /app/src/assets/env.template.js.tmp /app/src/assets/env.template.js && exec npm start"]
 # ===============================================================
 
 # Construção (Build) da Aplicação
@@ -40,11 +40,12 @@ RUN apk add --no-cache gettext
 COPY entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-COPY --from=build /app/src/assets/env.js /usr/share/nginx/html/assets/
+COPY src/assets/env.template.js /usr/share/nginx/html/assets/env.template.js
 
 COPY --from=build /app/dist/rsdesenvolvimento-ui/browser /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 
 
 EXPOSE 80
