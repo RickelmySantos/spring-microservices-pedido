@@ -19,6 +19,7 @@ export class PedidoService {
             Authorization: `Bearer ${token}`,
         });
         console.log('Enviando para API:', this.API_URL, pedido);
+        console.log('Headers:', headers);
 
         return this.http.post(this.API_URL, pedido, { headers });
     }

@@ -1,6 +1,8 @@
 package com.rsdesenvolvimento.pedido_service.core.ports;
 
+import com.rsdesenvolvimento.core.events.dto.NotificacaoDto;
+
 public interface NotificacaoPort {
 
-    void enviarNotificacao(String mensagem);
+    void enviarNotificacao(NotificacaoDto mensagem);
 }

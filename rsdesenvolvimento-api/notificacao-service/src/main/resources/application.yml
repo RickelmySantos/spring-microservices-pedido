@@ -7,7 +7,7 @@ spring:
     application:
         name: notificacao-service
     rabbitmq:
-        host: ${RABBITMQ_HOST:rabbitmq}
+        host: ${RABBITMQ_HOST:localhost}
         port: ${RABBITMQ_PORT:5672}
         username: ${RABBITMQ_USERNAME:guest}
         password: ${RABBITMQ_PASSWORD:guest}
@@ -40,4 +40,11 @@ management:
 sendgrid:
     api:
         # key: ${SENDGRID_API_KEY}
-        key: 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
+        key: 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
+
+logging:
+    level:
+        org.springframework.amqp: DEBUG
+        org.springframework.amqp.rabbit.listener: TRACE
+        org.springframework.cloud.openfeign: DEBUG
+        io.github.resilience4j: DEBUG

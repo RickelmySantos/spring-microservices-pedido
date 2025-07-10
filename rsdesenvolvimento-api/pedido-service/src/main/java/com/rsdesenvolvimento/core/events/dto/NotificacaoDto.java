@@ -1,0 +1,23 @@
+package com.rsdesenvolvimento.core.events.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Builder
+public class NotificacaoDto {
+    private String to;
+    private String subject;
+    private String content;
+
+}
