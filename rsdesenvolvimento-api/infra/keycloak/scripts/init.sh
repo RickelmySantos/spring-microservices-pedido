@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# set +e
-# set -x
+#  set +e
+
+#  set -x
+
 FILE_CHECK=/tmp/initialized
 
 init()
@@ -37,7 +39,7 @@ init()
             if (curl -s -f -S http://0.0.0.0:8080/auth)
             then
                 echo "Configurando cp-redenciais no Keycloak Admin Console..."
-                kcadm.sh config cp-redentials --server http://0.0.0.0:8080/auth --realm master --user admin --password admin --config ./tmp/kcadm.config 2>/dev/null
+                kcadm.sh config credentials --server http://0.0.0.0:8080/auth --realm master --user admin --password admin --config ./tmp/kcadm.config 2>/dev/null
 
                 echo "Criando o Realm ${REALM_DEFAULT}..."
                 realmId="$(kcadm.sh create realms -s realm=${REALM_DEFAULT} -s enabled=true --id --config ./tmp/kcadm.config 2>/dev/null)"
@@ -53,7 +55,7 @@ init()
                 appClientId="$(kcadm.sh create clients -r ${REALM_DEFAULT} -f ./import/clients/rsdesenvolvimento-ui.json --id --config ./tmp/kcadm.config 2>/dev/null)"
                 echo "Client da Aplicação criado com sucesso: ${appClientId}"
 
-                echo "Configurando Client da Aplicação..."
+                echo "Configurando Client da API..."
                 appClientId="$(kcadm.sh create clients -r ${REALM_DEFAULT} -f ./import/clients/rsdesenvolvimento-api.json --id --config ./tmp/kcadm.config 2>/dev/null)"
                 echo "Client da Aplicação criado com sucesso: ${appClientId}"
 
@@ -116,6 +118,7 @@ init()
     fi
 }
 
-echo “Iniciando processo em background para configurar o Keycloak”
+echo "Iniciando processo em background para configurar o Keycloak"
 init & disown
 echo “Processo em background para configurar o Keycloak Iniciado”
+

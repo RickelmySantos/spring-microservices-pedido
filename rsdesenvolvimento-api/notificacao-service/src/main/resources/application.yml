@@ -40,4 +40,4 @@ management:
 sendgrid:
     api:
         # key: ${SENDGRID_API_KEY}
-        key: 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
+        key: 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

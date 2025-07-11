@@ -15,11 +15,12 @@ services:
             retries: 20
         volumes:
             - postgres_data:/var/lib/postgresql/data
-            - ./rsdesenvolvimento-api/infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+            # - ./rsdesenvolvimento-api/infra/postgres/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./rsdesenvolvimento-api/infra/postgres/scripts/init.sh:/docker-entrypoint-initdb.d/init.sh
         networks:
             - rsdesenvolvimento
     keycloak:
-        image: bitnami/keycloak:latest
+        image: bitnami/keycloak:26
         container_name: keycloak
 
         ports:
@@ -42,8 +43,8 @@ services:
         healthcheck:
             test: ['CMD', 'curl', '-f', 'http://localhost:8080/auth/realms/master']
             interval: 30s
-            timeout: 10s
-            retries: 5
+            timeout: 5s
+            retries: 10
         volumes:
             - ./rsdesenvolvimento-api/infra/keycloak/import:/import
             - ./rsdesenvolvimento-api/infra/keycloak/scripts:/docker-entrypoint-initdb.d
@@ -114,7 +115,7 @@ services:
             EUREKA_INSTANCE_IP_ADDRESS: localhost
             SPRING_PROFILES_ACTIVE: default
         healthcheck:
-            test: 'curl --fail --silent localhost:8761/api/actuator/health | grep UP || exit 1'
+            test: 'curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1'
             interval: 10s
             timeout: 5s
             retries: 20
@@ -132,8 +133,16 @@ services:
             EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
             SPRING_PROFILES_ACTIVE: default
             OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL
+        healthcheck:
+            test: 'curl --fail --silent http://localhost:8080/actuator/health | grep UP || exit 1'
+            interval: 10s
+            timeout: 5s
+            retries: 20
+            start_period: 30s
         depends_on:
             eureka:
+                condition: service_healthy
+            keycloak:
                 condition: service_healthy
         networks:
             - rsdesenvolvimento
@@ -210,7 +219,7 @@ services:
             JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             JPA_SHOW_SQL: true
 
-            OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
+            OAUTH2_RESOURCESERVER_JWK_SET_URI: http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
 
             SERVER_PORT: 8083
             CONTEXT_PATH: /api

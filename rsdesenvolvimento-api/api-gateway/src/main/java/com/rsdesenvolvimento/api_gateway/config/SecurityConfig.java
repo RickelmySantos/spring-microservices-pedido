@@ -50,9 +50,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
 
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .pathMatchers("/estoque-api/**").permitAll()
-                        .pathMatchers("/pedido-service/**").permitAll().pathMatchers("/usuario/**")
-                        .permitAll()
+                        .pathMatchers("/actuator/**").permitAll()
 
 
                         .anyExchange().authenticated())
@@ -70,3 +68,8 @@ public class SecurityConfig {
         return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
     }
 }
+
+
+// .pathMatchers("/estoque-api/**")
+// .permitAll().pathMatchers("/pedido-service/**").permitAll()
+// .pathMatchers("/usuario/**").permitAll()
