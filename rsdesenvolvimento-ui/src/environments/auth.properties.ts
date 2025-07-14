@@ -1,5 +1,7 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 
+console.log('Loading auth properties from environment...', window['env']);
+
 export const authProperties: AuthConfig = {
     issuer: window['env']['OAUTH_ISSUER'] !== '${OAUTH_ISSUER}' ? window['env']['OAUTH_ISSUER'] : 'http://localhost:8086/auth/realms/REALM_LOCAL',
     clientId: window['env']['OAUTH_CLIENT_ID'] !== '${OAUTH_CLIENT_ID}' ? window['env']['OAUTH_CLIENT_ID'] : 'rsdesenvolvimento-ui',

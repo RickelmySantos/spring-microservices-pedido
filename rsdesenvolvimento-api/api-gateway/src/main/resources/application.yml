@@ -25,8 +25,8 @@ logging:
     level:
         root: INFO
         org.springframework.security: TRACE
-        org.springframework.web.reactive: DEBUG
-        reactor.netty.http.client: DEBUG
+        # org.springframework.web.reactive: DEBUG
+        # reactor.netty.http.client: DEBUG
 
 eureka:
     client:

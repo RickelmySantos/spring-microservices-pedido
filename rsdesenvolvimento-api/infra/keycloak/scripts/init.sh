@@ -38,7 +38,7 @@ init()
         do
             if (curl -s -f -S http://0.0.0.0:8080/auth)
             then
-                echo "Configurando cp-redenciais no Keycloak Admin Console..."
+                echo "Configurando credenciais no Keycloak Admin Console..."
                 kcadm.sh config credentials --server http://0.0.0.0:8080/auth --realm master --user admin --password admin --config ./tmp/kcadm.config 2>/dev/null
 
                 echo "Criando o Realm ${REALM_DEFAULT}..."

@@ -10,6 +10,13 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     const authStorage: OAuthStorage = inject(OAuthStorage);
 
     const url = req.url.toLowerCase();
+    const urlPermitida = allowedUrls[0].toLowerCase(); // Pega a primeira URL permitida
+
+    // LOGS DE DEPURAÇÃO
+    console.log('[DEPURAÇÃO] URL da Requisição:', url);
+    console.log('[DEPURAÇÃO] URL Permitida (de environments):', urlPermitida);
+    console.log('[DEPURAÇÃO] Resultado do startsWith:', url.startsWith(urlPermitida));
+
     if (!allowedUrls.find(u => url.startsWith(u.toLowerCase()))) {
         console.debug('`[AuthInterceptor]  Não foi necessário incluir cabeçalho Bearer na requisição');
         return next(req);

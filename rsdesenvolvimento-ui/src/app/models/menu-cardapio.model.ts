@@ -1,5 +1,6 @@
-export interface MenuCardapio {
-    id: number;
+import { Entity } from 'src/app/core/components/models/entity.model';
+
+export interface MenuCardapio extends Entity<number> {
     nome: string;
     descricao: string;
     preco: number;
