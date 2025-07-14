@@ -1,29 +1,32 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { CrudService } from 'src/app/core/services/crud.service';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
+import { Pedido } from 'src/app/models/pedido.model';
 
 @Injectable({
     providedIn: 'root',
 })
-export class PedidoService {
-    private readonly API_URL = 'http://localhost:8080/pedido-service/api/pedido';
+export class PedidoService extends CrudService<Pedido> {
+    protected override PATH: string = 'pedido-service/api/pedido';
 
-    constructor(private http: HttpClient, private oauthService: OAuthService) {}
-
-    registrarPedido(pedido: any) {
-        const token = this.oauthService.getAccessToken();
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`,
-        });
-        console.log('Enviando para API:', this.API_URL, pedido);
-
-        return this.http.post(this.API_URL, pedido, { headers });
+    constructor() {
+        super();
     }
 
-    criarPedido(item: MenuCardapio): Observable<any> {
+    registrarPedido(pedido: Partial<Pedido>): Observable<Pedido> {
+        return this.http.post<Pedido>(this.getUrl(), pedido).pipe(
+            tap(pedidoCriado => {
+                console.log(`[PedidoService] Pedido #${pedidoCriado.id} registrado com sucesso!`);
+            }),
+            catchError(err => {
+                console.error(`[PedidoService] Erro ao registrar pedido: ${err.message}`);
+                return throwError(() => new Error('Erro ao registrar o pedido. Tente novamente mais tarde.'));
+            })
+        );
+    }
+
+    criarPedido(item: MenuCardapio): Observable<Pedido> {
         const novoPedido = {
             descricao: `Pedido de ${item.nome}`,
             itens: [
