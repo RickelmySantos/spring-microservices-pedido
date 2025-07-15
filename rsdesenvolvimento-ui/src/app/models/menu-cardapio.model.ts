@@ -2,7 +2,7 @@ import { Entity } from 'src/app/core/components/models/entity.model';
 
 export interface MenuCardapio extends Entity<number> {
     nome: string;
-    descricao: string;
+    observacao: string;
     preco: number;
     categoria: string;
     estoque: number;

@@ -5,7 +5,7 @@
     "enabled": true,
     "alwaysDisplayInConsole": false,
     "clientAuthenticatorType": "client-secret",
-    "redirectUris": ["http://localhost:4200/*"],
+    "redirectUris": ["http://localhost:4200/*", "http://localhost/*"],
     "webOrigins": ["*"],
     "notBefore": 0,
     "bearerOnly": false,
@@ -105,7 +105,7 @@
             }
         }
     ],
-    "defaultClientScopes": ["web-origins", "profile", "roles", "email"],
+    "defaultClientScopes": ["web-origins", "profile", "roles", "email", "basic"],
     "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"],
     "access": {
         "view": true,

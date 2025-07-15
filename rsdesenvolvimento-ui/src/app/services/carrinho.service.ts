@@ -61,10 +61,12 @@ export class CarrinhoService {
         }
 
         const pedidoPayload = {
-            descricao: 'Pedido de múltiplos itens',
+            observacao: 'Pedido de múltiplos itens',
             itens: itensAtuais.map(i => ({
                 produtoId: i.id,
                 quantidade: i.quantidade,
+                nomeProduto: i.nome,
+                precoUnitario: i.preco,
             })),
         };
 

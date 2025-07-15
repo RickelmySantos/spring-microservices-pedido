@@ -1,6 +1,6 @@
 (function (window) {
     window['env'] = window['env'] || {};
-
+    // window['env']['PRODUCTION'] = '${PRODUCTION}';
     window['env']['BASE_URL'] = '${BASE_URL}';
     window['env']['UI_ROOT'] = '${UI_ROOT}';
     window['env']['API_URL'] = '${API_URL}';

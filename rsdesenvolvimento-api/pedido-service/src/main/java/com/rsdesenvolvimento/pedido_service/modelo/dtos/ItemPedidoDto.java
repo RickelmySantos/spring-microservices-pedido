@@ -1,6 +1,6 @@
 package com.rsdesenvolvimento.pedido_service.modelo.dtos;
 
-import java.util.List;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +10,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PedidoRequesteDto {
+public class ItemPedidoDto {
 
-
-    private String observacao;
-
-    // private List<ReservaEstoqueRequestDto> itens;
-    private List<ItemPedidoDto> itens;
-
+    private Long produtoId;
+    private String nomeProduto;
+    private int quantidade;
+    private BigDecimal precoUnitario;
 }

@@ -28,7 +28,7 @@ export class PedidoService extends CrudService<Pedido> {
 
     criarPedido(item: MenuCardapio): Observable<Pedido> {
         const novoPedido = {
-            descricao: `Pedido de ${item.nome}`,
+            observacao: `Pedido de ${item.nome}`,
             itens: [
                 {
                     produtoId: item.id,

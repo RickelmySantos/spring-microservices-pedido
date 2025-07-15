@@ -14,7 +14,7 @@ import lombok.Setter;
 public class PedidoResponseDto {
 
     private Long id;
-    private String descricao;
+    private String observacao;
     private String usuarioId;
     private String nomeUsuario;
     private String emailUsuario;

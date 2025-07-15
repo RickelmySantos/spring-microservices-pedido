@@ -16,7 +16,7 @@ spring:
         baseline-version: 0
         out-of-order: true
         baseline-description: Pedido Baseline
-        create-schemas: ${FLYWAY_CREATE_SCHEMA:false}
+        create-schemas: ${FLYWAY_CREATE_SCHEMA:true}
         default-schema: ${FLYWAY_DEFAULT_SCHEMA:pedido_adm}
         schemas: ${FLYWAY_SCHEMAS:pedido,pedido_aud, pedido_adm}
         url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pedido}
@@ -35,6 +35,7 @@ spring:
         database-platform: '${JPA_DIALECT:org.hibernate.dialect.PostgreSQLDialect}'
         hibernate:
             ddl-auto: none
+            # ddl-auto: update
         open-in-view: false
         show-sql: ${JPA_SHOW_SQL:false}
         properties:

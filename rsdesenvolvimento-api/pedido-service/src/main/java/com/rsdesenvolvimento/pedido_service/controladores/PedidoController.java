@@ -4,6 +4,7 @@ package com.rsdesenvolvimento.pedido_service.controladores;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoRequesteDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoResponseDto;
 import com.rsdesenvolvimento.pedido_service.services.PedidoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<PedidoResponseDto> criar(@RequestBody PedidoRequesteDto dto) {
+    public ResponseEntity<PedidoResponseDto> criar(@Valid @RequestBody PedidoRequesteDto dto) {
         PedidoController.log.info("Pedido recebido: {}", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.pedidoService.criarPedido(dto));
     }

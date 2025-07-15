@@ -7,7 +7,7 @@ export $(env | cut -d= -f1)
 echo "[Entrypoint] Variáveis disponíveis:"
 env
 
-envsubst '${BASE_URL} ${UI_ROOT} ${API_URL} ${DEFAULT_LOCALE} ${DEFAULT_TIMEZONE} ${OAUTH_CLIENT_ID} ${OAUTH_ISSUER} ${REQUIRE_HTTPS}' \
+envsubst ' ${BASE_URL} ${UI_ROOT} ${API_URL} ${DEFAULT_LOCALE} ${DEFAULT_TIMEZONE} ${OAUTH_CLIENT_ID} ${OAUTH_ISSUER} ${REQUIRE_HTTPS}' \
   < /usr/share/nginx/html/assets/env.template.js \
   > /usr/share/nginx/html/assets/env.js
 

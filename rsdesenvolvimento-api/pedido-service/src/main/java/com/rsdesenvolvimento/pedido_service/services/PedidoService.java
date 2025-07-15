@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.pedido_service.services;
 
+import com.rsdesenvolvimento.pedido_service.core.client.dtos.ReservaEstoqueRequestDto;
 import com.rsdesenvolvimento.pedido_service.core.ports.UsuarioPort;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoRequesteDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.PedidoResponseDto;
@@ -9,6 +10,7 @@ import com.rsdesenvolvimento.pedido_service.modelo.enums.StatusEnum;
 import com.rsdesenvolvimento.pedido_service.modelo.mappers.PedidoMapper;
 import com.rsdesenvolvimento.pedido_service.repositorios.PedidoRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,11 @@ public class PedidoService {
         Usuario usuario = this.usuarioPort.buscarUsuario();
         PedidoService.log.info("Usuário obtido: {}", usuario);
 
-        this.estoqueService.validarEstoque(dto.getItens());
+        List<ReservaEstoqueRequestDto> reserva = dto.getItens().stream().map(
+                item -> new ReservaEstoqueRequestDto(item.getProdutoId(), item.getQuantidade()))
+                .toList();
+
+        this.estoqueService.validarEstoque(reserva);
 
         Pedido pedido = this.prepararPedido(dto, usuario);
         Pedido pedidoSalvo = this.pedidoRepository.save(pedido);
@@ -64,6 +70,12 @@ public class PedidoService {
         pedido.setNomeUsuario(usuario.getUsername());
         pedido.setEmailUsuario(usuario.getEmail());
         pedido.setStatus(StatusEnum.PENDENTE);
+        pedido.setObservacao(dto.getObservacao());
+
+        if (pedido.getItens() != null) {
+            pedido.getItens().forEach(item -> item.setPedido(pedido));
+        }
+
         return pedido;
     }
 }

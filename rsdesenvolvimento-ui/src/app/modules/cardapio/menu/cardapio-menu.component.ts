@@ -18,7 +18,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
                     <span class="cardapio-card__price">{{ item.preco | currency : 'BRL' }}</span>
                 </header>
 
-                <p class="cardapio-card__description">{{ item.descricao }}</p>
+                <p class="cardapio-card__description">{{ item.observacao }}</p>
 
                 <button class="cardapio-card__action-button" (click)="onAdicionar()" [attr.aria-label]="'Adicionar ' + item.nome + ' ao pedido'">
                     <span>Adicionar</span>
