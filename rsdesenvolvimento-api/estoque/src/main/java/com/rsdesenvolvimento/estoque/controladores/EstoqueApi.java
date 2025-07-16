@@ -1,8 +1,8 @@
 package com.rsdesenvolvimento.estoque.controladores;
 
+import com.rsdesenvolvimento.estoque.modelo.dtos.AtualizarEstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueResponseDto;
-import com.rsdesenvolvimento.estoque.modelo.dtos.ReservaEstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.services.CloudinaryService;
 import com.rsdesenvolvimento.estoque.services.EstoqueService;
 import java.util.List;
@@ -62,15 +62,22 @@ public class EstoqueApi {
 
     @PostMapping("/validar")
     public ResponseEntity<Boolean> validarEstoque(
-            @RequestBody List<ReservaEstoqueRequestDto> itens) {
+            @RequestBody List<AtualizarEstoqueRequestDto> itens) {
         boolean disponivel = this.service.validarEstoque(itens);
         return ResponseEntity.ok(disponivel);
     }
 
     @PostMapping("/reservar")
-    public ResponseEntity<Void> reservarEstoque(@RequestBody List<ReservaEstoqueRequestDto> itens) {
+    public ResponseEntity<Void> reservarEstoque(
+            @RequestBody List<AtualizarEstoqueRequestDto> itens) {
         this.service.reservarEstoque(itens);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/atualizar")
+    public ResponseEntity<Void> atualizarEstoque(@RequestBody AtualizarEstoqueRequestDto dto) {
+        this.service.atualizarEstoque(dto);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/upload")

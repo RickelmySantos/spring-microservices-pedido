@@ -1,8 +1,8 @@
 package com.rsdesenvolvimento.estoque.services;
 
+import com.rsdesenvolvimento.estoque.modelo.dtos.AtualizarEstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueResponseDto;
-import com.rsdesenvolvimento.estoque.modelo.dtos.ReservaEstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.entidade.Estoque;
 import com.rsdesenvolvimento.estoque.modelo.mappers.EstoqueMapper;
 import com.rsdesenvolvimento.estoque.repositorios.EstoqueRepository;
@@ -11,8 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +46,7 @@ public class EstoqueService {
         return this.mapper.toDtoList(produtos);
     }
 
+    @Transactional(readOnly = true)
     public EstoqueResponseDto buscarPorId(Long id) {
         Estoque produto = this.repository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
@@ -63,8 +67,8 @@ public class EstoqueService {
         this.repository.deleteById(id);
     }
 
-    public boolean validarEstoque(List<ReservaEstoqueRequestDto> itens) {
-        for (ReservaEstoqueRequestDto item : itens) {
+    public boolean validarEstoque(List<AtualizarEstoqueRequestDto> itens) {
+        for (AtualizarEstoqueRequestDto item : itens) {
             Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(
                     () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
             if (produto.getEstoque() < item.getQuantidade()) {
@@ -75,8 +79,8 @@ public class EstoqueService {
     }
 
     @CacheEvict(value = "estoque", allEntries = true)
-    public void reservarEstoque(List<ReservaEstoqueRequestDto> itens) {
-        for (ReservaEstoqueRequestDto item : itens) {
+    public void reservarEstoque(List<AtualizarEstoqueRequestDto> itens) {
+        for (AtualizarEstoqueRequestDto item : itens) {
             Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(
                     () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
 
@@ -84,6 +88,21 @@ public class EstoqueService {
 
             this.repository.save(produto);
         }
+    }
+
+    @Transactional
+    public void atualizarEstoque(AtualizarEstoqueRequestDto dto) {
+        Estoque produto = this.repository.findById(dto.getProdutoId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        EstoqueService.PRODUTO_NAO_ENCONTRADO));
+
+        if (produto.getEstoque() < dto.getQuantidade()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Estoque insuficiente");
+        }
+
+        produto.setEstoque(produto.getEstoque() - dto.getQuantidade());
+
+        this.repository.save(produto);
     }
 
 }

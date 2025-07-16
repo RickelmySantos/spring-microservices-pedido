@@ -10,10 +10,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemPedidoDto {
+public class ItemPedidoResponseDto {
+
+    private Long id;
 
     private Long produtoId;
+
     private String nomeProduto;
-    private int quantidade;
+
+    private Integer quantidade;
+
     private BigDecimal precoUnitario;
+
+
 }

@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,10 +49,6 @@ public class Pedido extends EntidadeBase {
     @Column(name = "NOME_USUARIO", nullable = false, length = 100)
     private String nomeUsuario;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemPedido> itens = new ArrayList<>();
-
     @Column(name = "EMAIL_USUARIO", nullable = false, length = 50)
     @Email
     private String emailUsuario;
@@ -59,4 +56,10 @@ public class Pedido extends EntidadeBase {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status_pedido")
     private StatusEnum status;
+
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<ItemPedido> itensPedido = new ArrayList<>();
 }

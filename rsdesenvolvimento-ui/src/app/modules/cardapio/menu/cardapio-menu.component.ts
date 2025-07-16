@@ -1,6 +1,6 @@
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
-import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
+import { Produto } from 'src/app/models/produto.model';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -18,7 +18,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
                     <span class="cardapio-card__price">{{ item.preco | currency : 'BRL' }}</span>
                 </header>
 
-                <p class="cardapio-card__description">{{ item.observacao }}</p>
+                <p class="cardapio-card__description">{{ item.descricao }}</p>
 
                 <button class="cardapio-card__action-button" (click)="onAdicionar()" [attr.aria-label]="'Adicionar ' + item.nome + ' ao pedido'">
                     <span>Adicionar</span>
@@ -34,10 +34,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class CardapioCardComponent {
     @Input()
-    item!: MenuCardapio;
+    item!: Produto;
 
     @Output()
-    adiconarProduto = new EventEmitter<MenuCardapio>();
+    adiconarProduto = new EventEmitter<Produto>();
 
     onAdicionar(): void {
         this.adiconarProduto.emit(this.item);

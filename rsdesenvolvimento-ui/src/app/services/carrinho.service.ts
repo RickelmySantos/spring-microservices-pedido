@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
+import { CriarPedidoRequest } from 'src/app/models/criarPedido.model';
 import { ItemCarrinho } from 'src/app/models/itemCarrinho.model';
 import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { PedidoService } from 'src/app/services/pedido.service';
@@ -60,13 +61,13 @@ export class CarrinhoService {
             return throwError(() => new Error('Alguns itens possuem quantidade inválida...'));
         }
 
-        const pedidoPayload = {
+        const pedidoPayload: CriarPedidoRequest = {
             observacao: 'Pedido de múltiplos itens',
-            itens: itensAtuais.map(i => ({
-                produtoId: i.id,
-                quantidade: i.quantidade,
-                nomeProduto: i.nome,
-                precoUnitario: i.preco,
+            itensPedido: itensAtuais.map(item => ({
+                produtoId: item.id,
+                quantidade: item.quantidade,
+                precoUnitario: item.preco,
+                nomeProduto: item.nome,
             })),
         };
 

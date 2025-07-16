@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservaEstoqueRequestDto {
+public class AtualizarEstoqueRequestDto {
 
-  private Long produtoId;
-  private Integer quantidade;
+    private Long produtoId;
+    private Integer quantidade;
 }

@@ -27,20 +27,21 @@ import org.hibernate.envers.Audited;
 @AuditOverride(forClass = EntidadeBase.class)
 @Table(name = "TB_ESTOQUE", uniqueConstraints = {})
 @SequenceGenerator(name = EntidadeBase.SEQUENCE_GENERATOR, sequenceName = "SQ_ESTOQUE",
-    initialValue = 1, allocationSize = 1)
+        initialValue = 1, allocationSize = 1)
 public class Estoque extends EntidadeBase {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Column(name = "NOME", nullable = false, length = 100)
-  private String nome;
-  @Column(name = "DESCRICAO", nullable = false, length = 255)
-  private String descricao;
-  @Column(name = "PRECO", nullable = false, precision = 10, scale = 2)
-  private BigDecimal preco;
-  @Column(name = "CATEGORIA", nullable = false, length = 50)
-  private String categoria;
-  @Column(name = "ESTOQUE", nullable = false)
-  private Integer estoque;
-  private String imagemUrl;
+    @Column(name = "NOME", nullable = false, length = 100)
+    private String nome;
+    @Column(name = "DESCRICAO", nullable = false, length = 255)
+    private String descricao;
+    @Column(name = "PRECO", nullable = false, precision = 10, scale = 2)
+    private BigDecimal preco;
+    @Column(name = "CATEGORIA", nullable = false, length = 50)
+    private String categoria;
+    @Column(name = "ESTOQUE", nullable = false)
+    private Integer estoque;
+
+    private String imagemUrl;
 }

@@ -1,15 +1,21 @@
 package com.rsdesenvolvimento.estoque.modelo.dtos;
 
 import java.math.BigDecimal;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class EstoqueRequestDto {
-  private String nome;
-  private String descricao;
-  private BigDecimal preco;
-  private String categoria;
-  private Integer estoque;
-  private String imagemUrl;
+    private String nome;
+    private String descricao;
+    private BigDecimal preco;
+    private String categoria;
+    private Integer estoque;
+    private String imagemUrl;
 }
 
