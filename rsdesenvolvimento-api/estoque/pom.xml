@@ -145,6 +145,37 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activatedProfile>local</activatedProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>desenv</id>
+            <properties>
+                <activatedProfile>desenv</activatedProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <activatedProfile>test</activatedProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>deploy</id>
+            <properties>
+                <activatedProfile>deploy</activatedProfile>
+            </properties>
+        </profile>
+    </profiles>
+
+
     <build>
         <plugins>
             <!-- Compilador com Processadores de Anotação -->

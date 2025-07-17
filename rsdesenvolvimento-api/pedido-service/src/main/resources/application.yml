@@ -6,8 +6,7 @@ server:
 # Configurações gerais
 spring:
     profiles:
-        active:
-            - '@activatedProfile@'
+        active: @activatedProfile@
     application:
         name: pedido-service
     flyway:
@@ -82,18 +81,18 @@ eureka:
 resilience4j:
     circuitbreaker:
         instances:
-            usuario-api:
-                failureRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_FAILURE_RATE_THRESHOLD:50}
-                slowCallRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_SLOW_CALL_RATE_THRESHOLD:50}
-                waitDurationInOpenState: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_WAIT_DURATION_IN_OPEN_STATE:10s}
-                permittedNumberOfCallsInHalfOpenState: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_PERMITTED_CALLS_IN_HALF_OPEN:3}
-                minimumNumberOfCalls: ${RESILIENCE4J_CIRCUITBREAKER_USUARIO_API_MINIMUM_NUMBER_OF_CALLS:5}
+            estoque-api:
+                failureRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_ESTOQUE_API_FAILURE_RATE_THRESHOLD:50}
+                slowCallRateThreshold: ${RESILIENCE4J_CIRCUITBREAKER_ESTOQUE_API_SLOW_CALL_RATE_THRESHOLD:50}
+                waitDurationInOpenState: ${RESILIENCE4J_CIRCUITBREAKER_ESTOQUE_API_WAIT_DURATION_IN_OPEN_STATE:10s}
+                permittedNumberOfCallsInHalfOpenState: ${RESILIENCE4J_CIRCUITBREAKER_ESTOQUE_API_PERMITTED_CALLS_IN_HALF_OPEN:3}
+                minimumNumberOfCalls: ${RESILIENCE4J_CIRCUITBREAKER_ESTOQUE_API_MINIMUM_NUMBER_OF_CALLS:5}
     retry:
         instances:
-            usuario-api:
-                maxAttempts: ${RESILIENCE4J_RETRY_USUARIO_API_MAX_ATTEMPTS:3}
-                waitDuration: ${RESILIENCE4J_RETRY_USUARIO_API_WAIT_DURATION:2s}
-                exponentialBackoffMultiplier: ${RESILIENCE4J_RETRY_USUARIO_API_EXPONENTIAL_BACKOFF_MULTIPLIER:2}
+            estoque-api:
+                maxAttempts: ${RESILIENCE4J_RETRY_ESTOQUE_API_MAX_ATTEMPTS:3}
+                waitDuration: ${RESILIENCE4J_RETRY_ESTOQUE_API_WAIT_DURATION:2s}
+                exponentialBackoffMultiplier: ${RESILIENCE4J_RETRY_ESTOQUE_API_EXPONENTIAL_BACKOFF_MULTIPLIER:2}
                 retryExceptions:
                     - org.springframework.web.client.HttpClientErrorException
                     - java.net.UnknownHostException
@@ -125,39 +124,60 @@ logging:
 ################################################
 # configurações específicas para profile LOCAL #
 ################################################
-# spring:
-#   config:
-#     activate:
-#       on-profile: local
-#   flyway:
-#     enabled: true
-#     cleanDisabled: false
-#     create-schemas: true
-#     url: jdbc:postgresql://localhost:5432/pedido
-#   datasource:
-#     url: jdbc:postgresql://localhost:5432/pedido
-#     username: postgres
-#     password: postgres
-#   jpa:
-#     # show-sql: true
-#     properties:
-#       hibernate:
-#         format_sql: true
-#       javax.persistence.schema-generation.scripts:
-#         action: drop-and-create
-#         create-source: metadata
-#         create-target: target/create.sql
-#         drop-source: metadata
-#         drop-target: target/drop.sql
-# # configurações de logging
-# logging:
-#   level:
-#     org:
-#       flywaydb: debug
-#       hibernate:
-#         type.descriptor.sql.BasicBinder: info
-#       springframework:
-#         web:
-#           filter: info
-#           client: debug
-#         transaction: error
+spring:
+    config:
+        activate:
+            on-profile: local
+    flyway:
+        enabled: true
+        cleanDisabled: false
+        create-schemas: true
+        url: jdbc:postgresql://localhost:5432/pedido
+    datasource:
+        url: jdbc:postgresql://localhost:5432/pedido
+        username: postgres
+        password: postgres
+    jpa:
+        # show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+            javax.persistence.schema-generation.scripts:
+                action: drop-and-create
+                create-source: metadata
+                create-target: target/create.sql
+                drop-source: metadata
+                drop-target: target/drop.sql
+# configurações de logging
+logging:
+    level:
+        org:
+            flywaydb: debug
+            hibernate:
+                type.descriptor.sql.BasicBinder: info
+            springframework:
+                web:
+                    filter: info
+                    client: debug
+                transaction: error
+
+---
+##########################################################
+# configurações específicas para profile DESENVOLVIMENTO #
+##########################################################
+spring:
+    config:
+        activate:
+            on-profile: desenv
+
+    flyway:
+        enabled: ${FLYWAY_ENABLED:true}
+        create-schemas: ${FLYWAY_CREATE_SCHEMA:true}
+        url: ${SPRING_DATASOURCE_URL}
+        user: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+
+    datasource:
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}

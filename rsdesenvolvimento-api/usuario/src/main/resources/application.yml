@@ -9,7 +9,7 @@ spring:
         active:
             - '@activatedProfile@'
     application:
-        name: usuario-api
+        name: usuario-service
     flyway:
         enabled: ${FLYWAY_ENABLED:false}
         baseline-on-migrate: true

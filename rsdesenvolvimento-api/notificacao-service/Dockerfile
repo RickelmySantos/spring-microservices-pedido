@@ -1,33 +1,33 @@
-### DOWNLOAD DEPENDENCIES
 
 FROM maven:3.9.6-eclipse-temurin-21 AS dependencies
-WORKDIR /root
-COPY parent-pom.xml pom.xml
+WORKDIR /build
 
-WORKDIR /root/app
-COPY pom.xml .
-RUN --mount=type=cache,target=~/.m2/repository mvn -B -T 1C -Dmaven.artifact.threads=25 dependency:go-offline verify --fail-never -DskipTests && rm -rf ./target 
+COPY pom.xml ./pom.xml
+COPY notificacao-service/pom.xml ./notificacao-service/pom.xml
 
-### BUILD APP
+WORKDIR /build/notificacao-service
+
+RUN --mount=type=cache,target=/root/.m2 \
+    mvn -B -T 1C -Pdeploy -DskipTests dependency:go-offline verify --fail-never
+
 
 FROM dependencies AS build
-COPY src src 
-RUN --mount=type=cache,target=~/app/target \
+
+COPY notificacao-service/src ./src
+
+RUN --mount=type=cache,target=/root/.m2 \
     mvn -B -T 1C -Pdeploy -DskipTests clean package && \
     java -Djarmode=tools -jar ./target/notificacao-service-0.0.1-SNAPSHOT.jar \
     extract --layers --launcher --destination ./target/layers && \
-    rm -rf ~/.m2/repository && \
     find target -mindepth 1 ! -path 'target/layers*' ! -name '*.jar' -exec rm -rf {} +
 
-### BUILD DOCKER IMAGE
+
 FROM eclipse-temurin:21-jre AS runtime
 WORKDIR /app
 
-### COPY LAYERS
-
-COPY --from=build /root/app/target/layers/dependencies/ ./
-COPY --from=build /root/app/target/layers/spring-boot-loader/ ./
-COPY --from=build /root/app/target/layers/snapshot-dependencies/ ./
-COPY --from=build /root/app/target/layers/application/ ./
+COPY --from=build /build/notificacao-service/target/layers/dependencies/ ./
+COPY --from=build /build/notificacao-service/target/layers/spring-boot-loader/ ./
+COPY --from=build /build/notificacao-service/target/layers/snapshot-dependencies/ ./
+COPY --from=build /build/notificacao-service/target/layers/application/ ./
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

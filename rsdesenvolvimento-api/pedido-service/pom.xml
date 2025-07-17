@@ -133,6 +133,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Cache-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!--Logging  -->
         <!-- <dependency>
 			<groupId>com.github.loki4j</groupId>
@@ -151,7 +157,7 @@
         <profile>
             <id>local</id>
             <activation>
-                <!-- <activeByDefault>true</activeByDefault> -->
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <activatedProfile>local</activatedProfile>
