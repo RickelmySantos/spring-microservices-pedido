@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, map, Observable, shareReplay } from 'rxjs';
-import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { EstoqueService } from 'src/app/services/estoque.service';
+import { Produto } from '../models/produto.model';
 
 @Injectable({ providedIn: 'root' })
 export class CardapioState {
     private readonly categoriaSelecionadaSubject = new BehaviorSubject<string>('all');
     public readonly categoriaSelecionada$ = this.categoriaSelecionadaSubject.asObservable();
-    private readonly produtos$: Observable<MenuCardapio[]>;
+    private readonly produtos$: Observable<Produto[]>;
 
-    public readonly produtosFiltrados$: Observable<MenuCardapio[]>;
+    public readonly produtosFiltrados$: Observable<Produto[]>;
 
     constructor(private readonly estoqueService: EstoqueService) {
         this.produtos$ = this.estoqueService.listarProdutos().pipe(shareReplay({ bufferSize: 1, refCount: true }));

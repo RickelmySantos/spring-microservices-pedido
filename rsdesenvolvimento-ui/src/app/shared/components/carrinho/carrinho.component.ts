@@ -1,6 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { AlterarQuantidadeEvent } from 'src/app/models/alterarQuantidade.model';
 import { CarrinhoService } from 'src/app/services/carrinho.service';
+import { CheckoutService } from 'src/app/services/checkout.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CarrinhoModalComponent } from './carrinho-modal.component';
 
@@ -22,6 +23,7 @@ import { CarrinhoModalComponent } from './carrinho-modal.component';
 })
 export class CarrinhoComponent {
     protected readonly carrinhoService: CarrinhoService = inject(CarrinhoService);
+    protected readonly checkoutService: CheckoutService = inject(CheckoutService);
 
     protected readonly itensCarrinho$ = this.carrinhoService.itensCarrinho$;
     protected readonly totalCarrinho$ = this.carrinhoService.totalCarrinho$;
@@ -39,7 +41,7 @@ export class CarrinhoComponent {
 
     onFinalizarPedido(): void {
         this.isLoading = true;
-        this.carrinhoService.finalizarPedido().subscribe({
+        this.checkoutService.finalizarPedido().subscribe({
             next: () => {
                 this.isLoading = false;
                 alert('Pedido realizado com sucesso! 🎉');
@@ -52,6 +54,6 @@ export class CarrinhoComponent {
         });
     }
     onAlterarQuantidade(event: AlterarQuantidadeEvent): void {
-        this.carrinhoService.alterarQuantidade(event.item.id, event.delta);
+        this.carrinhoService.incrementarQuantidadeOuRemover(event.item.id, event.delta);
     }
 }

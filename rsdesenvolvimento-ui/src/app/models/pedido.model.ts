@@ -8,5 +8,5 @@ export interface Pedido extends Entity<number> {
     nomeUsuario: string;
     emailUsuario: string;
     status: StatusEnum;
-    itens: ItemPedido[];
+    itensPedido: ItemPedido[];
 }

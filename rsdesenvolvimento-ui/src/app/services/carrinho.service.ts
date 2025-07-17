@@ -1,14 +1,10 @@
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
-import { CriarPedidoRequest } from 'src/app/models/criarPedido.model';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { ItemCarrinho } from 'src/app/models/itemCarrinho.model';
-import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
-import { PedidoService } from 'src/app/services/pedido.service';
+import { Produto } from '../models/produto.model';
 
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService {
-    private readonly pedidoService: PedidoService = inject(PedidoService);
-
     private readonly itensSubject = new BehaviorSubject<ItemCarrinho[]>([]);
 
     public readonly itensCarrinho$: Observable<ItemCarrinho[]> = this.itensSubject.asObservable();
@@ -17,8 +13,8 @@ export class CarrinhoService {
 
     public readonly quantidadeItens$: Observable<number> = this.itensCarrinho$.pipe(map(itens => itens.length));
 
-    adicionarItem(item: MenuCardapio): void {
-        const itensAtuais = [...this.itensSubject.value];
+    adicionarItem(item: Produto): void {
+        const itensAtuais = [...this.carrinhoItens];
         const itemExistente = itensAtuais.find(i => i.id === item.id);
 
         if (itemExistente) {
@@ -30,8 +26,8 @@ export class CarrinhoService {
         this.itensSubject.next(itensAtuais);
     }
 
-    alterarQuantidade(itemId: number, delta: number): void {
-        let itensAtuais = [...this.itensSubject.value];
+    incrementarQuantidadeOuRemover(itemId: number, delta: number): void {
+        let itensAtuais = [...this.carrinhoItens];
         const item = itensAtuais.find(i => i.id === itemId);
 
         if (item) {
@@ -49,42 +45,11 @@ export class CarrinhoService {
         this.itensSubject.next([]);
     }
 
-    finalizarPedido(): Observable<any> {
-        const itensAtuais = this.itensSubject.value;
-
-        if (!itensAtuais.length) {
-            return throwError(() => new Error('Seu carrinho está vazio... 😔'));
-        }
-
-        const pedidoValido = itensAtuais.every(item => item.quantidade && item.quantidade > 0);
-        if (!pedidoValido) {
-            return throwError(() => new Error('Alguns itens possuem quantidade inválida...'));
-        }
-
-        const pedidoPayload: CriarPedidoRequest = {
-            observacao: 'Pedido de múltiplos itens',
-            itensPedido: itensAtuais.map(item => ({
-                produtoId: item.id,
-                quantidade: item.quantidade,
-                precoUnitario: item.preco,
-                nomeProduto: item.nome,
-            })),
-        };
-
-        console.log('Enviando payload:', pedidoPayload);
-
-        return this.pedidoService.registrarPedido(pedidoPayload).pipe(
-            tap(() => {
-                console.log('Pedido registrado com sucesso, limpando o carrinho.');
-                this.limparCarrinho();
-            }),
-            catchError(err => {
-                console.error('Houve um problema ao registrar o pedido.', err);
-                return throwError(() => new Error('Houve um problema ao finalizar seu pedido... 😔'));
-            })
-        );
-    }
     atualizarCarrinho(itens: ItemCarrinho[]) {
         this.itensSubject.next(itens);
+    }
+
+    get carrinhoItens(): ItemCarrinho[] {
+        return this.itensSubject.value;
     }
 }

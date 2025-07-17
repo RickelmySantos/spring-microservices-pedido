@@ -1,10 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
 import { CardapioState } from 'src/app/services/cardapio.service';
 import { CarrinhoService } from 'src/app/services/carrinho.service';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { Produto } from '../../models/produto.model';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
 import { CardapioCardComponent } from './menu/cardapio-menu.component';
 
@@ -36,7 +36,7 @@ import { CardapioCardComponent } from './menu/cardapio-menu.component';
 export class CardapioComponent {
     private readonly cloudinaryBaseUrl = 'https://res.cloudinary.com/rsdesenvolvimento-estoque-api/image/upload/';
 
-    produtos$: Observable<MenuCardapio[]>;
+    produtos$: Observable<Produto[]>;
 
     constructor(protected cardapioState: CardapioState, protected carrinhoService: CarrinhoService) {
         this.produtos$ = this.cardapioState.produtosFiltrados$.pipe(
@@ -53,10 +53,10 @@ export class CardapioComponent {
         this.cardapioState.selecionarCategoria(categoria);
     }
 
-    adcionarProduto(item: MenuCardapio): void {
+    adcionarProduto(item: Produto): void {
         this.carrinhoService.adicionarItem(item);
     }
-    trackByProdutoId(index: number, item: MenuCardapio): string | number {
+    trackByProdutoId(index: number, item: Produto): string | number {
         return item.id;
     }
 }

@@ -1,5 +1,5 @@
-import { MenuCardapio } from 'src/app/models/menu-cardapio.model';
+import { Produto } from './produto.model';
 
-export interface ItemCarrinho extends MenuCardapio {
+export interface ItemCarrinho extends Produto {
     quantidade: number;
 }

@@ -29,7 +29,6 @@ interface Depoimento {
                         </div>
                         <p class="cartao-depoimento__texto">"{{ depoimento.texto }}"</p>
                         <div class="cartao-depoimento__autor-info">
-                            <!-- <img [src]="depoimento.imagemUrl" [alt]="'Foto de ' + depoimento.autor" class="autor-info__imagem" /> -->
                             <img [ngSrc]="depoimento.imagemUrl" [alt]="'Foto de ' + depoimento.autor" class="autor-info__imagem" width="33" height="33" />
                             <div>
                                 <h4 class="autor-info__nome">{{ depoimento.autor }}</h4>
