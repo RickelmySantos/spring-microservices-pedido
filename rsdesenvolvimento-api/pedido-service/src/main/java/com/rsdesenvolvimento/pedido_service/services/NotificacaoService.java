@@ -14,7 +14,8 @@ public class NotificacaoService {
     private final NotificacaoPort notificacaoPort;
 
     public void enviarNotificacao(Pedido pedido) {
-        String mensagem = String.format("Pedido %s criado com sucesso!", pedido.getId());
+        String mensagem =
+                String.format("PEDIDO_CRIADO:%s:%s", pedido.getId(), pedido.getEmailUsuario());
         this.notificacaoPort.enviarNotificacao(mensagem);
     }
 }

@@ -82,6 +82,12 @@ public class PedidoService {
         }
     }
 
+    public String buscarEmailPorPedidoId(Long pedidoId) {
+        Pedido pedido = this.pedidoRepository.findById(pedidoId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+        return pedido.getEmailUsuario();
+    }
+
 
     private Pedido prepararPedido(PedidoRequesteDto dto, Usuario usuario) {
         Pedido pedido = this.pedidoMapper.paraEntidade(dto);

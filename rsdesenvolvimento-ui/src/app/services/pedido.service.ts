@@ -10,12 +10,10 @@ import { Pedido } from 'src/app/models/pedido.model';
 export class PedidoService extends CrudService<Pedido> {
     protected override PATH: string = 'pedido-service/api/pedido';
 
-    constructor() {
-        super();
-    }
     registrarPedido(pedido: CriarPedidoRequest): Observable<Pedido> {
         return this.http.post<Pedido>(this.getUrl(), pedido).pipe(
             tap(pedidoCriado => {
+                console.log(`[PedidoService] Payload enviado:`, pedido);
                 console.log(`[PedidoService] Pedido #${pedidoCriado.id} registrado com sucesso!`);
             }),
             catchError(err => {

@@ -32,7 +32,11 @@ public class PagamentoService {
 
         this.notificacaoProducer.enviarNotificacao(
                 "Pagamento do pedido " + dto.getPedidoId() + " realizado com sucesso!");
-        this.notificacaoProducer.enviarNotificacaoComDelay("EMAIL_PAGAMENTO_CONFIRMADO", 10000);
+
+        // Buscar o email do usuário do pedido
+        String emailUsuario = this.pedidoClient.buscarEmailPorPedidoId(dto.getPedidoId());
+        this.notificacaoProducer.enviarNotificacaoComDelay(
+                "EMAIL_PAGAMENTO_CONFIRMADO:" + dto.getPedidoId() + ":" + emailUsuario, 10000);
 
         return pagamento;
     }

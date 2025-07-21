@@ -20,7 +20,7 @@ public class NotificacaoService {
     private String sendGridApiKey;
 
     public void enviarEmail(String to, String subject, String content) {
-        Email from = new Email("rickelmysantos493@gmail.com", "RSDesenvolvimento - Notificações");
+        Email from = new Email("rickrickelmy98@gmail.com", "RSDesenvolvimento - Notificações");
         Email toEmail = new Email(to);
 
         Content emailContent = new Content("text/html", content);
