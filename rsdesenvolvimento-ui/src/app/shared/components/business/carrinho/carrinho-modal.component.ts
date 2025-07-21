@@ -1,6 +1,7 @@
 import { CurrencyPipe, NgFor, NgIf, NgOptimizedImage } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AlterarQuantidadeEvent } from 'src/app/models/alterarQuantidade.model';
+
 import { ItemCarrinho } from 'src/app/models/itemCarrinho.model';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -16,7 +17,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
                 <ul class="carrinho-itens">
                     <li *ngFor="let item of itens" class="carrinho-item">
                         <!-- <img [src]="item.imagemUrl" [alt]="item.nome" class="item-img" /> -->
-                        <img [ngSrc]="item.imagemUrl" [alt]="item.nome" class="item-img" width="80" height="60" />
+                        <div class="item-img-container">
+                            <img [ngSrc]="item.imagemUrl" [alt]="item.nome" class="item-img" width="80" height="60" />
+                        </div>
 
                         <div class="item-info">
                             <h3>{{ item.nome }}</h3>
@@ -53,6 +56,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
             </div>
         </dialog>
     `,
+
     standalone: true,
     imports: [SharedModule, NgFor, NgIf, CurrencyPipe, NgOptimizedImage],
 })

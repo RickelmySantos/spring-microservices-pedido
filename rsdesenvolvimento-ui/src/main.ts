@@ -45,20 +45,3 @@ bootstrapApplication(AppComponent, {
         },
     ],
 }).catch(err => console.error(err));
-// bootstrapApplication(AppComponent, {
-//     providers: [
-//         provideRouter(ROUTES),
-//         provideHttpClient(withInterceptors([authInterceptor])), // Mantenha seu interceptor
-//         importProvidersFrom(
-//             BrowserModule,
-//             BrowserAnimationsModule,
-//             TranslateModule.forRoot({
-//                 loader: {
-//                     provide: TranslateModule,
-//                     useFactory: httpLoaderFactory,
-//                     deps: [HttpClient],
-//                 },
-//             })
-//         ),
-//     ],
-// }).catch(err => console.error(err));

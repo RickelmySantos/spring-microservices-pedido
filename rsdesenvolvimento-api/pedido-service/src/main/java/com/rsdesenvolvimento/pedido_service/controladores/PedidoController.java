@@ -35,7 +35,7 @@ public class PedidoController {
     @PutMapping("/{id}/status")
     public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
             @RequestParam String status) {
-        this.pedidoService.statusPagamento(id, status);
+        this.pedidoService.atualizarStatusPagamento(id, status);
         return ResponseEntity.ok().build();
     }
 
