@@ -1,5 +1,6 @@
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
+import { ActionButtonComponent } from 'src/app/core/components/buttons/action-button.component';
 import { Produto } from 'src/app/models/produto.model';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -20,9 +21,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
                 <p class="cardapio-card__description">{{ item.descricao }}</p>
 
-                <button class="cardapio-card__action-button" (click)="onAdicionar()" [attr.aria-label]="'Adicionar ' + item.nome + ' ao pedido'">
+                <!-- <button class="cardapio-card__action-button" (click)="onAdicionar()" [attr.aria-label]="'Adicionar ' + item.nome + ' ao pedido'">
                     <span>Adicionar</span>
-                </button>
+                </button> -->
+
+                <action-button (click)="onAdicionar()" [attr.aria-label]="'Adicionar ' + item.nome + ' ao pedido'" [type]="'card'">
+                    <span>Adicionar</span>
+                </action-button>
             </section>
         </article>
     `,
@@ -30,7 +35,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
     changeDetection: ChangeDetectionStrategy.OnPush,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [SharedModule, CurrencyPipe, NgOptimizedImage],
+    imports: [SharedModule, CurrencyPipe, NgOptimizedImage, ActionButtonComponent],
 })
 export class CardapioCardComponent {
     @Input()

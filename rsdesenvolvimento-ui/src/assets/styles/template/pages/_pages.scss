@@ -1,0 +1,49 @@
+@use "../abstracts" as *;
+
+// Page-specific styles
+.page {
+    &__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    &__header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--p-surface-border);
+    }
+
+    &__title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--p-text-color);
+        margin: 0 0 0.5rem 0;
+    }
+
+    &__subtitle {
+        font-size: 1.125rem;
+        color: var(--p-text-color-secondary);
+        margin: 0;
+    }
+
+    &__content {
+        margin-bottom: 2rem;
+    }
+
+    &__section {
+        margin-bottom: 3rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__footer {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--p-surface-border);
+        text-align: center;
+        color: var(--p-text-color-secondary);
+    }
+}

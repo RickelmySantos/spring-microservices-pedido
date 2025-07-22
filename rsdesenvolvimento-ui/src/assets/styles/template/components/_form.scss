@@ -1,1 +1,54 @@
 @use "../abstracts" as *;
+
+// Form Components Styles
+.form {
+    &__group {
+        margin-bottom: var(--p-form-field-margin, 1rem);
+    }
+
+    &__label {
+        display: block;
+        margin-bottom: var(--p-form-label-margin, 0.5rem);
+        font-weight: 500;
+        color: var(--p-text-color);
+        font-size: 0.875rem;
+    }
+
+    &__input {
+        width: 100%;
+        padding: var(--p-input-padding, 0.75rem);
+        border: 1px solid var(--p-input-border-color);
+        border-radius: var(--p-border-radius);
+        background-color: var(--p-input-bg);
+        color: var(--p-input-text-color);
+        font-size: var(--p-input-font-size, 1rem);
+        transition: var(--p-form-element-transition);
+
+        &:focus {
+            outline: none;
+            border-color: var(--p-primary-color);
+            box-shadow: 0 0 0 2px rgba(var(--p-primary-color-rgb), 0.2);
+        }
+
+        &:disabled {
+            opacity: var(--p-disabled-opacity, 0.6);
+            cursor: not-allowed;
+        }
+
+        &--error {
+            border-color: var(--p-red-500);
+        }
+    }
+
+    &__error {
+        color: var(--p-red-500);
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
+
+    &__help {
+        color: var(--p-text-color-secondary);
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
+}

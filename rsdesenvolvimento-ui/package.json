@@ -42,6 +42,7 @@
         "express": "^4.21.2",
         "lodash.isequal": "^4.5.0",
         "luxon": "^3.6.1",
+        "madge": "^8.0.0",
         "primeflex": "^3.3.1",
         "primeicons": "^6.0.1",
         "primeng": "^17.18.15",

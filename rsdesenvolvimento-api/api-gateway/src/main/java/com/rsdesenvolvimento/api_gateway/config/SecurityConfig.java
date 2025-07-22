@@ -52,6 +52,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers("/actuator/**").permitAll()
 
+                        .pathMatchers("/estoque-api/**").permitAll()
+
 
                         .anyExchange().authenticated())
 

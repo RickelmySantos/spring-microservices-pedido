@@ -40,11 +40,11 @@ $xxl: 2400px !default; //Huge Desktop / TV
 }
 
 @mixin defineColor($color-name, $value) {
-    $p-red: p-red($value);
-    $p-green: p-green($value);
-    $p-blue: p-blue($value);
-    #{$color-name}: unquote("rgb(#{$p-red}, #{$p-green}, #{$p-blue})");
-    #{$color-name}-rgb: $p-red, $p-green, $p-blue;
+    $red: red($value);
+    $green: green($value);
+    $blue: blue($value);
+    #{$color-name}: unquote("rgb(#{$red}, #{$green}, #{$blue})");
+    #{$color-name}-rgb: $red, $green, $blue;
 }
 
 @mixin button {

@@ -10,7 +10,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     const authStorage: OAuthStorage = inject(OAuthStorage);
 
     const url = req.url.toLowerCase();
-    const urlPermitida = allowedUrls[0].toLowerCase(); // Pega a primeira URL permitida
+    const urlPermitida = allowedUrls[0].toLowerCase();
 
     // LOGS DE DEPURAÇÃO
     console.log('[DEPURAÇÃO] URL da Requisição:', url);

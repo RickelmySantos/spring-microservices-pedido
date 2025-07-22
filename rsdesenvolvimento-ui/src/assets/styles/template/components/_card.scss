@@ -1,0 +1,39 @@
+@use "../abstracts" as *;
+
+// Card Components Styles
+.card {
+    background-color: var(--p-surface-card);
+    border: 1px solid var(--p-surface-border);
+    border-radius: var(--p-border-radius);
+    padding: var(--p-card-padding, 1.5rem);
+    box-shadow: var(--p-card-shadow, 0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: var(--p-transition-duration);
+
+    &:hover {
+        box-shadow: var(--p-card-hover-shadow, 0 4px 8px rgba(0, 0, 0, 0.15));
+    }
+
+    &__header {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--p-surface-border);
+    }
+
+    &__title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--p-text-color);
+        margin: 0;
+    }
+
+    &__content {
+        color: var(--p-text-color-secondary);
+        line-height: 1.6;
+    }
+
+    &__footer {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--p-surface-border);
+    }
+}
