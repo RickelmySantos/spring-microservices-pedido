@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { ItemCarrinho } from 'src/app/models/itemCarrinho.model';
 import { Produto } from '../models/produto.model';
+import { ICarrinhoService } from './interfaces/carrinho.interface';
 
 @Injectable({ providedIn: 'root' })
-export class CarrinhoService {
+export class CarrinhoService implements ICarrinhoService {
     private readonly itensSubject = new BehaviorSubject<ItemCarrinho[]>([]);
 
     public readonly itensCarrinho$: Observable<ItemCarrinho[]> = this.itensSubject.asObservable();

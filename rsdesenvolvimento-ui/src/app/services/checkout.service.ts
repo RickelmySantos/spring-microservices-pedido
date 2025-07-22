@@ -1,37 +1,38 @@
-import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { inject, Injectable, InjectionToken } from '@angular/core';
+import { catchError, first, Observable, switchMap, tap, throwError } from 'rxjs';
 import { CriarPedidoRequest } from '../models/criarPedido.model';
 import { Pedido } from '../models/pedido.model';
-import { CarrinhoService } from './carrinho.service';
-import { PedidoService } from './pedido.service';
+
+import { ICarrinhoService } from './interfaces/carrinho.interface';
+import { IPedidoService } from './interfaces/pedido.interface';
+
+export const CARRINHO_SERVICE_TOKEN = new InjectionToken<ICarrinhoService>('ICarrinhoService');
+export const PEDIDO_SERVICE_TOKEN = new InjectionToken<IPedidoService>('IPedidoService');
 
 @Injectable({ providedIn: 'root' })
 export class CheckoutService {
-    private readonly carrinhoService: CarrinhoService = inject(CarrinhoService);
-    private readonly pedidoService: PedidoService = inject(PedidoService);
+    private readonly carrinhoService: ICarrinhoService = inject(CARRINHO_SERVICE_TOKEN);
+    private readonly pedidoService: IPedidoService = inject(PEDIDO_SERVICE_TOKEN);
 
     finalizarPedido(): Observable<Pedido> {
-        const itens = this.carrinhoService.carrinhoItens;
+        return this.carrinhoService.itensCarrinho$.pipe(
+            first(),
+            switchMap(itens => {
+                if (!itens.length) {
+                    return throwError(() => new Error('Seu carrinho está vazio... 😔'));
+                }
 
-        if (!itens.length) {
-            return throwError(() => new Error('Seu carrinho está vazio... 😔'));
-        }
-        const pedidoValido = itens.every(i => i.quantidade > 0);
-        if (!pedidoValido) {
-            return throwError(() => new Error('Todos os itens devem ter quantidade maior que zero.'));
-        }
-
-        const payload: CriarPedidoRequest = {
-            observacao: 'Pedido realizado via checkout',
-            itensPedido: itens.map(item => ({
-                produtoId: item.id,
-                quantidade: item.quantidade,
-                precoUnitario: item.preco,
-                nomeProduto: item.nome,
-            })),
-        };
-        return this.pedidoService.registrarPedido(payload).pipe(
-            tap(() => this.carrinhoService.limparCarrinho()),
+                const payload: CriarPedidoRequest = {
+                    observacao: 'Pedido realizado via checkout',
+                    itensPedido: itens.map(item => ({
+                        produtoId: item.id,
+                        quantidade: item.quantidade,
+                        precoUnitario: item.preco,
+                        nomeProduto: item.nome,
+                    })),
+                };
+                return this.pedidoService.registrarPedido(payload).pipe(tap(() => this.carrinhoService.limparCarrinho()));
+            }),
             catchError(err => {
                 console.error('Erro ao finalizar pedido:', err);
                 return throwError(() => new Error('Erro ao finalizar pedido. Tente novamente.'));

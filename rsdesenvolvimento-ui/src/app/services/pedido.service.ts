@@ -3,11 +3,12 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { CriarPedidoRequest } from 'src/app/models/criarPedido.model';
 import { Pedido } from 'src/app/models/pedido.model';
+import { IPedidoService } from './interfaces/pedido.interface';
 
 @Injectable({
     providedIn: 'root',
 })
-export class PedidoService extends CrudService<Pedido> {
+export class PedidoService extends CrudService<Pedido> implements IPedidoService {
     protected override PATH: string = 'pedido-service/api/pedido';
 
     registrarPedido(pedido: CriarPedidoRequest): Observable<Pedido> {

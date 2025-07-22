@@ -14,6 +14,9 @@ import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { authInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { httpLoaderFactory } from 'src/app/core/translate/translate-loader-factory';
+import { CarrinhoService } from './app/services/carrinho.service';
+import { CARRINHO_SERVICE_TOKEN, PEDIDO_SERVICE_TOKEN } from './app/services/checkout.service';
+import { PedidoService } from './app/services/pedido.service';
 
 // export function initializeAuth(authService: AuthService): () => Promise<void> {
 //     return () => authService.initAuth();
@@ -43,5 +46,7 @@ bootstrapApplication(AppComponent, {
         //     deps: [AuthService],
         //     multi: true,
         // },
+        { provide: CARRINHO_SERVICE_TOKEN, useExisting: CarrinhoService },
+        { provide: PEDIDO_SERVICE_TOKEN, useExisting: PedidoService },
     ],
 }).catch(err => console.error(err));
