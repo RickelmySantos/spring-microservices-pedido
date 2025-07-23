@@ -6,9 +6,9 @@ import { MenuItem } from 'primeng/api';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { BadgeModule } from 'primeng/badge';
-import { CarrinhoService } from 'src/app/services/carrinho.service';
 import { MenuItemComponent } from 'src/app/core/layout/menu-item/menu-item.component';
 import { CarrinhoComponent } from 'src/app/shared/components/carrinho/carrinho.component';
+import { CarrinhoService } from '../../../shared/components/carrinho/service/carrinho.service';
 
 @Component({
     selector: 'app-menu',

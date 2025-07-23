@@ -2,9 +2,9 @@ import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { CardapioState } from 'src/app/services/cardapio.service';
-import { CarrinhoService } from 'src/app/services/carrinho.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { Produto } from '../../models/produto.model';
+import { CarrinhoService } from '../../shared/components/carrinho/service/carrinho.service';
 import { CardapioCategoriaComponent } from './categoria/cardapio-categoria.component';
 import { CardapioCardComponent } from './menu/cardapio-menu.component';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CarrinhoLogic } from '../shared/state/carrinhoLogic.service';
-import { CarrinhoStorageService } from './storage/carrinho-storage.service';
+import { CarrinhoStorageService } from './carrinho-storage.service';
+import { CarrinhoLogic } from './carrinhoLogic.service';
 
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService extends CarrinhoLogic {

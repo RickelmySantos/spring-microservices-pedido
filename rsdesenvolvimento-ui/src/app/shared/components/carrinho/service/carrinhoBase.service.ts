@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, takeUntil, tap } from 'rxjs';
-import { Entity } from '../../core/components/models/entity.model';
-import { Unsubscribe } from '../../core/util/unsubscribe';
-import { StateUtil } from './StateUtil';
+import { Entity } from 'src/app/core/components/models/entity.model';
+import { StateUtil } from 'src/app/core/state/StateUtil';
+import { Unsubscribe } from 'src/app/core/util/unsubscribe';
 
 export interface IStorageService<T> {
     salvar(data: T[]): void;

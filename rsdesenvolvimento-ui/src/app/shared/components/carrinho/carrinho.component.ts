@@ -1,9 +1,9 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { AlterarQuantidadeEvent } from 'src/app/models/alterarQuantidade.model';
-import { CarrinhoService } from 'src/app/services/carrinho.service';
 import { CheckoutService } from 'src/app/services/checkout.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CarrinhoModalComponent } from './carrinho-modal.component';
+import { CarrinhoService } from './service/carrinho.service';
 
 @Component({
     selector: 'app-carrinho',

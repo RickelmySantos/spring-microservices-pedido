@@ -1,7 +1,7 @@
 import { map, Observable } from 'rxjs';
-import { ItemCarrinho } from '../../models/itemCarrinho.model';
+import { ItemCarrinho } from 'src/app/models/itemCarrinho.model';
+import { Produto } from 'src/app/models/produto.model';
 import { CarrinhoBaseService, IStorageService } from './carrinhoBase.service';
-import { Produto } from '../../models/produto.model';
 
 export abstract class CarrinhoLogic extends CarrinhoBaseService<ItemCarrinho> {
     public readonly totalCarrinho$: Observable<number>;

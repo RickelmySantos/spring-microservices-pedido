@@ -39,7 +39,7 @@ export class CardapioState implements ICardapioState, OnDestroy {
     }
 
     public get categoriaAtual(): string {
-        return this.categoriaState.currentValue;
+        return this.categoriaState.value;
     }
 
     public get isTodasCategorias(): boolean {

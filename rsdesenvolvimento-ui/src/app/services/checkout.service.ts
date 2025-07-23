@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { catchError, first, Observable, switchMap, tap, throwError } from 'rxjs';
 import { CriarPedidoRequest } from '../models/criarPedido.model';
 import { Pedido } from '../models/pedido.model';
-import { CarrinhoService } from './carrinho.service';
+
+import { CarrinhoService } from '../shared/components/carrinho/service/carrinho.service';
 import { PedidoService } from './pedido.service';
 
 @Injectable({ providedIn: 'root' })

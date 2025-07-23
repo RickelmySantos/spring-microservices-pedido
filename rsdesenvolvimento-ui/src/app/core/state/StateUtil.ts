@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Entity } from '../../core/components/models/entity.model';
+import { Entity } from '../components/models/entity.model';
 
 export class StateUtil<T extends Entity<any>> {
     private readonly state$: BehaviorSubject<T[]>;
