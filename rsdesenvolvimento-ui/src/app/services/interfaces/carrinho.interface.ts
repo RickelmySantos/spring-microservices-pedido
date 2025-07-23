@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ItemCarrinho } from '../models/itemCarrinho.model';
+import { ItemCarrinho } from '../../models/itemCarrinho.model';
 
 export interface ICarrinhoService {
     readonly itensCarrinho$: Observable<ItemCarrinho[]>;

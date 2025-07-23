@@ -54,7 +54,7 @@ export class CardapioComponent {
     }
 
     adcionarProduto(item: Produto): void {
-        this.carrinhoService.adicionarItem(item);
+        this.carrinhoService.adcionarProduto(item);
     }
     trackByProdutoId(index: number, item: Produto): string | number {
         return item.id;

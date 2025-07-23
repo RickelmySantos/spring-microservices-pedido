@@ -12,25 +12,25 @@ export class AuthService {
 
         this.oauthService.disablePKCE = false;
 
-        this.runInitialLoginSequence();
+        // this.runInitialLoginSequence();
     }
 
-    // async initAuth(): Promise<void> {
-    //     try {
-    //         await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    //         if (!this.oauthService.hasValidAccessToken()) {
-    //             this.oauthService.initLoginFlow();
-    //         } else {
-    //             console.debug('Login silencioso bem-sucedido. Token válido encontrado.');
-    //         }
-    //     } catch (e) {
-    //         console.error('Erro ao carregar discovery document ou tentar login:', e);
-    //         if (e instanceof Error && 'details' in e && typeof (e as any).details === 'string') {
-    //             console.log('Detalhes do erro:', e.details);
-    //         }
-    //         this.oauthService.initLoginFlow();
-    //     }
-    // }
+    async initAuth(): Promise<void> {
+        try {
+            await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+            if (!this.oauthService.hasValidAccessToken()) {
+                this.oauthService.initLoginFlow();
+            } else {
+                console.debug('Login silencioso bem-sucedido. Token válido encontrado.');
+            }
+        } catch (e) {
+            console.error('Erro ao carregar discovery document ou tentar login:', e);
+            if (e instanceof Error && 'details' in e && typeof (e as any).details === 'string') {
+                console.log('Detalhes do erro:', e.details);
+            }
+            this.oauthService.initLoginFlow();
+        }
+    }
     private async runInitialLoginSequence(): Promise<void> {
         try {
             await this.oauthService.loadDiscoveryDocumentAndTryLogin();

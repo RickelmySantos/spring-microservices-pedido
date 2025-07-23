@@ -25,7 +25,7 @@ export class CarrinhoComponent {
     protected readonly carrinhoService: CarrinhoService = inject(CarrinhoService);
     protected readonly checkoutService: CheckoutService = inject(CheckoutService);
 
-    protected readonly itensCarrinho$ = this.carrinhoService.itensCarrinho$;
+    protected readonly itensCarrinho$ = this.carrinhoService.items$;
     protected readonly totalCarrinho$ = this.carrinhoService.totalCarrinho$;
 
     public isVisible = false;

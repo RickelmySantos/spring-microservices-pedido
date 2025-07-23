@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { ROUTES } from 'src/app/app.routes';
 
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
+import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 
 import { provideCloudinaryLoader } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,13 +14,12 @@ import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { authInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { httpLoaderFactory } from 'src/app/core/translate/translate-loader-factory';
-import { CarrinhoService } from './app/services/carrinho.service';
-import { CARRINHO_SERVICE_TOKEN, PEDIDO_SERVICE_TOKEN } from './app/services/checkout.service';
-import { PedidoService } from './app/services/pedido.service';
+import { ProdutoRepositoryAdapter } from './app/services/adapters/produto-repository.adapter';
+import { PRODUTO_REPOSITORY_TOKEN } from './app/services/cardapio.service';
 
-// export function initializeAuth(authService: AuthService): () => Promise<void> {
-//     return () => authService.initAuth();
-// }
+export function initializeAuth(authService: AuthService): () => Promise<void> {
+    return () => authService.initAuth();
+}
 
 bootstrapApplication(AppComponent, {
     providers: [
@@ -40,13 +39,12 @@ bootstrapApplication(AppComponent, {
             })
         ),
         AuthService,
-        // {
-        //     provide: APP_INITIALIZER,
-        //     useFactory: initializeAuth,
-        //     deps: [AuthService],
-        //     multi: true,
-        // },
-        { provide: CARRINHO_SERVICE_TOKEN, useExisting: CarrinhoService },
-        { provide: PEDIDO_SERVICE_TOKEN, useExisting: PedidoService },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeAuth,
+            deps: [AuthService],
+            multi: true,
+        },
+        { provide: PRODUTO_REPOSITORY_TOKEN, useExisting: ProdutoRepositoryAdapter },
     ],
 }).catch(err => console.error(err));

@@ -22,9 +22,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
                             <h3>{{ item.nome }}</h3>
                             <p>{{ item.preco | currency : 'BRL' }}</p>
                             <div class="item-controle">
-                                <button (click)="alterarQuantidade.emit({ item: item, delta: -1 })" [disabled]="item.quantidade <= 1" [attr.aria-label]="'Diminuir quantidade do item ' + item.nome">
-                                    –
-                                </button>
+                                <button (click)="alterarQuantidade.emit({ item: item, delta: -1 })" [attr.aria-label]="'Diminuir quantidade do item ' + item.nome">–</button>
                                 <span>{{ item.quantidade }}</span>
                                 <button (click)="alterarQuantidade.emit({ item: item, delta: 1 })" [attr.aria-label]="'Aumentar quantidade do item ' + item.nome">+</button>
                             </div>
