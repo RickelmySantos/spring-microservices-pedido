@@ -113,11 +113,11 @@
     },
 
     "menu": {
-        "home": " Página Inicial",
-        "livros": "Livros",
-        "cadastros": "Cadastros",
-        "projetos": "Projetos",
-        "paginas": "Páginas",
+        "home": "Início",
+        "cardapio": "Cardápio",
+        "menu": "Sobre",
+        "contato": "Contato",
+        "uploadar": "Upload",
         "erro-inesperado": "Erro Inesperado",
         "sessao-expirada": "Sessão Expirada",
         "acesso-nao-autorizado": "Acesso Não Autorizado",

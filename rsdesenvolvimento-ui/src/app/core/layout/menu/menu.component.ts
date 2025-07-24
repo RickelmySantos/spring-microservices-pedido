@@ -1,14 +1,15 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import { MenuItem } from 'primeng/api';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { BadgeModule } from 'primeng/badge';
-import { MenuItemComponent } from 'src/app/core/layout/menu-item/menu-item.component';
+import { CustomMenuItem, MenuItemComponent } from 'src/app/core/layout/menu-item/menu-item.component';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { MENU } from 'src/app/menu';
 import { CarrinhoComponent } from 'src/app/shared/components/carrinho/carrinho.component';
-import { CarrinhoService } from '../../../shared/components/carrinho/service/carrinho.service';
+import { CarrinhoService } from 'src/app/shared/components/carrinho/service/carrinho.service';
 
 @Component({
     selector: 'app-menu',
@@ -44,22 +45,29 @@ import { CarrinhoService } from '../../../shared/components/carrinho/service/car
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [SharedModule, NgIf, NgFor, MenuItemComponent, CarrinhoComponent, BadgeModule],
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
     private readonly carrinhoService: CarrinhoService = inject(CarrinhoService);
+    private readonly authorizationService: AuthorizationService = inject(AuthorizationService);
+
     readonly quantidadeItens$ = this.carrinhoService.quantidadeItens$;
+
+    public menu: CustomMenuItem[] = [];
 
     isCarrinhoVisible = false;
 
     constructor(library: FaIconLibrary) {
         library.addIcons(faCartShopping);
     }
+    ngOnInit(): void {
+        this.menu = MENU.filter(item => {
+            const rolesAllowed = item.rolesAllowed;
 
-    menu: MenuItem[] = [
-        { label: 'Início', url: '#home' },
-        { label: 'Cardápio', routerLink: '/menu' },
-        { label: 'Sobre', url: '#about' },
-        { label: 'Contato', url: '#contact' },
-    ];
+            if (!rolesAllowed || rolesAllowed.length === 0) {
+                return true;
+            }
+            return this.authorizationService.hasAnyRole(rolesAllowed);
+        });
+    }
 
     openCarrinho(): void {
         this.isCarrinhoVisible = !this.isCarrinhoVisible;

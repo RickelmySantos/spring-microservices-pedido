@@ -2,6 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { Role } from 'src/app/shared/enums/role.enum';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -45,5 +46,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class MenuItemComponent {
     @Input()
-    item!: MenuItem;
+    item!: CustomMenuItem;
+}
+
+export interface CustomMenuItem extends MenuItem {
+    items?: CustomMenuItem[];
+    rolesAllowed?: keyof typeof Role | Role | (keyof typeof Role)[] | Role[];
 }
