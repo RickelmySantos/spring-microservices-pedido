@@ -1,5 +1,5 @@
 import { CustomMenuItem } from 'src/app/core/layout/menu-item/menu-item.component';
-import { Role } from 'src/app/shared/enums/role.enum';
+import { Permission } from 'src/app/shared/auth/permissions.enum.';
 
 export const MENU: CustomMenuItem[] = [
     {
@@ -21,6 +21,6 @@ export const MENU: CustomMenuItem[] = [
     {
         label: 'menu.upload',
         routerLink: ['/upload'],
-        rolesAllowed: [Role.ADMIN, Role.GESTOR],
+        permissionsAllowed: [Permission.GERENCIAR_ESTOQUE],
     },
 ];

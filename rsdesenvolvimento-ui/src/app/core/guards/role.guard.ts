@@ -1,19 +1,19 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { Role } from 'src/app/shared/enums/role.enum';
+import { Permission } from 'src/app/shared/auth/permissions.enum.';
 
 export const roleGuard: CanActivateFn = (route, state) => {
     const authorizationService = inject(AuthorizationService);
     const router = inject(Router);
 
-    const allowedRoles = route.data?.['roles'] as Role[] | undefined;
+    const requiredPermission = route.data?.['permission'] as Permission | undefined;
 
-    if (!allowedRoles || allowedRoles.length === 0) {
+    if (requiredPermission === undefined) {
         return true;
     }
 
-    if (authorizationService.hasAnyRole(allowedRoles)) {
+    if (authorizationService.can(requiredPermission)) {
         return true;
     }
 

@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
+import { roleGuard } from 'src/app/core/guards/role.guard';
 import { LayoutComponent } from 'src/app/layout/layout.component';
-import { authGuard } from './core/guards/auth.guard';
+import { Permission } from 'src/app/shared/auth/permissions.enum.';
 
 export const ROUTES: Route[] = [
     {
@@ -8,7 +9,12 @@ export const ROUTES: Route[] = [
         component: LayoutComponent,
         children: [
             { path: '', loadChildren: () => import('./core/layout/home/home.routes') },
-            { path: 'upload', canActivate: [authGuard], loadChildren: () => import('./modules/upload/file-upload.routes') },
+            {
+                path: 'upload',
+                canActivate: [roleGuard],
+                data: { permission: Permission.GERENCIAR_ESTOQUE },
+                loadChildren: () => import('./modules/upload/file-upload.routes'),
+            },
         ],
     },
 

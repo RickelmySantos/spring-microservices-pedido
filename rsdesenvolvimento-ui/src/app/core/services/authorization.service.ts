@@ -1,8 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { filter } from 'rxjs';
+import { PERMISSION_MAP } from 'src/app/shared/auth/authorization';
+import { Permission } from 'src/app/shared/auth/permissions.enum.';
 
-import { Role } from 'src/app/shared/enums/role.enum';
+import { Role } from 'src/app/shared/auth/role.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -61,15 +63,34 @@ export class AuthorizationService {
         return roles.every(role => this.getUserRoles().includes(role as string));
     }
 
-    isAdmin(): boolean {
-        return this.hasRole(Role.ADMIN);
+    can(permissions: Permission): boolean {
+        const requiredRoles = PERMISSION_MAP[permissions];
+
+        if (!requiredRoles || requiredRoles.length === 0) {
+            return false;
+        }
+
+        const hasPermission = this.hasAnyRole(requiredRoles);
+
+        return hasPermission;
     }
 
-    isGestor(): boolean {
-        return this.hasRole(Role.GESTOR);
+    public authenticatedUserHasPermissions(permissions: Permission | Permission[]): boolean {
+        if (Array.isArray(permissions)) {
+            return permissions.every(permission => this.can(permission));
+        }
+        return this.can(permissions);
     }
 
-    isUsuario(): boolean {
-        return this.hasRole(Role.USUARIO);
+    hasPermissions(user: any, permissions: Permission | Permission[]): boolean {
+        if (!user || !user.permissions) return false;
+
+        const userPermissions = user.permissions as Permission[];
+
+        if (Array.isArray(permissions)) {
+            return permissions.every(permission => userPermissions.includes(permission));
+        }
+
+        return userPermissions.includes(permissions);
     }
 }
