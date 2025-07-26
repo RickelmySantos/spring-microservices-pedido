@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +13,12 @@ import { RouterOutlet } from '@angular/router';
     imports: [RouterOutlet],
 })
 export class AppComponent implements OnInit {
+    private readonly authService: AuthService = inject(AuthService);
+
     title = 'rsdesenvolvimento-ui';
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        const userProfile = this.authService.getIdentityClaims();
+        console.log('User Profile:', userProfile);
+    }
 }

@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-menu-item',
     template: `
-        <ng-container *ngIf="item && item.visible !== false && (!item.permissionsAllowed || authorizationService.authenticatedUserHasPermissions(item.permissionsAllowed))">
+        <ng-container *ngIf="item && item.visible !== false && (!item.permissionsAllowed || authorizationService.hasPermissions(item.permissionsAllowed))">
             <ng-container>
                 <li class="menu__item" [class.disabled]="item.disabled">
                     <!-- Grupo não clicável -->

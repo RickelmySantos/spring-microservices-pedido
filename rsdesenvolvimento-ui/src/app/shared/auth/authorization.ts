@@ -9,7 +9,7 @@ export const PERMISSION_MAP: Record<Permission, Role[]> = {
     [Permission.EDITAR_PEDIDO_EM_ABERTO]: [Role.ADMIN, Role.GESTOR, Role.USUARIO],
     [Permission.FECHAR_CONTA_PEDIDO]: [Role.ADMIN, Role.GESTOR, Role.USUARIO],
 
-    // --- Permissões do GESTOR (Gerente) ---
+    // --- Permissões do GESTOR/ADMIN (Gerente) ---
     [Permission.CANCELAR_PEDIDO]: [Role.ADMIN, Role.GESTOR],
     [Permission.GERENCIAR_CARDAPIO]: [Role.ADMIN, Role.GESTOR],
     [Permission.VISUALIZAR_ESTOQUE]: [Role.ADMIN, Role.GESTOR, Role.USUARIO],

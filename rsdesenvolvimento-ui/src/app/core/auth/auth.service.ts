@@ -1,49 +1,32 @@
 import { inject, Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from 'src/app/core/auth/auth-config';
+import { User } from 'src/app/core/auth/seguranca/models/usuario.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private readonly oauthService: OAuthService = inject(OAuthService);
+
+    private userProfile: User;
 
     constructor() {
         this.oauthService.configure(authConfig);
         this.oauthService.setupAutomaticSilentRefresh();
 
         this.oauthService.disablePKCE = false;
-
-        // this.runInitialLoginSequence();
     }
 
     async initAuth(): Promise<void> {
         try {
             await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-            if (!this.oauthService.hasValidAccessToken()) {
-                this.oauthService.initLoginFlow();
+            if (!this.hasValidToken()) {
+                this.login();
             } else {
                 console.debug('Login silencioso bem-sucedido. Token válido encontrado.');
             }
         } catch (e) {
-            console.error('Erro ao carregar discovery document ou tentar login:', e);
-            if (e instanceof Error && 'details' in e && typeof (e as any).details === 'string') {
-                console.log('Detalhes do erro:', e.details);
-            }
-            this.oauthService.initLoginFlow();
+            this.login();
         }
-    }
-    private async runInitialLoginSequence(): Promise<void> {
-        try {
-            await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-            if (this.oauthService.hasValidAccessToken()) {
-                console.debug('Login silencioso bem-sucedido.');
-            }
-        } catch (error) {
-            console.error('Erro durante a tentativa de login silencioso.', error);
-        }
-    }
-
-    public hasValidToken(): boolean {
-        return this.oauthService.hasValidAccessToken();
     }
 
     login(): void {
@@ -51,11 +34,10 @@ export class AuthService {
     }
     logout(): void {
         this.oauthService.revokeTokenAndLogout();
-        this.oauthService.logOut();
     }
 
     isLoggedIn(): boolean {
-        return this.oauthService.hasValidAccessToken();
+        return this.hasValidToken();
     }
 
     getAccessToken(): string | null {
@@ -64,5 +46,24 @@ export class AuthService {
 
     getIdentityClaims(): any {
         return this.oauthService.getIdentityClaims();
+    }
+
+    private hasValidToken(): boolean {
+        return this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken();
+    }
+
+    loadUserInfo(): Promise<User> {
+        if (this.hasValidToken()) {
+            const claims = this.getIdentityClaims();
+            const user: User = {
+                name: claims?.name,
+                email: claims?.email,
+                username: claims?.preferred_username,
+                roles: claims?.realm_access?.roles || [],
+            };
+            this.userProfile = user;
+            return Promise.resolve(user);
+        }
+        return Promise.resolve(this.userProfile || null);
     }
 }

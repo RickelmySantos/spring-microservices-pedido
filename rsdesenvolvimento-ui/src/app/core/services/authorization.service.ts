@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { filter } from 'rxjs';
-import { PERMISSION_MAP } from 'src/app/shared/auth/authorization';
+import { hasPermission, hasRole } from 'src/app/core/auth/auth-utils';
+import { mapUser, User } from 'src/app/core/auth/seguranca/models/usuario.model';
 import { Permission } from 'src/app/shared/auth/permissions.enum.';
-
 import { Role } from 'src/app/shared/auth/role.enum';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { Role } from 'src/app/shared/auth/role.enum';
 })
 export class AuthorizationService {
     private oauthService: OAuthService = inject(OAuthService);
-    private _userRoles: string[] = [];
+    private _user: User | null = null;
 
     constructor() {
         this.oauthService.events.pipe(filter(e => e.type === 'token_received' || e.type === 'session_terminated')).subscribe(() => this.loadUserRoles());
@@ -34,63 +34,28 @@ export class AuthorizationService {
                 }
             }
 
-            this._userRoles = [...new Set([...realmRoles, ...clientRoles])];
+            const allRoles = [...new Set([...realmRoles, ...clientRoles])];
+
+            this._user = mapUser(claims);
+            console.log('🔍 DEBUG - Usuário logado:', this._user);
         } else {
-            this._userRoles = [];
+            this._user = null;
         }
     }
 
-    getUserRoles(): string[] {
-        return this._userRoles;
-    }
-
-    hasRole(role: Role | string): boolean {
-        return this.getUserRoles().includes(role as string);
+    getuser(): User | null {
+        return this._user;
     }
 
     hasAnyRole(roles: keyof typeof Role | Role | (keyof typeof Role)[] | Role[]): boolean {
-        if (!roles || (Array.isArray(roles) && roles.length === 0)) {
-            return true;
-        }
-        if (Array.isArray(roles)) {
-            return roles.some(role => this.hasRole(role));
-        }
-        return this.hasRole(roles);
-    }
-
-    hasAllRoles(roles: (Role | string)[]): boolean {
-        if (!roles || roles.length === 0) return true;
-        return roles.every(role => this.getUserRoles().includes(role as string));
+        return hasRole(this._user, roles);
     }
 
     can(permissions: Permission): boolean {
-        const requiredRoles = PERMISSION_MAP[permissions];
-
-        if (!requiredRoles || requiredRoles.length === 0) {
-            return false;
-        }
-
-        const hasPermission = this.hasAnyRole(requiredRoles);
-
-        return hasPermission;
+        return hasPermission(this._user, permissions);
     }
 
-    public authenticatedUserHasPermissions(permissions: Permission | Permission[]): boolean {
-        if (Array.isArray(permissions)) {
-            return permissions.every(permission => this.can(permission));
-        }
-        return this.can(permissions);
-    }
-
-    hasPermissions(user: any, permissions: Permission | Permission[]): boolean {
-        if (!user || !user.permissions) return false;
-
-        const userPermissions = user.permissions as Permission[];
-
-        if (Array.isArray(permissions)) {
-            return permissions.every(permission => userPermissions.includes(permission));
-        }
-
-        return userPermissions.includes(permissions);
+    hasPermissions(permissions: Permission | Permission[]): boolean {
+        return hasPermission(this._user, permissions);
     }
 }
