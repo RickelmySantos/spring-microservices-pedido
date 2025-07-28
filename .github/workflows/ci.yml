@@ -148,7 +148,10 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
+        service: [ notificacao-service ]
+      # matrix:
+      #   service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
+
 
     steps:
     - name: Checkout código
