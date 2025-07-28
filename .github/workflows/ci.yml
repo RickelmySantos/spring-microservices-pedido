@@ -6,8 +6,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  REGISTRY: docker.io
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
+
 jobs:
-  build-test-deploy:
+  # Job para build e teste dos microserviços Java
+  build-java-services:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,11 +27,135 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '21'
+        java-version: ${{ env.JAVA_VERSION }}
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
 
     - name: Build e Teste do serviço ${{ matrix.service }}
-      working-directory: ${{ matrix.service }}
-      run: mvn clean install -DskipTests
+      working-directory: rsdesenvolvimento-api
+      run: |
+        mvn clean compile -pl ${{ matrix.service }} -am
+        mvn test -pl ${{ matrix.service }}
+
+    - name: Publicar resultados dos testes
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: 'Testes ${{ matrix.service }}'
+        path: 'rsdesenvolvimento-api/${{ matrix.service }}/target/surefire-reports/*.xml'
+        reporter: java-junit
+
+    - name: Build JAR do serviço ${{ matrix.service }}
+      working-directory: rsdesenvolvimento-api
+      run: mvn package -pl ${{ matrix.service }} -DskipTests
+
+    - name: Upload artefatos
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.service }}-jar
+        path: rsdesenvolvimento-api/${{ matrix.service }}/target/*.jar
+
+  # Job para build e teste do frontend Angular
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Cache Node modules
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Instalar dependências
+      working-directory: rsdesenvolvimento-ui
+      run: npm ci
+
+    - name: Lint do código
+      working-directory: rsdesenvolvimento-ui
+      run: npm run fix-code
+
+    - name: Executar testes
+      working-directory: rsdesenvolvimento-ui
+      run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+    - name: Build da aplicação
+      working-directory: rsdesenvolvimento-ui
+      run: npm run build
+
+    - name: Upload artefatos do frontend
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-dist
+        path: rsdesenvolvimento-ui/dist/
+
+  # Job para análise de qualidade de código
+  code-quality:
+    runs-on: ubuntu-latest
+    needs: [ build-java-services ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Configurar Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: ${{ env.JAVA_VERSION }}
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Análise SonarQube
+      working-directory: rsdesenvolvimento-api
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        mvn clean verify sonar:sonar \
+          -Dsonar.projectKey=rsdesenvolvimento \
+          -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+          -Dsonar.host.url=https://sonarcloud.io
+
+  # Job para build e push das imagens Docker
+  build-docker-images:
+    runs-on: ubuntu-latest
+    needs: [ build-java-services, build-frontend ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
     - name: Login no Docker Hub
       uses: docker/login-action@v3
@@ -33,9 +163,57 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build imagem Docker do serviço ${{ matrix.service }}
-      working-directory: ${{ matrix.service }}
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest .
+    - name: Download artefatos
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.service }}-jar
+        path: rsdesenvolvimento-api/${{ matrix.service }}/target/
 
-    - name: Push imagem Docker do serviço ${{ matrix.service }}
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
+    - name: Build e Push imagem Docker do serviço ${{ matrix.service }}
+      uses: docker/build-push-action@v5
+      with:
+        context: rsdesenvolvimento-api
+        file: rsdesenvolvimento-api/${{ matrix.service }}/Dockerfile
+        push: true
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
+          ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  # Job para build e push da imagem Docker do frontend
+  build-docker-frontend:
+    runs-on: ubuntu-latest
+    needs: [ build-frontend ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login no Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Download artefatos do frontend
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-dist
+        path: rsdesenvolvimento-ui/dist/
+
+    - name: Build e Push imagem Docker do frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: rsdesenvolvimento-ui
+        file: rsdesenvolvimento-ui/Dockerfile.frontend
+        push: true
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/rsdesenvolvimento-ui:latest
+          ${{ secrets.DOCKER_USERNAME }}/rsdesenvolvimento-ui:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

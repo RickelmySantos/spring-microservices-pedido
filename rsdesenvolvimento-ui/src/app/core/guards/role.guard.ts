@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { Permission } from 'src/app/shared/auth/permissions.enum.';
 
 export const roleGuard: CanActivateFn = (route, state) => {
-    const authorizationService = inject(AuthorizationService);
+    const auth = inject(AuthService);
     const router = inject(Router);
 
     const requiredPermission = route.data?.['permission'] as Permission | undefined;
@@ -13,7 +13,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
         return true;
     }
 
-    if (authorizationService.hasPermissions(requiredPermission)) {
+    if (auth.hasPermissions(requiredPermission)) {
         return true;
     }
 

@@ -2,7 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { Permission } from 'src/app/shared/auth/permissions.enum.';
 import { Role } from 'src/app/shared/auth/role.enum';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
     selector: 'app-menu-item',
     template: `
-        <ng-container *ngIf="item && item.visible !== false && (!item.permissionsAllowed || authorizationService.hasPermissions(item.permissionsAllowed))">
+        <ng-container *ngIf="item && item.visible !== false && (!item.permissionsAllowed || authService.hasPermissions(item.permissionsAllowed))">
             <ng-container>
                 <li class="menu__item" [class.disabled]="item.disabled">
                     <!-- Grupo não clicável -->
@@ -46,7 +46,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     imports: [SharedModule, RouterModule, NgIf, NgFor],
 })
 export class MenuItemComponent {
-    protected readonly authorizationService: AuthorizationService = inject(AuthorizationService);
+    protected readonly authService: AuthService = inject(AuthService);
 
     @Input()
     item!: CustomMenuItem;
