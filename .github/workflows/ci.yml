@@ -15,6 +15,10 @@ jobs:
   # Job para build e teste dos microserviços Java
   build-java-services:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     strategy:
       matrix:
         service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
@@ -41,29 +45,28 @@ jobs:
       working-directory: rsdesenvolvimento-api
       run: |
         mvn clean compile -pl ${{ matrix.service }} -am
-        mvn package -pl ${{ matrix.service }} -DskipTests
 
-    # Testes desabilitados temporariamente
-    # - name: Executar testes do serviço ${{ matrix.service }}
-    #   working-directory: rsdesenvolvimento-api
-    #   run: mvn test -pl ${{ matrix.service }}
+    - name: Executar testes do serviço ${{ matrix.service }}
+      run: |
+        cd rsdesenvolvimento-api
+        if [[ "${{ matrix.service }}" == "estoque" || "${{ matrix.service }}" == "pedido-service" ]]; then
+          echo "Executando testes para o módulo ${{ matrix.service }}..."
+          mvn test -pl ${{ matrix.service }} -Dspring.profiles.active=test
+        else
+          echo "Testes desabilitados para ${{ matrix.service }} - ainda não configurados"
+        fi
 
-    # Upload relatórios de teste (desabilitado - sem testes)
-    # - name: Upload relatórios de teste
-    #   uses: actions/upload-artifact@v4
-    #   if: always()
-    #   with:
-    #     name: test-reports-${{ matrix.service }}
-    #     path: rsdesenvolvimento-api/${{ matrix.service }}/target/surefire-reports/
+    - name: Build JAR do serviço ${{ matrix.service }}
+      working-directory: rsdesenvolvimento-api
+      run: mvn package -pl ${{ matrix.service }} -DskipTests
 
-    # Test reporter comentado devido a problemas de permissão
-    # - name: Publicar resultados dos testes
-    #   uses: dorny/test-reporter@v1
-    #   if: success() || failure()
-    #   with:
-    #     name: 'Testes ${{ matrix.service }}'
-    #     path: 'rsdesenvolvimento-api/${{ matrix.service }}/target/surefire-reports/*.xml'
-    #     reporter: java-junit
+    # Upload relatórios de teste apenas para módulos com testes habilitados
+    - name: Upload relatórios de teste
+      uses: actions/upload-artifact@v4
+      if: always() && (matrix.service == 'estoque' || matrix.service == 'pedido-service')
+      with:
+        name: test-reports-${{ matrix.service }}
+        path: rsdesenvolvimento-api/${{ matrix.service }}/target/surefire-reports/
 
     - name: Upload artefatos
       uses: actions/upload-artifact@v4
@@ -148,10 +151,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        service: [ notificacao-service ]
-      # matrix:
-      #   service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
-
+        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
 
     steps:
     - name: Checkout código

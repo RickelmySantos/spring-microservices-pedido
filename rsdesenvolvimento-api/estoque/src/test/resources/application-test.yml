@@ -1,0 +1,41 @@
+spring:
+    profiles:
+        active: test
+
+    datasource:
+        url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+        driver-class-name: org.h2.Driver
+        username: sa
+        password: ''
+
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: create-drop
+        show-sql: false
+
+    flyway:
+        enabled: false
+
+    h2:
+        console:
+            enabled: false
+
+    cache:
+        type: none
+
+# Configurações Eureka para testes
+eureka:
+    client:
+        enabled: false
+        register-with-eureka: false
+        fetch-registry: false
+
+server:
+    port: 0
+
+# Configurações de logging para testes
+logging:
+    level:
+        com.rsdesenvolvimento: DEBUG
+        org.springframework.cache: DEBUG

@@ -35,7 +35,19 @@
         <spring-micrometer-prometheus.version>1.15.0-M3</spring-micrometer-prometheus.version>
         <!-- <spring-loki.version>1.6.0</spring-loki.version> -->
         <spring-sonar.version>5.1.0.4751</spring-sonar.version>
+        <jacoco.version>0.8.12</jacoco.version>
 
+        <!-- SonarQube Properties -->
+        <sonar.projectKey>restaurante-web</sonar.projectKey>
+        <sonar.projectName>restaurante-web</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.token>sqp_2520b13610ea01c5922fdc0f8d4a28609fbe6e6e</sonar.token>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.java.test.binaries>target/test-classes</sonar.java.test.binaries>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
     </properties>
 
     <dependencyManagement>
@@ -81,11 +93,8 @@
                 <version>${spring-micrometer-prometheus.version}</version>
             </dependency>
 
-            <!-- SonarQube -->
-            <dependency>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-            </dependency>
+            <!-- SonarQube Scanner Maven Plugin (não é uma dependency) -->
+            <!-- Removido da seção de dependências - será configurado como plugin -->
 
             <!--Logging  -->
             <!-- <dependency>
@@ -103,9 +112,50 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
 
+                <!-- SonarQube Maven Plugin -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${spring-sonar.version}</version>
+                </plugin>
+
+                <!-- JaCoCo Maven Plugin para cobertura de código -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <!-- SonarQube Plugin Global -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- JaCoCo Plugin para cobertura de código -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

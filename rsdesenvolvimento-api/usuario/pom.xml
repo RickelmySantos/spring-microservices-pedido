@@ -72,12 +72,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- SonarQube -->
-        <dependency>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>${spring-sonar.version}</version>
-        </dependency>
+        <!-- SonarQube configurado no POM pai -->
 
         <!-- MapStruct -->
         <dependency>
