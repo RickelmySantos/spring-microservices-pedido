@@ -115,9 +115,9 @@
     "menu": {
         "home": "Início",
         "cardapio": "Cardápio",
-        "menu": "Sobre",
+        "sobre": "Sobre",
         "contato": "Contato",
-        "uploadar": "Upload",
+        "upload": "Upload",
         "erro-inesperado": "Erro Inesperado",
         "sessao-expirada": "Sessão Expirada",
         "acesso-nao-autorizado": "Acesso Não Autorizado",

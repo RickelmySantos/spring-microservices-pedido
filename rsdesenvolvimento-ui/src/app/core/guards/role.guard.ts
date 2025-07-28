@@ -13,7 +13,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
         return true;
     }
 
-    if (authorizationService.can(requiredPermission)) {
+    if (authorizationService.hasPermissions(requiredPermission)) {
         return true;
     }
 

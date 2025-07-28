@@ -16,19 +16,19 @@ import { SharedModule } from 'src/app/shared/shared.module';
                     <!-- Grupo não clicável -->
                     <span *ngIf="!item.url && !item.routerLink && !item.items">
                         <i *ngIf="item.icon" [class]="item.icon"></i>
-                        {{ item.label }}
+                        {{ item.label | translate }}
                     </span>
 
                     <!-- Link externo -->
                     <a *ngIf="item.url" [href]="item.url" [attr.target]="item.target" (click)="item.command?.($event)">
                         <i *ngIf="item.icon" [class]="item.icon"></i>
-                        {{ item.label }}
+                        {{ item.label | translate }}
                     </a>
 
                     <!-- Link interno (routerLink) -->
                     <a *ngIf="item.routerLink" [routerLink]="item.routerLink" [attr.target]="item.target" (click)="item.command?.($event)">
                         <i *ngIf="item.icon" [class]="item.icon"></i>
-                        {{ item.label }}
+                        {{ item.label | translate }}
                     </a>
 
                     <!-- Submenu -->

@@ -8,7 +8,7 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 
 import { provideCloudinaryLoader } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -19,6 +19,13 @@ import { PRODUTO_REPOSITORY_TOKEN } from './app/services/cardapio.service';
 
 export function initializeAuth(authService: AuthService): () => Promise<void> {
     return () => authService.initAuth();
+}
+
+export function initializeTranslate(translateService: TranslateService): () => Promise<void> {
+    return () => {
+        translateService.setDefaultLang('pt');
+        return translateService.use('pt').toPromise();
+    };
 }
 
 bootstrapApplication(AppComponent, {
@@ -32,7 +39,7 @@ bootstrapApplication(AppComponent, {
             BrowserAnimationsModule,
             TranslateModule.forRoot({
                 loader: {
-                    provide: TranslateModule,
+                    provide: TranslateLoader,
                     useFactory: httpLoaderFactory,
                     deps: [HttpClient],
                 },
@@ -43,6 +50,12 @@ bootstrapApplication(AppComponent, {
             provide: APP_INITIALIZER,
             useFactory: initializeAuth,
             deps: [AuthService],
+            multi: true,
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeTranslate,
+            deps: [TranslateService],
             multi: true,
         },
         { provide: PRODUTO_REPOSITORY_TOKEN, useExisting: ProdutoRepositoryAdapter },

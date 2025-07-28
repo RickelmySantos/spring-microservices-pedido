@@ -22,8 +22,6 @@ export class AuthorizationService {
         if (this.oauthService.hasValidIdToken()) {
             const claims = this.oauthService.getIdentityClaims() as any;
 
-            const realmRoles = claims?.realm_access?.roles || [];
-
             let clientRoles: string[] = [];
             if (claims?.resource_access) {
                 for (const clientName in claims.resource_access) {
@@ -34,8 +32,6 @@ export class AuthorizationService {
                 }
             }
 
-            const allRoles = [...new Set([...realmRoles, ...clientRoles])];
-
             this._user = mapUser(claims);
             console.log('🔍 DEBUG - Usuário logado:', this._user);
         } else {
@@ -43,16 +39,8 @@ export class AuthorizationService {
         }
     }
 
-    getuser(): User | null {
-        return this._user;
-    }
-
     hasAnyRole(roles: keyof typeof Role | Role | (keyof typeof Role)[] | Role[]): boolean {
         return hasRole(this._user, roles);
-    }
-
-    can(permissions: Permission): boolean {
-        return hasPermission(this._user, permissions);
     }
 
     hasPermissions(permissions: Permission | Permission[]): boolean {

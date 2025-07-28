@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from 'src/app/core/auth/auth-config';
-import { User } from 'src/app/core/auth/seguranca/models/usuario.model';
+import { mapUser, User } from 'src/app/core/auth/seguranca/models/usuario.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -55,12 +55,7 @@ export class AuthService {
     loadUserInfo(): Promise<User> {
         if (this.hasValidToken()) {
             const claims = this.getIdentityClaims();
-            const user: User = {
-                name: claims?.name,
-                email: claims?.email,
-                username: claims?.preferred_username,
-                roles: claims?.realm_access?.roles || [],
-            };
+            const user: User = mapUser(claims);
             this.userProfile = user;
             return Promise.resolve(user);
         }
