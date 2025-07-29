@@ -92,16 +92,6 @@
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${spring-micrometer-prometheus.version}</version>
             </dependency>
-
-            <!-- SonarQube Scanner Maven Plugin (não é uma dependency) -->
-            <!-- Removido da seção de dependências - será configurado como plugin -->
-
-            <!--Logging  -->
-            <!-- <dependency>
-                <groupId>com.github.loki4j</groupId>
-                <artifactId>loki-logback-appender</artifactId>
-                <version>${spring-loki.version}</version>
-            </dependency> -->
         </dependencies>
     </dependencyManagement>
 

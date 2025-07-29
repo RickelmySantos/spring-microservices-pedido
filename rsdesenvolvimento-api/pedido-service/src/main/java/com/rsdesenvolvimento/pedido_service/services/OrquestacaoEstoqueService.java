@@ -2,6 +2,7 @@ package com.rsdesenvolvimento.pedido_service.services;
 
 import com.rsdesenvolvimento.pedido_service.core.client.dtos.AtualizarEstoqueRequestDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.ItemPedidoRequestDto;
+import com.rsdesenvolvimento.pedido_service.services.exceptions.EstoqueInsuficienteException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class OrquestacaoEstoqueService {
 
         } catch (Exception e) {
             OrquestacaoEstoqueService.log.error("Erro ao atualizar estoque: {}", e.getMessage(), e);
-            throw new RuntimeException("Falha na atualização do estoque", e);
+            throw new EstoqueInsuficienteException("Erro ao atualizar estoque para o pedido", e);
         }
     }
 

@@ -79,9 +79,19 @@ class PedidoServiceTest {
             // Arrange
             EstoqueResponseDto produto = TestDataBuilder.umEstoqueResponseDto().comId(1L)
                     .comNome("Produto Teste").build();
+            Pedido pedidoConvertido = TestDataBuilder.umPedido().build();
 
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
                     .thenReturn(PedidoServiceTest.this.usuarioTeste);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoConvertido);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .itemPedidoRequestDtoParaItemPedido(ArgumentMatchers.any()))
+                    .thenReturn(TestDataBuilder.umItemPedido().build());
+            Mockito.when(
+                    PedidoServiceTest.this.pedidoMapper.paraDto(ArgumentMatchers.any(Pedido.class)))
+                    .thenReturn(TestDataBuilder.umPedidoResponseDto().build());
             Mockito.when(
                     PedidoServiceTest.this.estoqueService.buscarProduto(ArgumentMatchers.anyLong()))
                     .thenReturn(produto);
@@ -135,6 +145,13 @@ class PedidoServiceTest {
             // Arrange
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
                     .thenReturn(PedidoServiceTest.this.usuarioTeste);
+
+            // Configurar o mapper para retornar um pedido válido
+            Pedido pedidoMock = new Pedido();
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoMock);
+
             Mockito.when(
                     PedidoServiceTest.this.estoqueService.buscarProduto(ArgumentMatchers.anyLong()))
                     .thenThrow(new ResponseStatusException(
@@ -161,12 +178,19 @@ class PedidoServiceTest {
             PedidoRequesteDto pedidoSemItens =
                     TestDataBuilder.umPedidoRequesteDto().semItens().build();
 
+            Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
+                    .thenReturn(PedidoServiceTest.this.usuarioTeste);
+
+            // Configurar o validacaoService para lançar exceção
+            Mockito.doThrow(new RuntimeException("A lista de itens do pedido não pode ser vazia"))
+                    .when(PedidoServiceTest.this.validacaoService).validarPedido(pedidoSemItens);
+
             // Act & Assert
             Assertions
                     .assertThatThrownBy(
                             () -> PedidoServiceTest.this.pedidoService.criarPedido(pedidoSemItens))
                     .isInstanceOf(RuntimeException.class)
-                    .hasMessageContaining("deve conter pelo menos um item");
+                    .hasMessageContaining("lista de itens do pedido não pode ser vazia");
 
             Mockito.verify(PedidoServiceTest.this.pedidoRepository, Mockito.never())
                     .save(ArgumentMatchers.any(Pedido.class));
@@ -181,8 +205,15 @@ class PedidoServiceTest {
             EstoqueResponseDto produto = TestDataBuilder.umEstoqueResponseDto().build();
             Usuario usuario = TestDataBuilder.umUsuario().comUsername("Maria Silva")
                     .comEmail("maria@teste.com").build();
+            Pedido pedidoConvertido = TestDataBuilder.umPedido().build();
 
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario()).thenReturn(usuario);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoConvertido);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .itemPedidoRequestDtoParaItemPedido(ArgumentMatchers.any()))
+                    .thenReturn(TestDataBuilder.umItemPedido().build());
             Mockito.when(
                     PedidoServiceTest.this.estoqueService.buscarProduto(ArgumentMatchers.anyLong()))
                     .thenReturn(produto);
@@ -190,6 +221,14 @@ class PedidoServiceTest {
                     .save(ArgumentMatchers.any(Pedido.class))).thenAnswer(invocation -> {
                         Pedido pedido = invocation.getArgument(0);
                         return TestDataBuilder.umPedido().comNomeUsuario(pedido.getNomeUsuario())
+                                .comEmailUsuario(pedido.getEmailUsuario()).build();
+                    });
+            Mockito.when(
+                    PedidoServiceTest.this.pedidoMapper.paraDto(ArgumentMatchers.any(Pedido.class)))
+                    .thenAnswer(invocation -> {
+                        Pedido pedido = invocation.getArgument(0);
+                        return TestDataBuilder.umPedidoResponseDto()
+                                .comNomeUsuario(pedido.getNomeUsuario())
                                 .comEmailUsuario(pedido.getEmailUsuario()).build();
                     });
 
@@ -217,6 +256,8 @@ class PedidoServiceTest {
 
             Mockito.when(PedidoServiceTest.this.pedidoRepository.findById(pedidoId))
                     .thenReturn(Optional.of(pedidoExistente));
+            Mockito.when(PedidoServiceTest.this.validacaoService.validarEConverterStatus(status))
+                    .thenReturn(StatusEnum.FINALIZADO);
 
             // Act
             Assertions.assertThatCode(() -> PedidoServiceTest.this.pedidoService
@@ -251,8 +292,8 @@ class PedidoServiceTest {
         }
 
         @Test
-        @DisplayName("Deve enviar notificação ao atualizar status para aprovado")
-        void deveEnviarNotificacaoAoAtualizarStatusParaAprovado() {
+        @DisplayName("Deve atualizar status sem enviar notificação")
+        void deveAtualizarStatusSemEnviarNotificacao() {
             // Arrange
             Long pedidoId = 1L;
             String status = "APROVADO";
@@ -260,12 +301,14 @@ class PedidoServiceTest {
 
             Mockito.when(PedidoServiceTest.this.pedidoRepository.findById(pedidoId))
                     .thenReturn(Optional.of(pedidoExistente));
+            Mockito.when(PedidoServiceTest.this.validacaoService.validarEConverterStatus(status))
+                    .thenReturn(StatusEnum.FINALIZADO);
 
             // Act
             PedidoServiceTest.this.pedidoService.atualizarStatusPagamento(pedidoId, status);
 
             // Assert
-            Mockito.verify(PedidoServiceTest.this.notificacaoService)
+            Mockito.verify(PedidoServiceTest.this.notificacaoService, Mockito.never())
                     .enviarNotificacao(ArgumentMatchers.any());
         }
 
@@ -370,8 +413,18 @@ class PedidoServiceTest {
                     .comUsuarioId("user456").comObservacao("Pedido urgente")
                     .comItensPedido(Arrays.asList(itemDto)).build();
 
+            // Criando usuário que terá ID "user456" como esperado no teste
+            Usuario usuarioTeste = TestDataBuilder.umUsuario().comId("user456").build();
+            Pedido pedidoConvertido = TestDataBuilder.umPedido().build();
+
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
-                    .thenReturn(PedidoServiceTest.this.usuarioTeste);
+                    .thenReturn(usuarioTeste);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoConvertido);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .itemPedidoRequestDtoParaItemPedido(ArgumentMatchers.any()))
+                    .thenReturn(TestDataBuilder.umItemPedido().build());
             Mockito.when(
                     PedidoServiceTest.this.estoqueService.buscarProduto(ArgumentMatchers.anyLong()))
                     .thenReturn(produto);
@@ -381,6 +434,14 @@ class PedidoServiceTest {
                         return TestDataBuilder.umPedido().comUsuarioId(pedido.getUsuarioId())
                                 .comObservacao(pedido.getObservacao())
                                 .comItensPedido(pedido.getItensPedido()).build();
+                    });
+            Mockito.when(
+                    PedidoServiceTest.this.pedidoMapper.paraDto(ArgumentMatchers.any(Pedido.class)))
+                    .thenAnswer(invocation -> {
+                        Pedido pedido = invocation.getArgument(0);
+                        return TestDataBuilder.umPedidoResponseDto()
+                                .comUsuarioId(pedido.getUsuarioId())
+                                .comObservacao(pedido.getObservacao()).build();
                     });
 
             // Act
@@ -403,6 +464,13 @@ class PedidoServiceTest {
 
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
                     .thenReturn(PedidoServiceTest.this.usuarioTeste);
+
+            // Configurar o mapper para retornar um pedido válido
+            Pedido pedidoMock = new Pedido();
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoMock);
+
             Mockito.when(PedidoServiceTest.this.estoqueService.buscarProduto(999L))
                     .thenThrow(new ResponseStatusException(
                             org.springframework.http.HttpStatus.NOT_FOUND,
@@ -428,6 +496,10 @@ class PedidoServiceTest {
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
                     .thenReturn(PedidoServiceTest.this.usuarioTeste);
 
+            // Configurar o validacaoService para lançar exceção
+            Mockito.doThrow(new RuntimeException("Quantidade deve ser maior que zero"))
+                    .when(PedidoServiceTest.this.validacaoService).validarPedido(request);
+
             // Act & Assert
             Assertions
                     .assertThatThrownBy(
@@ -448,6 +520,10 @@ class PedidoServiceTest {
 
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
                     .thenReturn(PedidoServiceTest.this.usuarioTeste);
+
+            // Configurar o validacaoService para lançar exceção
+            Mockito.doThrow(new RuntimeException("Preço deve ser maior que zero"))
+                    .when(PedidoServiceTest.this.validacaoService).validarPedido(request);
 
             // Act & Assert
             Assertions

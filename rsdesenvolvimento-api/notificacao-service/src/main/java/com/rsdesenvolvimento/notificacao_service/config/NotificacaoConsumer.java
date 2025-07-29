@@ -37,9 +37,7 @@ public class NotificacaoConsumer {
         return switch (tipoNotificacao) {
             case "PEDIDO_CRIADO" -> this.processarPedidoCriado(partes);
             case "EMAIL_PAGAMENTO_CONFIRMADO" -> this.processarPagamentoConfirmado(partes);
-            default -> {
-                yield this.criarEmailFallback();
-            }
+            default -> this.criarEmailFallback();
         };
     }
 

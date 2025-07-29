@@ -1,6 +1,6 @@
 spring:
     datasource:
-        url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
         driver-class-name: org.h2.Driver
         username: sa
         password: ''
@@ -10,18 +10,20 @@ spring:
         database-platform: org.hibernate.dialect.H2Dialect
         hibernate:
             ddl-auto: create-drop
-        show-sql: true
+        show-sql: false
         properties:
             hibernate:
+                '[default_schema]': 'public'
                 '[format_sql]': true
-                # Auditoria JPA
-                envers:
-                    '[audit_table_suffix]': _AUD
-                    '[revision_field_name]': REV
-                    '[revision_type_field_name]': REVTYPE
+    sql:
+        init:
+            mode: always
+            data-locations: classpath:data.sql
 
     flyway:
         enabled: false
+    cache:
+        type: none
 
     cloud:
         discovery:

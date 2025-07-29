@@ -13,8 +13,8 @@ public class SecurityUtil implements UsuarioPort {
     @Override
     public Usuario buscarUsuario() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof JwtAuthenticationToken) {
-            var token = (JwtAuthenticationToken) auth;
+
+        if (auth instanceof JwtAuthenticationToken token) {
             return new Usuario((String) token.getTokenAttributes().get("sub"),
                     (String) token.getTokenAttributes().get("preferred_username"),
                     (String) token.getTokenAttributes().get("email"));

@@ -1,71 +1,41 @@
 package com.rsdesenvolvimento.estoque.repositorios;
 
+import com.rsdesenvolvimento.estoque.core.auditoria.AuditoriaConfig;
 import com.rsdesenvolvimento.estoque.modelo.entidade.Estoque;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
 @ActiveProfiles("test")
+@Import(AuditoriaConfig.class)
 @DisplayName("EstoqueRepository - Testes de Integração")
 class EstoqueRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
     private EstoqueRepository estoqueRepository;
-
-    private Estoque estoque1;
-    private Estoque estoque2;
-    private Estoque estoque3;
-
-    @BeforeEach
-    void setUp() {
-        // Limpar dados antes de cada teste
-        this.entityManager.clear();
-
-        // Criar produtos de teste
-        this.estoque1 = Estoque.builder().nome("Produto 1").descricao("Descrição do produto 1")
-                .preco(BigDecimal.valueOf(29.99)).categoria("ELETRONICOS").estoque(100)
-                .imagemUrl("https://example.com/produto1.jpg").build();
-
-        this.estoque2 = Estoque.builder().nome("Produto 2").descricao("Descrição do produto 2")
-                .preco(BigDecimal.valueOf(49.99)).categoria("ELETRONICOS").estoque(50)
-                .imagemUrl("https://example.com/produto2.jpg").build();
-
-        this.estoque3 = Estoque.builder().nome("Produto 3").descricao("Descrição do produto 3")
-                .preco(BigDecimal.valueOf(19.99)).categoria("LIVROS").estoque(200)
-                .imagemUrl("https://example.com/produto3.jpg").build();
-
-        // Persistir no banco H2
-        this.entityManager.persistAndFlush(this.estoque1);
-        this.entityManager.persistAndFlush(this.estoque2);
-        this.entityManager.persistAndFlush(this.estoque3);
-    }
 
     @Test
     @DisplayName("Deve encontrar produtos por categoria")
     void deveEncontrarProdutosPorCategoria() {
         // When
-        List<Estoque> produtosEletronicos = this.estoqueRepository.findByCategoria("ELETRONICOS");
-        List<Estoque> produtosLivros = this.estoqueRepository.findByCategoria("LIVROS");
+        List<Estoque> produtoPrincipal = this.estoqueRepository.findByCategoria("PRATO PRINCIPAL");
+        List<Estoque> produtoSobremesa = this.estoqueRepository.findByCategoria("SOBREMESA");
 
         // Then
-        Assertions.assertThat(produtosEletronicos).hasSize(2);
-        Assertions.assertThat(produtosEletronicos).extracting(Estoque::getCategoria)
-                .containsOnly("ELETRONICOS");
+        Assertions.assertThat(produtoPrincipal).hasSize(2);
+        Assertions.assertThat(produtoPrincipal).extracting(Estoque::getCategoria)
+                .containsOnly("PRATO PRINCIPAL");
 
-        Assertions.assertThat(produtosLivros).hasSize(1);
-        Assertions.assertThat(produtosLivros.get(0).getCategoria()).isEqualTo("LIVROS");
+        Assertions.assertThat(produtoSobremesa).hasSize(1);
+        Assertions.assertThat(produtoSobremesa.get(0).getCategoria()).isEqualTo("SOBREMESA");
     }
 
     @Test
@@ -101,13 +71,12 @@ class EstoqueRepositoryTest {
     @DisplayName("Deve encontrar produto por ID")
     void deveEncontrarProdutoPorId() {
         // When
-        Optional<Estoque> produtoEncontrado =
-                this.estoqueRepository.findById(this.estoque1.getId());
+        Optional<Estoque> produtoEncontrado = this.estoqueRepository.findById(1L);
 
         // Then
         Assertions.assertThat(produtoEncontrado).isPresent();
         Assertions.assertThat(produtoEncontrado.get().getNome()).isEqualTo("Produto 1");
-        Assertions.assertThat(produtoEncontrado.get().getCategoria()).isEqualTo("ELETRONICOS");
+        Assertions.assertThat(produtoEncontrado.get().getCategoria()).isEqualTo("PRATO PRINCIPAL");
     }
 
     @Test
@@ -126,19 +95,19 @@ class EstoqueRepositoryTest {
         // Given
         String novoNome = "Produto 1 Atualizado";
         Integer novoEstoque = 150;
+        Estoque produto = this.estoqueRepository.findById(2L).orElseThrow();
 
         // When
-        this.estoque1.setNome(novoNome);
-        this.estoque1.setEstoque(novoEstoque);
-        Estoque produtoAtualizado = this.estoqueRepository.save(this.estoque1);
+        produto.setNome(novoNome);
+        produto.setEstoque(novoEstoque);
+        Estoque produtoAtualizado = this.estoqueRepository.save(produto);
 
         // Then
         Assertions.assertThat(produtoAtualizado.getNome()).isEqualTo(novoNome);
         Assertions.assertThat(produtoAtualizado.getEstoque()).isEqualTo(novoEstoque);
 
         // Verificar se foi realmente atualizado no banco
-        Optional<Estoque> produtoVerificacao =
-                this.estoqueRepository.findById(this.estoque1.getId());
+        Optional<Estoque> produtoVerificacao = this.estoqueRepository.findById(2L);
         Assertions.assertThat(produtoVerificacao).isPresent();
         Assertions.assertThat(produtoVerificacao.get().getNome()).isEqualTo(novoNome);
         Assertions.assertThat(produtoVerificacao.get().getEstoque()).isEqualTo(novoEstoque);
@@ -148,7 +117,7 @@ class EstoqueRepositoryTest {
     @DisplayName("Deve excluir produto por ID")
     void deveExcluirProdutoPorId() {
         // Given
-        Long idParaExcluir = this.estoque1.getId();
+        Long idParaExcluir = 1L;
 
         // When
         this.estoqueRepository.deleteById(idParaExcluir);

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -42,11 +45,15 @@ class NotificacaoProducerTest {
                 "notificacao-routing-key", this.mensagemValida);
     }
 
-    @Test
-    @DisplayName("Deve lançar exceção para mensagem nula")
-    void deveLancarExcecaoParaMensagemNula() {
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"", "   "})
+    @DisplayName("Deve lançar exceção para mensagens inválidas (nula, vazia ou só espaços)")
+    void deveLancarExcecaoParaMensagemInvalida(String mensagemInvalida) {
         // When & Then
-        Assertions.assertThatThrownBy(() -> this.notificacaoProducer.enviarNotificacao(null))
+        Assertions
+                .assertThatThrownBy(
+                        () -> this.notificacaoProducer.enviarNotificacao(mensagemInvalida))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Mensagem de notificação não pode ser vazia.");
 
@@ -55,31 +62,6 @@ class NotificacaoProducerTest {
                 ArgumentMatchers.anyString());
     }
 
-    @Test
-    @DisplayName("Deve lançar exceção para mensagem vazia")
-    void deveLancarExcecaoParaMensagemVazia() {
-        // When & Then
-        Assertions.assertThatThrownBy(() -> this.notificacaoProducer.enviarNotificacao(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Mensagem de notificação não pode ser vazia.");
-
-        Mockito.verify(this.rabbitTemplate, Mockito.never()).convertAndSend(
-                ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString());
-    }
-
-    @Test
-    @DisplayName("Deve lançar exceção para mensagem apenas com espaços")
-    void deveLancarExcecaoParaMensagemApenasComEspacos() {
-        // When & Then
-        Assertions.assertThatThrownBy(() -> this.notificacaoProducer.enviarNotificacao("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Mensagem de notificação não pode ser vazia.");
-
-        Mockito.verify(this.rabbitTemplate, Mockito.never()).convertAndSend(
-                ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString());
-    }
 
     @Test
     @DisplayName("Deve enviar notificação com delay usando exchange e routing key corretos")

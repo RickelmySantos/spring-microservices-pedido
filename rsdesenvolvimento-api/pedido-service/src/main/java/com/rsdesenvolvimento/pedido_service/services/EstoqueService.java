@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -18,10 +19,11 @@ public class EstoqueService {
     private final EstoquePort estoquePort;
 
     public void validarEstoque(List<AtualizarEstoqueRequestDto> itens) {
-        if (!this.estoquePort.validarEstoque(itens)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Estoque insuficiente para os itens solicitados.");
+        if (this.estoquePort.validarEstoque(itens)) {
+            return;
         }
+        Assert.isTrue(this.estoquePort.validarEstoque(itens),
+                "Estoque insuficiente para os itens solicitados.");
     }
 
     public EstoqueResponseDto buscarProduto(Long id) {

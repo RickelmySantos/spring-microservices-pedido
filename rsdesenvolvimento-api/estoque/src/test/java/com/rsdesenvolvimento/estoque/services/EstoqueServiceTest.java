@@ -52,7 +52,6 @@ class EstoqueServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Dados de teste
         this.estoque = Estoque.builder().id(1L).nome("Produto Teste")
                 .descricao("Descrição do produto teste").preco(BigDecimal.valueOf(29.99))
                 .categoria("CATEGORIA_TESTE").estoque(100)
@@ -163,8 +162,7 @@ class EstoqueServiceTest {
                     EstoqueServiceTest.this.estoqueService.listarPorCategoria(categoria);
 
             // Then
-            Assertions.assertThat(resultado).isNotEmpty();
-            Assertions.assertThat(resultado).hasSize(1);
+            Assertions.assertThat(resultado).isNotEmpty().hasSize(1);
             Assertions.assertThat(resultado.get(0).getCategoria()).isEqualTo("CATEGORIA_TESTE");
 
             Mockito.verify(EstoqueServiceTest.this.repository).findByCategoria(categoria);
@@ -187,8 +185,7 @@ class EstoqueServiceTest {
                     EstoqueServiceTest.this.estoqueService.listarPorCategoria(null);
 
             // Then
-            Assertions.assertThat(resultado).isNotEmpty();
-            Assertions.assertThat(resultado).hasSize(1);
+            Assertions.assertThat(resultado).isNotEmpty().hasSize(1);
 
             Mockito.verify(EstoqueServiceTest.this.repository).findAll();
             Mockito.verify(EstoqueServiceTest.this.repository, Mockito.never())
@@ -212,8 +209,7 @@ class EstoqueServiceTest {
                     EstoqueServiceTest.this.estoqueService.listarPorCategoria("");
 
             // Then
-            Assertions.assertThat(resultado).isNotEmpty();
-            Assertions.assertThat(resultado).hasSize(1);
+            Assertions.assertThat(resultado).isNotEmpty().hasSize(1);
 
             Mockito.verify(EstoqueServiceTest.this.repository).findAll();
             Mockito.verify(EstoqueServiceTest.this.repository, Mockito.never())
@@ -377,8 +373,7 @@ class EstoqueServiceTest {
         @DisplayName("Deve retornar true quando estoque é suficiente")
         void deveRetornarTrueQuandoEstoqueSuficiente() {
             // Given
-            EstoqueServiceTest.this.atualizarEstoqueDto.setQuantidade(50); // Menor que o estoque
-                                                                           // disponível (100)
+            EstoqueServiceTest.this.atualizarEstoqueDto.setQuantidade(50);
             List<AtualizarEstoqueRequestDto> itens =
                     Arrays.asList(EstoqueServiceTest.this.atualizarEstoqueDto);
 
@@ -397,8 +392,7 @@ class EstoqueServiceTest {
         @DisplayName("Deve retornar false quando estoque é insuficiente")
         void deveRetornarFalseQuandoEstoqueInsuficiente() {
             // Given
-            EstoqueServiceTest.this.atualizarEstoqueDto.setQuantidade(150); // Maior que o estoque
-                                                                            // disponível (100)
+            EstoqueServiceTest.this.atualizarEstoqueDto.setQuantidade(150);
             List<AtualizarEstoqueRequestDto> itens =
                     Arrays.asList(EstoqueServiceTest.this.atualizarEstoqueDto);
 
@@ -458,9 +452,7 @@ class EstoqueServiceTest {
             Mockito.verify(EstoqueServiceTest.this.repository).findById(1L);
             Mockito.verify(EstoqueServiceTest.this.repository)
                     .save(EstoqueServiceTest.this.estoque);
-            Assertions.assertThat(EstoqueServiceTest.this.estoque.getEstoque()).isEqualTo(70); // 100
-                                                                                               // -
-                                                                                               // 30
+            Assertions.assertThat(EstoqueServiceTest.this.estoque.getEstoque()).isEqualTo(70);
         }
 
         @Test
@@ -508,9 +500,7 @@ class EstoqueServiceTest {
             Mockito.verify(EstoqueServiceTest.this.repository).findById(1L);
             Mockito.verify(EstoqueServiceTest.this.repository)
                     .save(EstoqueServiceTest.this.estoque);
-            Assertions.assertThat(EstoqueServiceTest.this.estoque.getEstoque()).isEqualTo(80); // 100
-                                                                                               // -
-                                                                                               // 20
+            Assertions.assertThat(EstoqueServiceTest.this.estoque.getEstoque()).isEqualTo(80);
         }
 
         @Test
@@ -541,8 +531,7 @@ class EstoqueServiceTest {
         @DisplayName("Deve lançar exceção quando estoque é insuficiente na atualização")
         void deveLancarExcecaoQuandoEstoqueInsuficienteNaAtualizacao() {
             // Given
-            EstoqueServiceTest.this.atualizarEstoqueDto.setQuantidade(150); // Maior que estoque
-                                                                            // disponível
+            EstoqueServiceTest.this.atualizarEstoqueDto.setQuantidade(150);
             Mockito.when(EstoqueServiceTest.this.repository.findById(1L))
                     .thenReturn(Optional.of(EstoqueServiceTest.this.estoque));
 

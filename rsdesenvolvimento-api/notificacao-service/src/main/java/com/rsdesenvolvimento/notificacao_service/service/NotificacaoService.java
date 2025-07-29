@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.notificacao_service.service;
 
+import com.rsdesenvolvimento.notificacao_service.exception.NotificacaoException;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -44,7 +45,7 @@ public class NotificacaoService {
             NotificacaoService.log.info("Response Headers: {}", response.getHeaders());
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao enviar email: " + e.getMessage());
+            throw new NotificacaoException("Erro ao enviar email", e);
         }
     }
 }

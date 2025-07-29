@@ -70,8 +70,3 @@ public class SecurityConfig {
         return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
     }
 }
-
-
-// .pathMatchers("/estoque-api/**")
-// .permitAll().pathMatchers("/pedido-service/**").permitAll()
-// .pathMatchers("/usuario/**").permitAll()

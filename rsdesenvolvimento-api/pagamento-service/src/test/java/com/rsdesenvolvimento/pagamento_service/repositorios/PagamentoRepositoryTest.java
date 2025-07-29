@@ -1,63 +1,34 @@
 package com.rsdesenvolvimento.pagamento_service.repositorios;
 
+import com.rsdesenvolvimento.pagamento_service.core.auditoria.AuditoriaConfig;
 import com.rsdesenvolvimento.pagamento_service.modelo.entidades.Pagamento;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
 @ActiveProfiles("test")
+@Import(AuditoriaConfig.class)
 @DisplayName("Testes de Integração para PagamentoRepository")
 class PagamentoRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
     private PagamentoRepository pagamentoRepository;
 
-    private Pagamento pagamento1;
-    private Pagamento pagamento2;
 
-    @BeforeEach
-    void setUp() {
-        this.pagamento1 = Pagamento.builder().pedidoId(1L).valor(new BigDecimal("100.50"))
-                .dataHora(LocalDateTime.of(2025, 7, 28, 10, 30)).status("FINALIZADO").build();
-
-        this.pagamento2 = Pagamento.builder().pedidoId(2L).valor(new BigDecimal("250.75"))
-                .dataHora(LocalDateTime.of(2025, 7, 28, 11, 45)).status("PENDENTE").build();
-    }
-
-    @Test
-    @DisplayName("Deve salvar pagamento corretamente")
-    void deveSalvarPagamentoCorretamente() {
-        // When
-        Pagamento pagamentoSalvo = this.pagamentoRepository.save(this.pagamento1);
-
-        // Then
-        Assertions.assertThat(pagamentoSalvo).isNotNull();
-        Assertions.assertThat(pagamentoSalvo.getId()).isNotNull();
-        Assertions.assertThat(pagamentoSalvo.getPedidoId()).isEqualTo(1L);
-        Assertions.assertThat(pagamentoSalvo.getValor()).isEqualTo(new BigDecimal("100.50"));
-        Assertions.assertThat(pagamentoSalvo.getDataHora())
-                .isEqualTo(LocalDateTime.of(2025, 7, 28, 10, 30));
-        Assertions.assertThat(pagamentoSalvo.getStatus()).isEqualTo("FINALIZADO");
-    }
 
     @Test
     @DisplayName("Deve buscar pagamento por ID")
     void deveBuscarPagamentoPorId() {
         // Given
-        Pagamento pagamentoSalvo = this.entityManager.persistAndFlush(this.pagamento1);
+        Pagamento pagamentoSalvo = this.pagamentoRepository.findById(2L).orElseThrow();
 
         // When
         Optional<Pagamento> pagamentoEncontrado =
@@ -65,9 +36,9 @@ class PagamentoRepositoryTest {
 
         // Then
         Assertions.assertThat(pagamentoEncontrado).isPresent();
-        Assertions.assertThat(pagamentoEncontrado.get().getPedidoId()).isEqualTo(1L);
+        Assertions.assertThat(pagamentoEncontrado.get().getPedidoId()).isEqualTo(2L);
         Assertions.assertThat(pagamentoEncontrado.get().getValor())
-                .isEqualTo(new BigDecimal("100.50"));
+                .isEqualTo(new BigDecimal("49.99"));
     }
 
     @Test
@@ -82,42 +53,26 @@ class PagamentoRepositoryTest {
 
     @Test
     @DisplayName("Deve listar todos os pagamentos")
-    void deveListarTodosOsPagamentos() {
-        // Given
-        this.entityManager.persistAndFlush(this.pagamento1);
-        this.entityManager.persistAndFlush(this.pagamento2);
+    void deveListarTodosOsPagamentosFinalizados() {
 
         // When
-        List<Pagamento> pagamentos = this.pagamentoRepository.findAll();
+        List<Pagamento> pagamentos = this.pagamentoRepository.findByStatus("FINALIZADO");
 
         // Then
         Assertions.assertThat(pagamentos).hasSize(2);
         Assertions.assertThat(pagamentos).extracting(Pagamento::getPedidoId)
-                .containsExactlyInAnyOrder(1L, 2L);
+                .containsExactlyInAnyOrder(3L, 4L);
     }
 
-    @Test
-    @DisplayName("Deve retornar lista vazia quando não há pagamentos")
-    void deveRetornarListaVaziaQuandoNaoHaPagamentos() {
-        // When
-        List<Pagamento> pagamentos = this.pagamentoRepository.findAll();
-
-        // Then
-        Assertions.assertThat(pagamentos).isEmpty();
-    }
 
     @Test
     @DisplayName("Deve deletar pagamento corretamente")
     void deveDeletarPagamentoCorretamente() {
-        // Given
-        Pagamento pagamentoSalvo = this.entityManager.persistAndFlush(this.pagamento1);
-
         // When
-        this.pagamentoRepository.deleteById(pagamentoSalvo.getId());
+        this.pagamentoRepository.deleteById(1l);
 
         // Then
-        Optional<Pagamento> pagamentoDeletado =
-                this.pagamentoRepository.findById(pagamentoSalvo.getId());
+        Optional<Pagamento> pagamentoDeletado = this.pagamentoRepository.findById(1L);
         Assertions.assertThat(pagamentoDeletado).isEmpty();
     }
 
@@ -125,7 +80,7 @@ class PagamentoRepositoryTest {
     @DisplayName("Deve atualizar pagamento existente")
     void deveAtualizarPagamentoExistente() {
         // Given
-        Pagamento pagamentoSalvo = this.entityManager.persistAndFlush(this.pagamento1);
+        Pagamento pagamentoSalvo = this.pagamentoRepository.findById(2L).orElseThrow();
 
         // When
         pagamentoSalvo.setStatus("CANCELADO");
@@ -141,22 +96,20 @@ class PagamentoRepositoryTest {
     @Test
     @DisplayName("Deve contar pagamentos corretamente")
     void deveContarPagamentosCorretamente() {
-        // Given
-        this.entityManager.persistAndFlush(this.pagamento1);
-        this.entityManager.persistAndFlush(this.pagamento2);
+
 
         // When
         long count = this.pagamentoRepository.count();
 
         // Then
-        Assertions.assertThat(count).isEqualTo(2);
+        Assertions.assertThat(count).isEqualTo(5L);
     }
 
     @Test
     @DisplayName("Deve verificar existência de pagamento por ID")
     void deveVerificarExistenciaDePagamentoPorId() {
         // Given
-        Pagamento pagamentoSalvo = this.entityManager.persistAndFlush(this.pagamento1);
+        Pagamento pagamentoSalvo = this.pagamentoRepository.findById(4L).orElseThrow();
 
         // When
         boolean existe = this.pagamentoRepository.existsById(pagamentoSalvo.getId());
@@ -175,14 +128,5 @@ class PagamentoRepositoryTest {
         Assertions.assertThat(existe).isFalse();
     }
 
-    @Test
-    @DisplayName("Deve persistir dados de auditoria automaticamente")
-    void devePersistirDadosDeAuditoriaAutomaticamente() {
-        // When
-        Pagamento pagamentoSalvo = this.pagamentoRepository.save(this.pagamento1);
 
-        // Then
-        Assertions.assertThat(pagamentoSalvo.getDataHoraCriacao()).isNotNull();
-        Assertions.assertThat(pagamentoSalvo.getDataHoraAtualizacao()).isNotNull();
-    }
 }

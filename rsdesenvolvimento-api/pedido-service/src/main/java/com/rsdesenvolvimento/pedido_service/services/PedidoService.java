@@ -13,7 +13,6 @@ import com.rsdesenvolvimento.pedido_service.modelo.mappers.PedidoMapper;
 import com.rsdesenvolvimento.pedido_service.repositorios.PedidoRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -83,7 +82,7 @@ public class PedidoService {
         return this.pedidoRepository.save(pedido);
     }
 
-    @Transactional(readOnly = true)
+
     private Pedido buscarPedidoPorId(Long pedidoId) {
         return this.pedidoRepository.findById(pedidoId).orElseThrow(
                 () -> new PedidoNaoEncontradoException("Pedido não encontrado: " + pedidoId));
@@ -123,8 +122,7 @@ public class PedidoService {
 
     private List<ItemPedido> criarItensPedido(List<ItemPedidoRequestDto> itensPedido,
             Pedido pedido) {
-        return itensPedido.stream().map(itemDto -> this.criarItemPedido(itemDto, pedido))
-                .collect(Collectors.toList());
+        return itensPedido.stream().map(itemDto -> this.criarItemPedido(itemDto, pedido)).toList();
     }
 
     private ItemPedido criarItemPedido(ItemPedidoRequestDto itemDto, Pedido pedido) {
