@@ -12,9 +12,9 @@ services:
 - type: pserv
   name: rabbitmq
   runtime: docker
-  image:
-    url: rabbitmq:3-management-alpine
   plan: free
+  dockerContext: ./rsdesenvolvimento-api
+  dockerfilePath: infra/rabbitmq/Dockerfile
   envVars:
     - fromGroup: app-secrets
 
