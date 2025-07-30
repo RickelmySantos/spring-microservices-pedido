@@ -13,11 +13,10 @@ services:
   name: rabbitmq
   runtime: docker
   image:
-    url: alpine:latest
-  dockerCommand: "sleep 3600"
+    url: rabbitmq:3-management-alpine
   plan: free
-  # envVars:
-  # - fromGroup: app-secrets
+  envVars:
+    - fromGroup: app-secrets
 
 - type: pserv
   name: eureka
