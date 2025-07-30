@@ -1,6 +1,6 @@
-# =================================================================
-# ==     Blueprint do Render (render.yaml) para Microsserviços    ==
-# =================================================================
+# =====================================================================
+# ==     Blueprint do Render (render.yaml) - VERSÃO FINAL CORRIGIDA  ==
+# =====================================================================
 
 databases:
 - name: ms-postgres
@@ -16,10 +16,7 @@ services:
     url: rabbitmq:4.1-management
   plan: free
   envVars:
-  - key: RABBITMQ_DEFAULT_USER
-    value: guest
-  - key: RABBITMQ_DEFAULT_PASS
-    value: guest
+  - fromGroup: app-secrets
 
 - type: pserv
   name: eureka
@@ -43,7 +40,7 @@ services:
   runtime: docker
   image:
     url: bitnami/keycloak:26
-  plan: free
+  plan: free # RECOMENDADO para o Keycloak.
   envVars:
   - fromGroup: app-secrets
   - key: KEYCLOAK_CREATE_ADMIN_USER
@@ -53,23 +50,33 @@ services:
   - key: KEYCLOAK_DATABASE_SCHEMA
     value: keycloak
   - key: KC_PROXY
-    value: "edge"
+    value: 'edge'
   - key: KC_HOSTNAME_STRICT_HTTPS
-    value: "false"
+    value: 'false'
   - key: KEYCLOAK_HTTP_RELATIVE_PATH
     value: /auth
   - key: KC_HOSTNAME_URL
-    fromService: { type: web, name: api-gateway, property: url }
+    value: https://api-gateway.onrender.com/auth
   - key: KEYCLOAK_DATABASE_HOST
-    fromService: { type: dpg, name: ms-postgres, property: host }
+    fromDatabase:
+      name: ms-postgres
+      property: host
   - key: KEYCLOAK_DATABASE_PORT
-    fromService: { type: dpg, name: ms-postgres, property: port }
+    fromDatabase:
+      name: ms-postgres
+      property: port
   - key: KEYCLOAK_DATABASE_NAME
-    fromService: { type: dpg, name: ms-postgres, property: database }
+    fromDatabase:
+      name: ms-postgres
+      property: database
   - key: KEYCLOAK_DATABASE_USER
-    fromService: { type: dpg, name: ms-postgres, property: user }
+    fromDatabase:
+      name: ms-postgres
+      property: user
   - key: KEYCLOAK_DATABASE_PASSWORD
-    fromService: { type: dpg, name: ms-postgres, property: password }
+    fromDatabase:
+      name: ms-postgres
+      property: password
 
 # === API GATEWAY (SERVIÇO PÚBLICO) ===
 - type: web
@@ -93,18 +100,11 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: pedido-service/Dockerfile
+  plan: free
   envVars:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
     value: http://eureka:8761/eureka/
-  - key: RABBITMQ_HOST
-    value: rabbitmq
-  - key: RABBITMQ_PORT
-    value: '5672'
-  - key: RABBITMQ_USERNAME
-    value: guest
-  - key: RABBITMQ_PASSWORD
-    value: guest
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
@@ -159,18 +159,11 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: notificacao-service/Dockerfile
+  plan: free
   envVars:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
     value: http://eureka:8761/eureka/
-  - key: RABBITMQ_HOST
-    value: rabbitmq
-  - key: RABBITMQ_PORT
-    value: '5672'
-  - key: RABBITMQ_USERNAME
-    value: guest
-  - key: RABBITMQ_PASSWORD
-    value: guest
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
@@ -195,18 +188,11 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: pagamento-service/Dockerfile
+  plan: free
   envVars:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
     value: http://eureka:8761/eureka/
-  - key: RABBITMQ_HOST
-    value: rabbitmq
-  - key: RABBITMQ_PORT
-    value: '5672'
-  - key: RABBITMQ_USERNAME
-    value: guest
-  - key: RABBITMQ_PASSWORD
-    value: guest
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
@@ -243,6 +229,7 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: estoque/Dockerfile
+  plan: free
   envVars:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
@@ -271,12 +258,6 @@ services:
     value: org.hibernate.dialect.PostgreSQLDialect
   - key: JPA_SHOW_SQL
     value: 'true'
-  - key: CLOUDINARY_CLOUD_NAME
-    value: rsdesenvolvimento-estoque-api
-  - key: CLOUDINARY_API_KEY
-    value: '198152423354888'
-  - key: CLOUDINARY_API_SECRET
-    value: OT3yW8hP0Ytl47h-FWOHb11-kTE
   - key: SERVER_PORT
     value: '8082'
   - key: CONTEXT_PATH
