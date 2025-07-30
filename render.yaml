@@ -23,7 +23,6 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: eureka-server/Dockerfile
-  healthCheckPath: /actuator/health
   plan: free
   envVars:
   - key: EUREKA_INSTANCE_HOSTNAME
@@ -65,6 +64,10 @@ services:
     fromDatabase:
       name: ms-postgres
       property: port
+  - key: KEYCLOAK_DATABASE_URL
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
   - key: KEYCLOAK_DATABASE_NAME
     fromDatabase:
       name: ms-postgres
@@ -84,7 +87,6 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: api-gateway/Dockerfile
-  healthCheckPath: /actuator/health
   plan: free
   envVars:
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
@@ -108,11 +110,9 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: dpg, name: ms-postgres, property: connectionString }
-  - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: dpg, name: ms-postgres, property: user }
-  - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: dpg, name: ms-postgres, property: password }
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
@@ -167,11 +167,9 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: dpg, name: ms-postgres, property: connectionString }
-  - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: dpg, name: ms-postgres, property: user }
-  - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: dpg, name: ms-postgres, property: password }
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
   - key: SENDGRID_API_KEY
     value: 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
   - key: SERVER_PORT
@@ -196,11 +194,9 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: dpg, name: ms-postgres, property: connectionString }
-  - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: dpg, name: ms-postgres, property: user }
-  - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: dpg, name: ms-postgres, property: password }
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
@@ -237,11 +233,9 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: dpg, name: ms-postgres, property: connectionString }
-  - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: dpg, name: ms-postgres, property: user }
-  - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: dpg, name: ms-postgres, property: password }
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
