@@ -9,18 +9,21 @@ databases:
 
 services:
 # === INFRAESTRUTURA ===
-- type: private
+- type: pserv
   name: rabbitmq
-  env: docker
+  runtime: docker
   image:
     url: rabbitmq:4.1-management
   plan: free
   envVars:
-  - fromGroup: app-secrets
+  - key: RABBITMQ_DEFAULT_USER
+    value: guest
+  - key: RABBITMQ_DEFAULT_PASS
+    value: guest
 
-- type: private
+- type: pserv
   name: eureka
-  env: docker
+  runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: eureka-server/Dockerfile
   healthCheckPath: /actuator/health
@@ -35,9 +38,9 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
 
-- type: private
+- type: pserv
   name: keycloak
-  env: docker
+  runtime: docker
   image:
     url: bitnami/keycloak:26
   plan: free
@@ -56,22 +59,22 @@ services:
   - key: KEYCLOAK_HTTP_RELATIVE_PATH
     value: /auth
   - key: KC_HOSTNAME_URL
-    value: ${API_GATEWAY_URL}/auth
+    fromService: { type: web, name: api-gateway, property: url }
   - key: KEYCLOAK_DATABASE_HOST
-    fromService: { type: psql, name: ms-postgres, property: host }
+    fromService: { type: dpg, name: ms-postgres, property: host }
   - key: KEYCLOAK_DATABASE_PORT
-    fromService: { type: psql, name: ms-postgres, property: port }
+    fromService: { type: dpg, name: ms-postgres, property: port }
   - key: KEYCLOAK_DATABASE_NAME
-    fromService: { type: psql, name: ms-postgres, property: database }
+    fromService: { type: dpg, name: ms-postgres, property: database }
   - key: KEYCLOAK_DATABASE_USER
-    fromService: { type: psql, name: ms-postgres, property: user }
+    fromService: { type: dpg, name: ms-postgres, property: user }
   - key: KEYCLOAK_DATABASE_PASSWORD
-    fromService: { type: psql, name: ms-postgres, property: password }
+    fromService: { type: dpg, name: ms-postgres, property: password }
 
 # === API GATEWAY (SERVIÇO PÚBLICO) ===
 - type: web
   name: api-gateway
-  env: docker
+  runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: api-gateway/Dockerfile
   healthCheckPath: /actuator/health
@@ -85,9 +88,9 @@ services:
     value: http://keycloak:8080/auth/realms/REALM_LOCAL
 
 # === SERVIÇOS DE NEGÓCIO ===
-- type: private
+- type: pserv
   name: pedido-service
-  env: docker
+  runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: pedido-service/Dockerfile
   envVars:
@@ -105,11 +108,11 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: psql, name: ms-postgres, property: connectionString }
+    fromService: { type: dpg, name: ms-postgres, property: connectionString }
   - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: psql, name: ms-postgres, property: user }
+    fromService: { type: dpg, name: ms-postgres, property: user }
   - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: psql, name: ms-postgres, property: password }
+    fromService: { type: dpg, name: ms-postgres, property: password }
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
@@ -151,9 +154,9 @@ services:
   - key: OAUTH2_RESOURCESERVER_JWK_SET_URI
     value: http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
 
-- type: private
+- type: pserv
   name: notificacao-service
-  env: docker
+  runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: notificacao-service/Dockerfile
   envVars:
@@ -171,11 +174,11 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: psql, name: ms-postgres, property: connectionString }
+    fromService: { type: dpg, name: ms-postgres, property: connectionString }
   - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: psql, name: ms-postgres, property: user }
+    fromService: { type: dpg, name: ms-postgres, property: user }
   - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: psql, name: ms-postgres, property: password }
+    fromService: { type: dpg, name: ms-postgres, property: password }
   - key: SENDGRID_API_KEY
     value: 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
   - key: SERVER_PORT
@@ -187,9 +190,9 @@ services:
   - key: DEFAULT_TIMEZONE
     value: America/Belem
 
-- type: private
+- type: pserv
   name: pagamento-service
-  env: docker
+  runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: pagamento-service/Dockerfile
   envVars:
@@ -207,11 +210,11 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: psql, name: ms-postgres, property: connectionString }
+    fromService: { type: dpg, name: ms-postgres, property: connectionString }
   - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: psql, name: ms-postgres, property: user }
+    fromService: { type: dpg, name: ms-postgres, property: user }
   - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: psql, name: ms-postgres, property: password }
+    fromService: { type: dpg, name: ms-postgres, property: password }
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
@@ -235,9 +238,9 @@ services:
   - key: DEFAULT_TIMEZONE
     value: America/Belem
 
-- type: private
+- type: pserv
   name: estoque-api
-  env: docker
+  runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: estoque/Dockerfile
   envVars:
@@ -247,11 +250,11 @@ services:
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
-    fromService: { type: psql, name: ms-postgres, property: connectionString }
+    fromService: { type: dpg, name: ms-postgres, property: connectionString }
   - key: SPRING_DATASOURCE_USERNAME
-    fromService: { type: psql, name: ms-postgres, property: user }
+    fromService: { type: dpg, name: ms-postgres, property: user }
   - key: SPRING_DATASOURCE_PASSWORD
-    fromService: { type: psql, name: ms-postgres, property: password }
+    fromService: { type: dpg, name: ms-postgres, property: password }
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
