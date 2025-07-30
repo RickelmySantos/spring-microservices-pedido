@@ -37,9 +37,9 @@ services:
 - type: pserv
   name: keycloak
   runtime: docker
-  image:
-    url: bitnami/keycloak:26
   plan: free
+  dockerContext: ./rsdesenvolvimento-api
+  dockerfilePath: infra/keycloak/Dockerfile
   envVars:
   - fromGroup: app-secrets
   - key: KEYCLOAK_CREATE_ADMIN_USER
