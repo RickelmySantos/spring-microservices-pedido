@@ -9,14 +9,14 @@ databases:
 
 services:
 # === INFRAESTRUTURA ===
-# - type: pserv
-#   name: rabbitmq
-#   runtime: docker
-#   image:
-#     url: rabbitmq:4.1-management
-#   plan: free
-#   envVars:
-#   - fromGroup: app-secrets
+- type: pserv
+  name: rabbitmq
+  runtime: docker
+  image:
+    url: rabbitmq:4.1-management
+  plan: free
+  # envVars:
+  # - fromGroup: app-secrets
 
 - type: pserv
   name: eureka
