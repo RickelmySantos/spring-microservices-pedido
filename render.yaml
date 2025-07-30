@@ -14,7 +14,7 @@ services:
   runtime: docker
   image:
     url: alpine:latest
-  startCommand: "sleep 3600"
+  dockerCommand: "sleep 3600"
   plan: free
   # envVars:
   # - fromGroup: app-secrets
