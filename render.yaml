@@ -39,15 +39,15 @@ services:
   runtime: docker
   image:
     url: bitnami/keycloak:26
-  plan: free # RECOMENDADO para o Keycloak.
+  plan: free
   envVars:
   - fromGroup: app-secrets
   - key: KEYCLOAK_CREATE_ADMIN_USER
     value: 'true'
-  - key: KEYCLOAK_DATABASE_VENDOR
-    value: postgresql
-  - key: KEYCLOAK_DATABASE_SCHEMA
-    value: keycloak
+  - key: KEYCLOAK_DATABASE_URL
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
   - key: KC_PROXY
     value: 'edge'
   - key: KC_HOSTNAME_STRICT_HTTPS
@@ -56,30 +56,6 @@ services:
     value: /auth
   - key: KC_HOSTNAME_URL
     value: https://api-gateway.onrender.com/auth
-  - key: KEYCLOAK_DATABASE_HOST
-    fromDatabase:
-      name: ms-postgres
-      property: host
-  - key: KEYCLOAK_DATABASE_PORT
-    fromDatabase:
-      name: ms-postgres
-      property: port
-  - key: KEYCLOAK_DATABASE_URL
-    fromDatabase:
-      name: ms-postgres
-      property: connectionString
-  - key: KEYCLOAK_DATABASE_NAME
-    fromDatabase:
-      name: ms-postgres
-      property: database
-  - key: KEYCLOAK_DATABASE_USER
-    fromDatabase:
-      name: ms-postgres
-      property: user
-  - key: KEYCLOAK_DATABASE_PASSWORD
-    fromDatabase:
-      name: ms-postgres
-      property: password
 
 # === API GATEWAY (SERVIÇO PÚBLICO) ===
 - type: web
