@@ -57,21 +57,21 @@ services:
   - key: KC_HOSTNAME_URL
     value: https://api-gateway.onrender.com/auth
 
-# === API GATEWAY (SERVIÇO PÚBLICO) ===
-- type: web
-  name: api-gateway
-  runtime: docker
-  dockerContext: ./rsdesenvolvimento-api
-  dockerfilePath: api-gateway/Dockerfile
-  healthCheckPath: /actuator/health
-  plan: free
-  envVars:
-  - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
-    value: http://eureka:8761/eureka/
-  - key: SPRING_PROFILES_ACTIVE
-    value: prod
-  - key: OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-    value: http://keycloak:8080/auth/realms/REALM_LOCAL
+# # === API GATEWAY (SERVIÇO PÚBLICO) ===
+# - type: web
+#   name: api-gateway
+#   runtime: docker
+#   dockerContext: ./rsdesenvolvimento-api
+#   dockerfilePath: api-gateway/Dockerfile
+#   healthCheckPath: /actuator/health
+#   plan: free
+#   envVars:
+#   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
+#     value: http://eureka:8761/eureka/
+#   - key: SPRING_PROFILES_ACTIVE
+#     value: prod
+#   - key: OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+#     value: http://keycloak:8080/auth/realms/REALM_LOCAL
 
 # # === SERVIÇOS DE NEGÓCIO ===
 # - type: pserv
