@@ -241,27 +241,58 @@
 #     value: pt-BR
 #   - key: DEFAULT_TIMEZONE
 #     value: America/Belem
-# =================================================================
-# ==     ARQUIVO DE TESTE MÍNIMO (render.yaml)                   ==
-# =================================================================
-# Este arquivo serve apenas para validar a estrutura base.
 
 databases:
-- name: ms-postgres-teste
+- name: ms-postgres
   plan: free
+  ipAllowList: []
 
 services:
-- type: web
-  name: api-gateway-teste
+# === INFRAESTRUTURA ===
+- type: pserv
+  name: rabbitmq
   runtime: docker
-  dockerContext: ./rsdesenvolvimento-api
-  dockerfilePath: api-gateway/Dockerfile
-  healthCheckPath: /actuator/health
+  image:
+    url: rabbitmq:4.1-management
   plan: free
   envVars:
-  - key: SPRING_DATASOURCE_URL
-    fromDatabase:
-      name: ms-postgres-teste
-      property: connectionString
+  - fromGroup: app-secrets
+
+- type: pserv
+  name: eureka
+  runtime: docker
+  dockerContext: ./rsdesenvolvimento-api
+  dockerfilePath: eureka-server/Dockerfile
+  plan: free
+  envVars:
+  - key: EUREKA_INSTANCE_HOSTNAME
+    value: eureka
+  - key: EUREKA_CLIENT_REGISTER-WITH-EUREKA
+    value: 'false'
+  - key: EUREKA_CLIENT_FETCH-REGISTRY
+    value: 'false'
   - key: SPRING_PROFILES_ACTIVE
     value: prod
+
+- type: pserv
+  name: keycloak
+  runtime: docker
+  image:
+    url: bitnami/keycloak:26
+  plan: starter
+  envVars:
+  - fromGroup: app-secrets
+  - key: KEYCLOAK_CREATE_ADMIN_USER
+    value: 'true'
+  - key: KEYCLOAK_DATABASE_URL
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
+  - key: KC_PROXY
+    value: 'edge'
+  - key: KC_HOSTNAME_STRICT_HTTPS
+    value: 'false'
+  - key: KEYCLOAK_HTTP_RELATIVE_PATH
+    value: /auth
+  - key: KC_HOSTNAME_URL
+    value: https://api-gateway.onrender.com/aut
