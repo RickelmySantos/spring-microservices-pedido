@@ -34,44 +34,44 @@ services:
   # - key: SPRING_PROFILES_ACTIVE
   #   value: prod
 
-# - type: pserv
-#   name: keycloak
-#   runtime: docker
-#   image:
-#     url: bitnami/keycloak:26
-#   plan: free
-#   envVars:
-#   - fromGroup: app-secrets
-#   - key: KEYCLOAK_CREATE_ADMIN_USER
-#     value: 'true'
-#   - key: KEYCLOAK_DATABASE_URL
-#     fromDatabase:
-#       name: ms-postgres
-#       property: connectionString
-#   - key: KC_PROXY
-#     value: 'edge'
-#   - key: KC_HOSTNAME_STRICT_HTTPS
-#     value: 'false'
-#   - key: KEYCLOAK_HTTP_RELATIVE_PATH
-#     value: /auth
-#   - key: KC_HOSTNAME_URL
-#     value: https://api-gateway.onrender.com/auth
+- type: pserv
+  name: keycloak
+  runtime: docker
+  image:
+    url: bitnami/keycloak:26
+  plan: free
+  envVars:
+  - fromGroup: app-secrets
+  - key: KEYCLOAK_CREATE_ADMIN_USER
+    value: 'true'
+  - key: KEYCLOAK_DATABASE_URL
+    fromDatabase:
+      name: ms-postgres
+      property: connectionString
+  - key: KC_PROXY
+    value: 'edge'
+  - key: KC_HOSTNAME_STRICT_HTTPS
+    value: 'false'
+  - key: KEYCLOAK_HTTP_RELATIVE_PATH
+    value: /auth
+  - key: KC_HOSTNAME_URL
+    value: https://api-gateway.onrender.com/auth
 
-# # === API GATEWAY (SERVIÇO PÚBLICO) ===
-# - type: web
-#   name: api-gateway
-#   runtime: docker
-#   dockerContext: ./rsdesenvolvimento-api
-#   dockerfilePath: api-gateway/Dockerfile
-#   healthCheckPath: /actuator/health
-#   plan: free
-#   envVars:
-#   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
-#     value: http://eureka:8761/eureka/
-#   - key: SPRING_PROFILES_ACTIVE
-#     value: prod
-#   - key: OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-#     value: http://keycloak:8080/auth/realms/REALM_LOCAL
+# === API GATEWAY (SERVIÇO PÚBLICO) ===
+- type: web
+  name: api-gateway
+  runtime: docker
+  dockerContext: ./rsdesenvolvimento-api
+  dockerfilePath: api-gateway/Dockerfile
+  healthCheckPath: /actuator/health
+  plan: free
+  envVars:
+  - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
+    value: http://eureka:8761/eureka/
+  - key: SPRING_PROFILES_ACTIVE
+    value: prod
+  - key: OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+    value: http://keycloak:8080/auth/realms/REALM_LOCAL
 
 # # === SERVIÇOS DE NEGÓCIO ===
 # - type: pserv
