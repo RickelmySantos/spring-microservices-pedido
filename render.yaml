@@ -1,6 +1,6 @@
-# =====================================================================
-# ==     Blueprint do Render (render.yaml) - VERSÃO FINAL CORRIGIDA  ==
-# =====================================================================
+# =========================================================================
+# ==     Blueprint do Render (render.yaml) - VERSÃO 100% COMPLETA        ==
+# =========================================================================
 
 databases:
 - name: ms-postgres
@@ -39,7 +39,7 @@ services:
   runtime: docker
   image:
     url: bitnami/keycloak:26
-  plan: free
+  plan: starter
   envVars:
   - fromGroup: app-secrets
   - key: KEYCLOAK_CREATE_ADMIN_USER
@@ -63,6 +63,7 @@ services:
   runtime: docker
   dockerContext: ./rsdesenvolvimento-api
   dockerfilePath: api-gateway/Dockerfile
+  healthCheckPath: /actuator/health
   plan: free
   envVars:
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
@@ -83,12 +84,16 @@ services:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
     value: http://eureka:8761/eureka/
+  - key: RABBITMQ_HOST
+    value: rabbitmq
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
     fromDatabase:
       name: ms-postgres
       property: connectionString
+  - key: OAUTH2_RESOURCESERVER_JWK_SET_URI
+    value: http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
   - key: FLYWAY_CREATE_SCHEMA
     value: 'true'
   - key: FLYWAY_ENABLED
@@ -127,8 +132,6 @@ services:
     value: 2s
   - key: RESILIENCE4J_RETRY_ESTOQUE_API_EXPONENTIAL_BACKOFF_MULTIPLIER
     value: '2'
-  - key: OAUTH2_RESOURCESERVER_JWK_SET_URI
-    value: http://keycloak:8080/auth/realms/REALM_LOCAL/protocol/openid-connect/certs
 
 - type: pserv
   name: notificacao-service
@@ -140,14 +143,14 @@ services:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
     value: http://eureka:8761/eureka/
+  - key: RABBITMQ_HOST
+    value: rabbitmq
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
     fromDatabase:
       name: ms-postgres
       property: connectionString
-  - key: SENDGRID_API_KEY
-    value: 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
   - key: SERVER_PORT
     value: '8085'
   - key: CONTEXT_PATH
@@ -167,6 +170,8 @@ services:
   - fromGroup: app-secrets
   - key: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
     value: http://eureka:8761/eureka/
+  - key: RABBITMQ_HOST
+    value: rabbitmq
   - key: SPRING_PROFILES_ACTIVE
     value: prod
   - key: SPRING_DATASOURCE_URL
