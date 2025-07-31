@@ -403,44 +403,6 @@ services:
         networks:
             - rsdesenvolvimento
 
-    # usuario:
-    #     build:
-    #         context: ./rsdesenvolvimento-api/usuario
-    #         dockerfile: Dockerfile
-    #     container_name: usuario
-    #     ports:
-    #         - '8081:8081'
-    #     volumes:
-    #         - ./rsdesenvolvimento-api/infra/usuario/api/data:/tmp/import
-    #     environment:
-    #         CONTEXT_PATH: /api
-    #         DEFAULT_LOCALE: pt-BR
-    #         DEFAULT_TIMEZONE: America/Belem
-
-    #         ENVERS_SCHEMA: usuario_aud
-    #         EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eurekaserver:8761/eureka/
-    #         FLYWAY_CREATE_SCHEMA: true
-    #         FLYWAY_DEFAULT_SCHEMA: usuario_adm
-    #         FLYWAY_ENABLED: true
-    #         FLYWAY_LOCATIONS: filesystem:/tmp/import
-    #         FLYWAY_SCHEMAS: usuario,usuario_aud, usuario_adm
-    #         JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-    #         JPA_SHOW_SQL: true
-
-    #         SERVER_PORT: 8081
-    #         SPRING_DATASOURCE_DRIVER-CLASS_NAME: org.postgresql.Driver
-    #         SPRING_DATASOURCE_PASSWORD: postgres
-    #         SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usuario
-    #         SPRING_DATASOURCE_USERNAME: postgres
-    #         SPRING_PROFILES_ACTIVE: desenv
-    #     depends_on:
-    #         eureka:
-    #             condition: service_healthy
-    #         postgres:
-    #             condition: service_healthy
-    #     networks:
-    #         - rsdesenvolvimento
-
     rsdesenvolvimento-ui:
         build:
             context: ./rsdesenvolvimento-ui

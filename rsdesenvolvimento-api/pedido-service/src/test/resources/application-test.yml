@@ -1,0 +1,46 @@
+spring:
+    datasource:
+        url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=false
+        driver-class-name: org.h2.Driver
+        username: sa
+        password: ''
+
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: create-drop
+        show-sql: true
+        properties:
+            hibernate:
+                '[default_schema]': 'public'
+                '[format_sql]': true
+
+    flyway:
+        enabled: false
+
+    h2:
+        console:
+            enabled: false
+    sql:
+        init:
+            mode: always
+            data-locations: classpath:data-h2.sql
+
+    cache:
+        type: none
+
+# Configurações Eureka para testes
+eureka:
+    client:
+        enabled: false
+        register-with-eureka: false
+        fetch-registry: false
+
+server:
+    port: 0
+
+# Configurações de logging para testes
+logging:
+    level:
+        '[com.rsdesenvolvimento]': DEBUG
+        '[org.springframework.cache]': DEBUG

@@ -106,7 +106,6 @@ class EstoqueRepositoryTest {
         Assertions.assertThat(produtoAtualizado.getNome()).isEqualTo(novoNome);
         Assertions.assertThat(produtoAtualizado.getEstoque()).isEqualTo(novoEstoque);
 
-        // Verificar se foi realmente atualizado no banco
         Optional<Estoque> produtoVerificacao = this.estoqueRepository.findById(2L);
         Assertions.assertThat(produtoVerificacao).isPresent();
         Assertions.assertThat(produtoVerificacao.get().getNome()).isEqualTo(novoNome);
@@ -126,7 +125,6 @@ class EstoqueRepositoryTest {
         Optional<Estoque> produtoExcluido = this.estoqueRepository.findById(idParaExcluir);
         Assertions.assertThat(produtoExcluido).isEmpty();
 
-        // Verificar que outros produtos ainda existem
         List<Estoque> produtosRestantes = this.estoqueRepository.findAll();
         Assertions.assertThat(produtosRestantes).hasSize(2);
     }
@@ -149,7 +147,7 @@ class EstoqueRepositoryTest {
         // Given
         Estoque produto = Estoque.builder().nome("Produto Teste Integridade")
                 .descricao("Teste de integridade de dados").preco(BigDecimal.valueOf(15.50))
-                .categoria("TESTE").estoque(10).build(); // Sem imagemUrl para testar campo opcional
+                .categoria("TESTE").estoque(10).build();
 
         // When
         Estoque produtoSalvo = this.estoqueRepository.save(produto);
@@ -158,7 +156,7 @@ class EstoqueRepositoryTest {
         Assertions.assertThat(produtoSalvo).isNotNull();
         Assertions.assertThat(produtoSalvo.getId()).isNotNull();
         Assertions.assertThat(produtoSalvo.getNome()).isEqualTo("Produto Teste Integridade");
-        Assertions.assertThat(produtoSalvo.getImagemUrl()).isNull(); // Campo opcional
+        Assertions.assertThat(produtoSalvo.getImagemUrl()).isNull();
         Assertions.assertThat(produtoSalvo.getPreco())
                 .isEqualByComparingTo(BigDecimal.valueOf(15.50));
     }
