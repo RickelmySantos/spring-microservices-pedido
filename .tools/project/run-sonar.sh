@@ -62,7 +62,6 @@ case $opcao in
         echo "📁 Módulos disponíveis:"
         echo "  - eureka-server"
         echo "  - estoque"
-        echo "  - usuario"
         echo "  - pedido-service"
         echo "  - pagamento-service"
         echo "  - notificacao-service"

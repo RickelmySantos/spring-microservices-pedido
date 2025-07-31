@@ -65,8 +65,8 @@ class PedidoServiceTest {
     void setUp() {
         this.usuarioTeste = TestDataBuilder.umUsuario().build();
         this.pedidoRequestDto = TestDataBuilder.umPedidoRequesteDto().build();
-        this.pedidoSalvo = TestDataBuilder.umPedido().build();
-        this.pedidoTeste = TestDataBuilder.umPedido().build();
+        this.pedidoSalvo = TestDataBuilder.umPedido().comId(1L).build();
+        this.pedidoTeste = TestDataBuilder.umPedido().comId(2L).build();
     }
 
     @Nested

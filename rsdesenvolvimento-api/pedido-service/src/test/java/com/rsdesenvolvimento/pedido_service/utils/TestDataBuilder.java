@@ -161,7 +161,7 @@ public final class TestDataBuilder {
      * Builder para criar PedidoRequesteDto de teste
      */
     public static class PedidoRequesteDtoTestBuilder {
-        private String usuarioId = "user123";
+        private String usuarioId = "55861bd6-0651-4c53-b6b5-10c982468080";
         private String observacao = "Observação de teste";
         private String nomeUsuario = "Xpto Silva";
         private String emailUsuario = "xpto@teste.com";
@@ -246,7 +246,7 @@ public final class TestDataBuilder {
      */
     public static class PedidoResponseDtoTestBuilder {
         private Long id = 1L;
-        private String usuarioId = "user123";
+        private String usuarioId = "55861bd6-0651-4c53-b6b5-10c982468080";
         private String observacao = "Observação de teste";
         private String nomeUsuario = "Xpto Silva";
         private String emailUsuario = "xpto@teste.com";
@@ -302,7 +302,7 @@ public final class TestDataBuilder {
      * Builder para criar Usuario de teste
      */
     public static class UsuarioTestBuilder {
-        private String id = "user123";
+        private String id = "55861bd6-0651-4c53-b6b5-10c982468080"; // Alinhado com outros builders
         private String username = "Xpto Silva";
         private String email = "xpto@teste.com";
 
@@ -392,7 +392,7 @@ public final class TestDataBuilder {
 
     // Constantes úteis para testes
     public static final class TestConstants {
-        public static final String USER_ID_TEST = "user123";
+        public static final String USER_ID_TEST = "55861bd6-0651-4c53-b6b5-10c982468080";
         public static final String NOME_USUARIO_TEST = "Xpto";
         public static final String EMAIL_USUARIO_TEST = "xpto@teste.com";
         public static final String OBSERVACAO_TEST = "Observação de teste";
