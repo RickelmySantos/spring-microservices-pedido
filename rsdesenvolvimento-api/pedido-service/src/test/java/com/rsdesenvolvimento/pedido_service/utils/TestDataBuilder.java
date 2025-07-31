@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.pedido_service.utils;
 
+import com.rsdesenvolvimento.pedido_service.core.client.dtos.AtualizarEstoqueRequestDto;
 import com.rsdesenvolvimento.pedido_service.core.client.dtos.EstoqueResponseDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.ItemPedidoRequestDto;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.ItemPedidoResponseDto;
@@ -348,6 +349,31 @@ public final class TestDataBuilder {
             return this;
         }
 
+        public EstoqueResponseDtoTestBuilder comDescricao(String descricao) {
+            this.descricao = descricao;
+            return this;
+        }
+
+        public EstoqueResponseDtoTestBuilder comPreco(BigDecimal preco) {
+            this.preco = preco;
+            return this;
+        }
+
+        public EstoqueResponseDtoTestBuilder comCategoria(String categoria) {
+            this.categoria = categoria;
+            return this;
+        }
+
+        public EstoqueResponseDtoTestBuilder comEstoque(Integer estoque) {
+            this.estoque = estoque;
+            return this;
+        }
+
+        public EstoqueResponseDtoTestBuilder comImagemUrl(String imagemUrl) {
+            this.imagemUrl = imagemUrl;
+            return this;
+        }
+
         public EstoqueResponseDto build() {
             EstoqueResponseDto dto = new EstoqueResponseDto();
             dto.setId(this.id);
@@ -358,6 +384,28 @@ public final class TestDataBuilder {
             dto.setEstoque(this.estoque);
             dto.setImagemUrl(this.imagemUrl);
             return dto;
+        }
+    }
+
+    /**
+     * Builder para criar AtualizarEstoqueRequestDto de teste
+     */
+    public static class AtualizarEstoqueRequestDtoTestBuilder {
+        private Long produtoId = 1L;
+        private Integer quantidade = 2;
+
+        public AtualizarEstoqueRequestDtoTestBuilder comProdutoId(Long produtoId) {
+            this.produtoId = produtoId;
+            return this;
+        }
+
+        public AtualizarEstoqueRequestDtoTestBuilder comQuantidade(Integer quantidade) {
+            this.quantidade = quantidade;
+            return this;
+        }
+
+        public AtualizarEstoqueRequestDto build() {
+            return new AtualizarEstoqueRequestDto(this.produtoId, this.quantidade);
         }
     }
 
@@ -388,6 +436,10 @@ public final class TestDataBuilder {
 
     public static EstoqueResponseDtoTestBuilder umEstoqueResponseDto() {
         return new EstoqueResponseDtoTestBuilder();
+    }
+
+    public static AtualizarEstoqueRequestDtoTestBuilder umAtualizarEstoqueRequestDto() {
+        return new AtualizarEstoqueRequestDtoTestBuilder();
     }
 
     // Constantes úteis para testes
