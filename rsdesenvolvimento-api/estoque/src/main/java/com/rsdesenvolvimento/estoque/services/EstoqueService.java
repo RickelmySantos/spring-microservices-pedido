@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.estoque.services;
 
+import com.rsdesenvolvimento.estoque.core.exception.EstoqueException;
 import com.rsdesenvolvimento.estoque.modelo.dtos.AtualizarEstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueResponseDto;
@@ -29,8 +30,7 @@ public class EstoqueService {
     private final CloudinaryService cloudinaryService;
 
     @CachePut(value = "estoque", key = "#produtoRequestDTO.id")
-    public EstoqueResponseDto salvar(EstoqueRequestDto produtoRequestDTO, MultipartFile imagem)
-            throws Exception {
+    public EstoqueResponseDto salvar(EstoqueRequestDto produtoRequestDTO, MultipartFile imagem) {
         String url = this.cloudinaryService.uploadImage(imagem);
         Estoque produto = this.mapper.toEntity(produtoRequestDTO);
         produto.setImagemUrl(url);
@@ -48,14 +48,14 @@ public class EstoqueService {
 
     @Transactional(readOnly = true)
     public EstoqueResponseDto buscarPorId(Long id) {
-        Estoque produto = this.repository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
+        Estoque produto = this.repository.findById(id)
+                .orElseThrow(() -> new EstoqueException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
         return this.mapper.toDto(produto);
     }
 
     public EstoqueResponseDto atualizar(Long id, EstoqueRequestDto dto) {
-        Estoque produtoExistente = this.repository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
+        Estoque produtoExistente = this.repository.findById(id)
+                .orElseThrow(() -> new EstoqueException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
 
         Estoque atualizado = this.mapper.toEntity(dto);
         atualizado.setId(produtoExistente.getId());
@@ -69,8 +69,8 @@ public class EstoqueService {
 
     public boolean validarEstoque(List<AtualizarEstoqueRequestDto> itens) {
         for (AtualizarEstoqueRequestDto item : itens) {
-            Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(
-                    () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
+            Estoque produto = this.repository.findById(item.getProdutoId())
+                    .orElseThrow(() -> new EstoqueException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
             if (produto.getEstoque() < item.getQuantidade()) {
                 return false;
             }
@@ -81,8 +81,8 @@ public class EstoqueService {
     @CacheEvict(value = "estoque", allEntries = true)
     public void reservarEstoque(List<AtualizarEstoqueRequestDto> itens) {
         for (AtualizarEstoqueRequestDto item : itens) {
-            Estoque produto = this.repository.findById(item.getProdutoId()).orElseThrow(
-                    () -> new IllegalArgumentException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
+            Estoque produto = this.repository.findById(item.getProdutoId())
+                    .orElseThrow(() -> new EstoqueException(EstoqueService.PRODUTO_NAO_ENCONTRADO));
 
             produto.setEstoque(produto.getEstoque() - item.getQuantidade());
 

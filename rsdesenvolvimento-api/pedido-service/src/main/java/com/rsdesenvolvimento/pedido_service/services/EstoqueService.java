@@ -19,9 +19,7 @@ public class EstoqueService {
     private final EstoquePort estoquePort;
 
     public void validarEstoque(List<AtualizarEstoqueRequestDto> itens) {
-        if (this.estoquePort.validarEstoque(itens)) {
-            return;
-        }
+
         Assert.isTrue(this.estoquePort.validarEstoque(itens),
                 "Estoque insuficiente para os itens solicitados.");
     }

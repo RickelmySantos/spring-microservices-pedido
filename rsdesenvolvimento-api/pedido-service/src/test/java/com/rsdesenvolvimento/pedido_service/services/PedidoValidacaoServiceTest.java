@@ -89,12 +89,11 @@ public class PedidoValidacaoServiceTest {
             Mockito.when(PedidoValidacaoServiceTest.this.estoqueService
                     .buscarProduto(item.getProdutoId())).thenReturn(estoqueResponseDto);
 
-            var exception = Assertions.assertThrows(EstoqueInsuficienteException.class, () -> {
-                PedidoValidacaoServiceTest.this.pedidoValidacaoService
-                        .validarDisponibilidadeEstoque(List.of(item));
-            });
-            org.assertj.core.api.Assertions.assertThat(exception.getMessage()).isEqualTo(
-                    "Estoque insuficiente para o produto 'Produto Teste'. Disponível: 5, Solicitado: 10");
+            org.assertj.core.api.Assertions
+                    .assertThatThrownBy(() -> PedidoValidacaoServiceTest.this.pedidoValidacaoService
+                            .validarDisponibilidadeEstoque(List.of(item)))
+                    .isInstanceOf(EstoqueInsuficienteException.class).hasMessage(
+                            "Estoque insuficiente para o produto 'Produto Teste'. Disponível: 5, Solicitado: 10");
         }
 
         @Test

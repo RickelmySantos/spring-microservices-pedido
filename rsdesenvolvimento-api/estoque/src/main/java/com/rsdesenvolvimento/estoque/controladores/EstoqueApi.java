@@ -33,7 +33,7 @@ public class EstoqueApi {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<EstoqueResponseDto> cadastrarProduto(
             @RequestPart("dados") EstoqueRequestDto dto,
-            @RequestPart("imagem") MultipartFile imagem) throws Exception {
+            @RequestPart("imagem") MultipartFile imagem) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.service.salvar(dto, imagem));
     }
 

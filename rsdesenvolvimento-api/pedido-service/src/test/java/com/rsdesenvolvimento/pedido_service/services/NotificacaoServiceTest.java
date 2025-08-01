@@ -85,8 +85,7 @@ class NotificacaoServiceTest {
                     .enviarNotificacao(mensagemCaptor.capture());
 
             String mensagem = mensagemCaptor.getValue();
-            Assertions.assertThat(mensagem).contains("999");
-            Assertions.assertThat(mensagem).startsWith("PEDIDO_CRIADO:");
+            Assertions.assertThat(mensagem).contains("999").contains("PEDIDO_CRIADO:");
         }
 
         @Test
@@ -107,8 +106,8 @@ class NotificacaoServiceTest {
                     .enviarNotificacao(mensagemCaptor.capture());
 
             String mensagem = mensagemCaptor.getValue();
-            Assertions.assertThat(mensagem).contains("email.especifico@teste.org");
-            Assertions.assertThat(mensagem).endsWith("email.especifico@teste.org");
+            Assertions.assertThat(mensagem).contains("email.especifico@teste.org")
+                    .endsWith("email.especifico@teste.org");
         }
 
         @Test

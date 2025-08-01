@@ -522,11 +522,11 @@ class PedidoServiceTest {
                     .comUsuarioId("user456").comObservacao("Pedido urgente")
                     .comItensPedido(Arrays.asList(itemDto)).build();
 
-            Usuario usuarioTeste = TestDataBuilder.umUsuario().comId("user456").build();
+
             Pedido pedidoConvertido = TestDataBuilder.umPedido().build();
 
             Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
-                    .thenReturn(usuarioTeste);
+                    .thenReturn(PedidoServiceTest.this.usuarioTeste);
             Mockito.when(PedidoServiceTest.this.pedidoMapper
                     .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
                     .thenReturn(pedidoConvertido);
@@ -556,7 +556,8 @@ class PedidoServiceTest {
             PedidoResponseDto resultado = PedidoServiceTest.this.pedidoService.criarPedido(request);
 
             // Assert
-            Assertions.assertThat(resultado.getUsuarioId()).isEqualTo("user456");
+            Assertions.assertThat(resultado.getUsuarioId())
+                    .isEqualTo("55861bd6-0651-4c53-b6b5-10c982468080");
             Assertions.assertThat(resultado.getObservacao()).isEqualTo("Pedido urgente");
         }
 

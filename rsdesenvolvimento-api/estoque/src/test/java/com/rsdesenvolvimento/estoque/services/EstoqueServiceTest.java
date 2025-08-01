@@ -1,5 +1,6 @@
 package com.rsdesenvolvimento.estoque.services;
 
+import com.rsdesenvolvimento.estoque.core.exception.EstoqueException;
 import com.rsdesenvolvimento.estoque.modelo.dtos.AtualizarEstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueRequestDto;
 import com.rsdesenvolvimento.estoque.modelo.dtos.EstoqueResponseDto;
@@ -84,7 +85,7 @@ class EstoqueServiceTest {
 
         @Test
         @DisplayName("Deve salvar produto com sucesso quando dados válidos são fornecidos")
-        void deveSalvarProdutoComSucesso() throws Exception {
+        void deveSalvarProdutoComSucesso() {
             // Given
             String urlImagem = "https://cloudinary.com/imagem.jpg";
             Mockito.when(EstoqueServiceTest.this.cloudinaryService
@@ -120,7 +121,7 @@ class EstoqueServiceTest {
 
         @Test
         @DisplayName("Deve lançar exceção quando falha no upload da imagem")
-        void deveLancarExcecaoQuandoFalhaUploadImagem() throws Exception {
+        void deveLancarExcecaoQuandoFalhaUploadImagem() {
             // Given
             Mockito.when(EstoqueServiceTest.this.cloudinaryService
                     .uploadImage(EstoqueServiceTest.this.multipartFile))
@@ -277,8 +278,7 @@ class EstoqueServiceTest {
             Assertions
                     .assertThatThrownBy(
                             () -> EstoqueServiceTest.this.estoqueService.buscarPorId(idInexistente))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Produto não encontrado");
+                    .isInstanceOf(EstoqueException.class).hasMessage("Produto não encontrado");
 
             Mockito.verify(EstoqueServiceTest.this.repository).findById(idInexistente);
             Mockito.verifyNoInteractions(EstoqueServiceTest.this.mapper);
@@ -339,8 +339,7 @@ class EstoqueServiceTest {
             Assertions
                     .assertThatThrownBy(() -> EstoqueServiceTest.this.estoqueService
                             .atualizar(idInexistente, EstoqueServiceTest.this.estoqueRequestDto))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Produto não encontrado");
+                    .isInstanceOf(EstoqueException.class).hasMessage("Produto não encontrado");
 
             Mockito.verify(EstoqueServiceTest.this.repository).findById(idInexistente);
             Mockito.verifyNoInteractions(EstoqueServiceTest.this.mapper);
@@ -420,8 +419,7 @@ class EstoqueServiceTest {
             Assertions
                     .assertThatThrownBy(
                             () -> EstoqueServiceTest.this.estoqueService.validarEstoque(itens))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Produto não encontrado");
+                    .isInstanceOf(EstoqueException.class).hasMessage("Produto não encontrado");
 
             Mockito.verify(EstoqueServiceTest.this.repository).findById(1L);
         }
@@ -468,8 +466,7 @@ class EstoqueServiceTest {
             Assertions
                     .assertThatThrownBy(
                             () -> EstoqueServiceTest.this.estoqueService.reservarEstoque(itens))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Produto não encontrado");
+                    .isInstanceOf(EstoqueException.class).hasMessage("Produto não encontrado");
 
             Mockito.verify(EstoqueServiceTest.this.repository).findById(1L);
             Mockito.verify(EstoqueServiceTest.this.repository, Mockito.never())

@@ -42,7 +42,7 @@ case $opcao in
             -Dsonar.projectKey=restaurante-web \
             -Dsonar.projectName='restaurante-web' \
             -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.token=sqp_2520b13610ea01c5922fdc0f8d4a28609fbe6e6e
+            -Dsonar.token=sqp_4cd0be72b79330df1e09866889420ff495a5e20c
         ;;
     2)
         echo "⚡ Executando análise rápida..."
@@ -51,7 +51,7 @@ case $opcao in
             -Dsonar.projectKey=restaurante-web \
             -Dsonar.projectName='restaurante-web' \
             -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.token=sqp_2520b13610ea01c5922fdc0f8d4a28609fbe6e6e
+            -Dsonar.token=sqp_4cd0be72b79330df1e09866889420ff495a5e20c
         ;;
     3)
         echo "📊 Gerando relatório de cobertura JaCoCo..."
@@ -76,7 +76,7 @@ case $opcao in
                 -Dsonar.projectKey=restaurante-web:$modulo \
                 -Dsonar.projectName="restaurante-web-$modulo" \
                 -Dsonar.host.url=http://localhost:9000 \
-                -Dsonar.token=sqp_2520b13610ea01c5922fdc0f8d4a28609fbe6e6e
+                -Dsonar.token=sqp_4cd0be72b79330df1e09866889420ff495a5e20c
         else
             echo "❌ Módulo '$modulo' não encontrado!"
             exit 1

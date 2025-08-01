@@ -87,7 +87,7 @@ class EstoqueServiceTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Estoque insuficiente para os itens solicitados.");
 
-            Mockito.verify(EstoqueServiceTest.this.estoquePort, Mockito.times(2))
+            Mockito.verify(EstoqueServiceTest.this.estoquePort, Mockito.times(1))
                     .validarEstoque(EstoqueServiceTest.this.listaItens);
         }
 
@@ -241,7 +241,7 @@ class EstoqueServiceTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Estoque insuficiente para os itens solicitados.");
 
-            Mockito.verify(EstoqueServiceTest.this.estoquePort, Mockito.times(2))
+            Mockito.verify(EstoqueServiceTest.this.estoquePort, Mockito.times(1))
                     .validarEstoque(EstoqueServiceTest.this.listaItens);
         }
     }
@@ -368,7 +368,7 @@ class EstoqueServiceTest {
                     EstoqueServiceTest.this.estoqueService.atualizarEstoque(dtoQuantidadeZero);
 
             // Assert
-            Assertions.assertThat(resultado.getQuantidade()).isEqualTo(0);
+            Assertions.assertThat(resultado.getQuantidade()).isZero();
             Mockito.verify(EstoqueServiceTest.this.estoquePort).atualizarEstoque(dtoQuantidadeZero);
         }
     }

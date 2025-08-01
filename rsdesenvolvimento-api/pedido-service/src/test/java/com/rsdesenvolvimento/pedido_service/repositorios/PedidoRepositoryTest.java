@@ -22,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DataJpaTest
 @ActiveProfiles("test")
 @Import(AuditoriaConfig.class)
-public class PedidoRepositoryTest {
+class PedidoRepositoryTest {
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -267,8 +267,9 @@ public class PedidoRepositoryTest {
         long count = this.pedidoRepository.count();
 
         // ASSERT
-        Assertions.assertThat(count).isGreaterThanOrEqualTo(2);
-        Assertions.assertThat(count).isEqualTo(this.pedidoRepository.findAll().size());
+        Assertions.assertThat(count).isGreaterThanOrEqualTo(2)
+                .isEqualTo(this.pedidoRepository.findAll().size());
+
     }
 
     @Test
@@ -295,7 +296,7 @@ public class PedidoRepositoryTest {
                 .createQuery("SELECT COUNT(i) FROM ItemPedido i WHERE i.pedido.id = :pedidoId",
                         Long.class)
                 .setParameter("pedidoId", pedidoId).getSingleResult();
-        Assertions.assertThat(countItens).isEqualTo(0);
+        Assertions.assertThat(countItens).isZero();
     }
 
 
@@ -340,11 +341,12 @@ public class PedidoRepositoryTest {
         String observacaoMuitoLonga = "a".repeat(256);
         Pedido pedido = TestDataBuilder.umPedido().comObservacao(observacaoMuitoLonga).build();
 
-        // ACT & ASSERT
-        Assertions.assertThatThrownBy(() -> {
-            this.pedidoRepository.save(pedido);
-            this.entityManager.flush();
-        }).isInstanceOf(DataException.class);
+        // ACT
+        this.pedidoRepository.save(pedido);
+
+        // ASSERT
+        Assertions.assertThatThrownBy(() -> this.entityManager.flush())
+                .isInstanceOf(DataException.class);
     }
 
     @Test

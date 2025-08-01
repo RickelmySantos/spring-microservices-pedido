@@ -1,0 +1,39 @@
+server:
+    port: 0
+
+spring:
+    cache:
+        type: caffeine
+        caffeine:
+            spec: initialCapacity=50,maximumSize=200,expireAfterWrite=5m,recordStats
+
+eureka:
+    client:
+        registerWithEureka: false
+        fetchRegistry: false
+        service-url: http://localhost:${server.port}/eureka/
+    instance:
+        hostname: localhost
+    server:
+        enableSelfPreservation: false
+        evictionIntervalTimerInMs: 5000
+        response-cache-update-interval-ms: 1000
+        response-cache-auto-expiration-in-seconds: 1000
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info,metrics,caches
+    endpoint:
+        health:
+            show-details: always
+    health:
+        defaults:
+            enabled: true
+
+logging:
+    level:
+        com.netflix.eureka: WARN
+        com.netflix.discovery: WARN
+        com.rsdesenvolvimento: DEBUG
