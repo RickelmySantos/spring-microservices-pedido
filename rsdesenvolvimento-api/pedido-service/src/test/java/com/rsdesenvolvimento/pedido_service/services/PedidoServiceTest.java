@@ -1,5 +1,9 @@
 package com.rsdesenvolvimento.pedido_service.services;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.rsdesenvolvimento.pedido_service.core.client.dtos.EstoqueResponseDto;
 import com.rsdesenvolvimento.pedido_service.core.ports.UsuarioPort;
 import com.rsdesenvolvimento.pedido_service.modelo.dtos.ItemPedidoRequestDto;
@@ -13,6 +17,7 @@ import com.rsdesenvolvimento.pedido_service.repositorios.PedidoRepository;
 import com.rsdesenvolvimento.pedido_service.utils.TestDataBuilder;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +30,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -240,6 +246,110 @@ class PedidoServiceTest {
             Assertions.assertThat(resultado.getNomeUsuario()).isEqualTo("Maria Silva");
             Assertions.assertThat(resultado.getEmailUsuario()).isEqualTo("maria@teste.com");
         }
+
+        @Test
+        @DisplayName("Deve logar erro quando notificação falha mas não interromper o processo")
+        void deveLogarErroQuandoNotificacaoFalhaMasNaoInterromperProcesso() {
+            // Arrange
+            EstoqueResponseDto produto = TestDataBuilder.umEstoqueResponseDto().build();
+            Pedido pedidoConvertido = TestDataBuilder.umPedido().build();
+
+            RuntimeException notificacaoException =
+                    new RuntimeException("Falha no serviço de notificação");
+
+            Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
+                    .thenReturn(PedidoServiceTest.this.usuarioTeste);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoConvertido);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .itemPedidoRequestDtoParaItemPedido(ArgumentMatchers.any()))
+                    .thenReturn(TestDataBuilder.umItemPedido().build());
+            Mockito.when(
+                    PedidoServiceTest.this.estoqueService.buscarProduto(ArgumentMatchers.anyLong()))
+                    .thenReturn(produto);
+            Mockito.when(PedidoServiceTest.this.pedidoRepository
+                    .save(ArgumentMatchers.any(Pedido.class)))
+                    .thenReturn(PedidoServiceTest.this.pedidoSalvo);
+            Mockito.when(
+                    PedidoServiceTest.this.pedidoMapper.paraDto(ArgumentMatchers.any(Pedido.class)))
+                    .thenReturn(TestDataBuilder.umPedidoResponseDto().build());
+
+            Mockito.doThrow(notificacaoException).when(PedidoServiceTest.this.notificacaoService)
+                    .enviarNotificacao(ArgumentMatchers.any(Pedido.class));
+
+            PedidoResponseDto resultado = PedidoServiceTest.this.pedidoService
+                    .criarPedido(PedidoServiceTest.this.pedidoRequestDto);
+
+
+            Assertions.assertThat(resultado).isNotNull();
+            Assertions.assertThat(resultado.getId())
+                    .isEqualTo(PedidoServiceTest.this.pedidoSalvo.getId());
+
+            Mockito.verify(PedidoServiceTest.this.notificacaoService)
+                    .enviarNotificacao(ArgumentMatchers.any(Pedido.class));
+
+            Mockito.verify(PedidoServiceTest.this.pedidoRepository)
+                    .save(ArgumentMatchers.any(Pedido.class));
+        }
+
+        @Test
+        @DisplayName("Deve capturar e logar erro específico quando notificação falha")
+        void deveCapturaELogarErroEspecificoQuandoNotificacaoFalha() {
+            // Arrange
+            Logger pedidoServiceLogger = (Logger) LoggerFactory.getLogger(PedidoService.class);
+            ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+            listAppender.start();
+            pedidoServiceLogger.addAppender(listAppender);
+
+            EstoqueResponseDto produto = TestDataBuilder.umEstoqueResponseDto().build();
+            Pedido pedidoConvertido = TestDataBuilder.umPedido().comId(123L).build();
+
+            String mensagemErroEsperada = "Erro específico de notificação";
+            RuntimeException notificacaoException = new RuntimeException(mensagemErroEsperada);
+
+            Mockito.when(PedidoServiceTest.this.usuarioPort.buscarUsuario())
+                    .thenReturn(PedidoServiceTest.this.usuarioTeste);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .paraEntidade(ArgumentMatchers.any(PedidoRequesteDto.class)))
+                    .thenReturn(pedidoConvertido);
+            Mockito.when(PedidoServiceTest.this.pedidoMapper
+                    .itemPedidoRequestDtoParaItemPedido(ArgumentMatchers.any()))
+                    .thenReturn(TestDataBuilder.umItemPedido().build());
+            Mockito.when(
+                    PedidoServiceTest.this.estoqueService.buscarProduto(ArgumentMatchers.anyLong()))
+                    .thenReturn(produto);
+            Mockito.when(PedidoServiceTest.this.pedidoRepository
+                    .save(ArgumentMatchers.any(Pedido.class))).thenReturn(pedidoConvertido);
+            Mockito.when(
+                    PedidoServiceTest.this.pedidoMapper.paraDto(ArgumentMatchers.any(Pedido.class)))
+                    .thenReturn(TestDataBuilder.umPedidoResponseDto().comId(123L).build());
+
+            Mockito.doThrow(notificacaoException).when(PedidoServiceTest.this.notificacaoService)
+                    .enviarNotificacao(ArgumentMatchers.any(Pedido.class));
+
+            // Act
+            PedidoResponseDto resultado = PedidoServiceTest.this.pedidoService
+                    .criarPedido(PedidoServiceTest.this.pedidoRequestDto);
+
+            // Assert
+            Assertions.assertThat(resultado).isNotNull();
+            Assertions.assertThat(resultado.getId()).isEqualTo(123L);
+
+            // Assert
+            List<ILoggingEvent> logsList = listAppender.list;
+            boolean errorLogFound = logsList.stream()
+                    .anyMatch(event -> event.getLevel() == Level.ERROR
+                            && event.getFormattedMessage()
+                                    .contains("Erro ao enviar notificação para pedido 123")
+                            && event.getFormattedMessage().contains(mensagemErroEsperada));
+
+            Assertions.assertThat(errorLogFound)
+                    .as("Log de erro deve ter sido registrado com a mensagem esperada").isTrue();
+
+            // Cleanup
+            pedidoServiceLogger.detachAppender(listAppender);
+        }
     }
 
     @Nested
@@ -392,7 +502,6 @@ class PedidoServiceTest {
             Mockito.verify(PedidoServiceTest.this.pedidoRepository).findById(pedidoId);
         }
 
-
     }
 
     @Nested
@@ -413,7 +522,6 @@ class PedidoServiceTest {
                     .comUsuarioId("user456").comObservacao("Pedido urgente")
                     .comItensPedido(Arrays.asList(itemDto)).build();
 
-            // Criando usuário que terá ID "user456" como esperado no teste
             Usuario usuarioTeste = TestDataBuilder.umUsuario().comId("user456").build();
             Pedido pedidoConvertido = TestDataBuilder.umPedido().build();
 
