@@ -21,7 +21,7 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
+        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service ]
 
     steps:
     - name: Checkout código
@@ -151,7 +151,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service, usuario ]
+        service: [ api-gateway, estoque, eureka-server, notificacao-service, pagamento-service, pedido-service ]
 
     steps:
     - name: Checkout código
